@@ -64,7 +64,7 @@ try{
 <?php require_once 'pwa_head.php'; ?><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title><?php echo htmlspecialchars($sets['site_name']??'Dashboard'); ?> — Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Cinzel:wght@700;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=<?=time()?>">
 <style>
 *{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}html{font-size:16px!important;overflow-x:hidden}
 body{overflow-x:hidden;max-width:100vw;background:var(--bg);color:var(--t);padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
@@ -147,7 +147,10 @@ button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.hdr,
 .ps-arr:active{background:rgba(var(--sec-rgb,56,189,248),.15)}
 .prov-sec-right{display:flex;flex-direction:row;align-items:center;gap:6px}
 .ps-all{font-size:.72rem;color:var(--pri);font-weight:700}
-.prov-sec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 8px;padding:12px 10px;align-items:start}
+.prov-sec-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px 8px;padding:12px 10px;align-items:start;grid-auto-rows:auto}
+.prov-sec-grid > *{min-width:0;max-width:100%}
+.prov-sec-grid > .gwrap{width:100%!important;display:flex!important;flex-direction:column;gap:6px;grid-column:auto!important;grid-row:auto!important}
+.prov-sec-grid > .gwrap > .gc{width:100%!important;aspect-ratio:1/1!important;min-width:0;max-width:none}
 .gwrap{display:flex;flex-direction:column;gap:6px;text-decoration:none;color:inherit}
 .gwrap .gn{display:block;font-family:'Plus Jakarta Sans','Outfit','Poppins',sans-serif;font-size:.7rem;font-weight:600;color:var(--t);line-height:1.2;letter-spacing:-.01em;text-align:center;padding:0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gc-overlay{position:absolute;left:0;right:0;bottom:0;height:42%;display:flex;align-items:flex-end;justify-content:center;padding:0 0 8px;background:linear-gradient(180deg,transparent 0%,rgba(var(--pri-rgb),.32) 35%,rgba(0,0,0,.78) 100%);z-index:2;pointer-events:none}
@@ -1308,7 +1311,7 @@ function renderPopular(){
     if(secBody)secBody.style.display='';
     if(!pageState['pop'])pageState['pop']={page:0,expanded:false};
     var ps=pageState['pop'];
-    var perPage=ps.expanded?40:7;
+    var perPage=ps.expanded?40:9;
     var pg=ps.page;var mx=Math.ceil(all.length/perPage)-1;
     if(pg<0)pg=mx;if(pg>mx)pg=0;ps.page=pg;
     var st=pg*perPage;var en=Math.min(st+perPage,all.length);
@@ -1333,7 +1336,7 @@ function renderProvSection(id){
     var games=p.games||[];
     if(!pageState[id])pageState[id]={page:0,expanded:false};
     var ps=pageState[id];
-    var perPage=ps.expanded?40:7;
+    var perPage=ps.expanded?40:9;
     var pg=ps.page;var mx=Math.ceil(games.length/perPage)-1;
     if(pg<0)pg=mx;if(pg>mx)pg=0;ps.page=pg;
     var st=pg*perPage;var en=Math.min(st+perPage,games.length);
