@@ -1,5 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800;900&display=swap');
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+/* ═══ DESIGN SYSTEM TOKENS (consistent everywhere) ═══ */
+:root{
+  /* Typography scale — Plus Jakarta Sans for UI, Chakra Petch for numerics, Poppins legacy fallback */
+  --font-ui:'Plus Jakarta Sans','Poppins',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  --font-num:'Chakra Petch','Plus Jakarta Sans',monospace;
+  --font-display:'Plus Jakarta Sans','Poppins',sans-serif;
+  /* Spacing scale */
+  --sp-xs:6px; --sp-sm:8px; --sp:12px; --sp-md:14px; --sp-lg:16px; --sp-xl:20px; --sp-2xl:24px;
+  /* Border radius — predictable */
+  --rad-sm:8px; --rad:10px; --rad-md:12px; --rad-lg:14px; --rad-xl:18px; --rad-pill:999px;
+  /* Shadow scale — 3 tiers only */
+  --sh-flat:none;
+  --sh-1:0 1px 2px rgba(0,0,0,.18),0 0 0 1px rgba(255,255,255,.03) inset;
+  --sh-2:0 4px 12px rgba(0,0,0,.22),0 0 0 1px rgba(255,255,255,.04) inset;
+  --sh-3:0 12px 28px rgba(0,0,0,.32),0 0 0 1px rgba(255,255,255,.05) inset;
+}
 
 /* === DEFAULT VARS (overridden by theme.php) === */
 :root{
@@ -344,3 +361,115 @@ input,select,textarea,button{font-family:inherit}
 .img-placeholder svg{width:28px;height:28px;opacity:.5;margin-bottom:6px;color:var(--pri)}
 .img-placeholder-label{font-size:.7rem;font-weight:700;color:var(--t2);margin-bottom:2px;letter-spacing:-.005em;position:relative;z-index:1}
 .img-placeholder-size{font-size:.62rem;font-weight:600;color:var(--t3);font-family:'Chakra Petch','Poppins',monospace;letter-spacing:.5px;position:relative;z-index:1}
+
+/* ═══════════════════════════════════════════════════════════════
+   UNIVERSAL TYPOGRAPHY + POLISH — wins over per-page inline styles
+   Applied via cache-busted style.css?v=time()
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Body & headings: Plus Jakarta Sans modern stack */
+html{font-feature-settings:'cv11','ss01','ss03'}
+body{font-family:var(--font-ui)!important;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+h1,h2,h3,h4,h5,h6{font-family:var(--font-display);letter-spacing:-.02em;line-height:1.2}
+h1{font-size:1.5rem;font-weight:800;letter-spacing:-.025em}
+h2{font-size:1.2rem;font-weight:800;letter-spacing:-.022em}
+h3{font-size:1rem;font-weight:800;letter-spacing:-.018em}
+h4{font-size:.9rem;font-weight:700;letter-spacing:-.014em}
+
+/* All currency/numeric values get tabular numerics + Chakra Petch */
+.bal-val,.bl-val,.li-amount,.amt-val,.qa-val,.qk,
+[class*="amount"],[class*="balance"],[class*="-amt"],[class*="-bal"],
+.h-bal .bal-val,.hdr-bal .bal-val,.topbar-bal,.lw-amt,
+.stat-val,.sb-stat-v,.sb-stat-mini-v,.stat-card .sv,
+input[inputmode="numeric"]{
+  font-family:var(--font-num)!important;
+  font-variant-numeric:tabular-nums;
+  font-feature-settings:'tnum' 1,'lnum' 1;
+}
+
+/* ── Theme-aware HOT badge (was hardcoded orange) ── */
+.hot-badge,
+[class*="hot-badge"]{
+  background:linear-gradient(135deg,#ef4444,#b91c1c)!important;
+}
+
+/* ── Universal :hover scaling for all clickable elements ── */
+button:not(:disabled),
+.btn,
+a[href]:not(.no-hover){
+  transition:transform .15s cubic-bezier(.16,1,.3,1),
+             background .15s,
+             box-shadow .25s,
+             border-color .15s,
+             color .15s;
+}
+
+/* Active feedback — universal scale */
+button:not(:disabled):active,
+.btn:active,
+a[href]:not(.no-hover):active{transform:scale(.97)}
+
+/* ── Card/section unification ── */
+[class*="card"]:not(.gc):not(.card-noborder),
+.sec,.section,.box,
+.prov-sec,.tut-card,.menu,
+.bank-info,.bank-empty,.bal-card{
+  border-radius:var(--rad-md);
+}
+
+/* Modal handle visual cue */
+.modal-handle{cursor:grab;transition:background .2s ease}
+.modal-handle:active{cursor:grabbing;background:var(--pri)}
+
+/* Smooth scroll snap for game grids */
+.gc-grid,.prov-sec-grid{scroll-behavior:smooth}
+
+/* ── Improve focus visibility (a11y) ── */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible{
+  outline:2px solid rgba(var(--pri-rgb),.55);
+  outline-offset:2px;
+  border-radius:var(--rad-sm);
+}
+
+/* ── Section divider ── */
+.sec-divider{
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--bd),transparent);
+  margin:var(--sp-lg) 0;
+  border:none;
+}
+
+/* ── Force consistent header padding ── */
+.hdr,.topbar-in{
+  padding:var(--sp) var(--sp-md);
+}
+
+/* ── Topbar logo: clean fallback (no broken-img X icon) ── */
+.logo-img{
+  background:transparent;
+}
+.logo-img:not([src]),.logo-img[src=""]{display:none!important}
+
+/* ── Universal "ts-amount-prefix" : green plus / red minus ── */
+.li-amount.plus::before,.amt-prefix-plus{color:#4ade80;content:'+';margin-right:1px}
+.li-amount.minus::before,.amt-prefix-minus{color:#ef4444;content:'-';margin-right:1px}
+
+/* ── Smooth content fade-in for sections appearing on scroll ── */
+@keyframes secFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.sec,.prov-sec,.tut-card,.card,.menu,.alert{
+  animation:secFadeIn .35s cubic-bezier(.16,1,.3,1) both;
+}
+
+/* ── Page transition: soft fade ── */
+main,body > *:not(.bnav):not(.bnav-popup):not(.modal-overlay):not(.lw-pop){
+  animation-fill-mode:both;
+}
+
+/* ── Respect reduced motion (override above for users who prefer no anim) ── */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}

@@ -69,7 +69,7 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-he
 .km-today{display:flex;align-items:center;justify-content:space-between}
 .km-today span{font-size:.78rem;color:var(--t2)}
 .km-today b{color:var(--pri);font-weight:800}
-.btn-klaim{padding:10px 24px;background:linear-gradient(135deg,var(--sec),var(--sec));border:none;border-radius:8px;color:#fff;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-klaim{padding:10px 24px;background:var(--sec);border:none;border-radius:8px;color:#fff;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit}
 .km-note{font-size:.62rem;color:var(--t3);margin-top:10px}
 /* Data saya */
 .data-card{background:var(--s);border:1px solid var(--bd);border-radius:14px;padding:18px;margin-bottom:16px}
