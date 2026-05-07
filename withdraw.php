@@ -277,7 +277,6 @@ html{font-size:16px!important;overflow-x:hidden}body{font-family:'Poppins',sans-
 </div>
 </div>
 
-<?php @require_once __DIR__.'/includes/site_footer.php'; ?>
 <?php echo renderBnav($db,"deposit", $isLoggedIn); ?>
 
 <script>
