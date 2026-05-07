@@ -350,6 +350,7 @@ $fmtK = function($v){ return number_format($v/1000,2,'.',','); };
 <div class="dt-body" id="dtBody"></div>
 </div>
 
+<?php require_once dirname(__FILE__)."/includes/site_footer.php"; ?>
 <?php echo renderBnav($db,"undang", $isLoggedIn); ?>
 
 <script>
