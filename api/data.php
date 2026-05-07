@@ -257,15 +257,18 @@ if($action==='claim_misteri'){
     $db->beginTransaction();
     try{
         $db->prepare("INSERT INTO vip_claims(user_id,claim_type,period,vip_level,amount) VALUES(?,?,?,?,?)")->execute([$uid,'misteri',$cycleId,$day,$bonusRp]);
-        $db->prepare("UPDATE users SET balance=balance+? WHERE id=?")->execute([$bonusRp,$uid]);
-        $db->prepare("INSERT INTO transactions(user_id,type,amount,note,created_at) VALUES(?,?,?,?,NOW())")->execute([$uid,'bonus',$bonusRp,'Bonus Misteri Hari '.$day]);
+        // Lock + read balance untuk audit trail (sebelumnya balance_before/after kosong)
+        $bq=$db->prepare("SELECT balance FROM users WHERE id=? FOR UPDATE");$bq->execute([$uid]);
+        $balBefore=(int)$bq->fetchColumn();$balAfter=$balBefore+$bonusRp;
+        $db->prepare("UPDATE users SET balance=? WHERE id=?")->execute([$balAfter,$uid]);
+        $db->prepare("INSERT INTO transactions(user_id,type,amount,balance_before,balance_after,note,created_at) VALUES(?,?,?,?,?,?,NOW())")
+           ->execute([$uid,'bonus',$bonusRp,$balBefore,$balAfter,'Bonus Misteri Hari '.$day]);
 
         require_once __DIR__.'/../includes/bonus_to.php';
         bonusTO_track($db,$uid,'misteri',$bonusRp,'Misteri Hari '.$day,1);
 
         $db->commit();
-        $bal=$db->prepare("SELECT balance FROM users WHERE id=?");$bal->execute([$uid]);
-        ok(['amount'=>$bonusRp,'balance'=>$bal->fetchColumn()]);
+        ok(['amount'=>$bonusRp,'balance'=>$balAfter]);
     }catch(Exception $e){$db->rollBack();err('Gagal memproses');}
 }
 
@@ -300,15 +303,17 @@ if($action==='claim_bantuan'){
     $db->beginTransaction();
     try{
         $db->prepare("INSERT INTO vip_claims(user_id,claim_type,period,vip_level,amount) VALUES(?,?,?,?,?)")->execute([$uid,'bantuan',$weekId,0,$cashbackRp]);
-        $db->prepare("UPDATE users SET balance=balance+? WHERE id=?")->execute([$cashbackRp,$uid]);
-        $db->prepare("INSERT INTO transactions(user_id,type,amount,note,created_at) VALUES(?,?,?,?,NOW())")->execute([$uid,'bonus',$cashbackRp,'Dana Bantuan Mingguan W'.date('W')]);
+        $bq=$db->prepare("SELECT balance FROM users WHERE id=? FOR UPDATE");$bq->execute([$uid]);
+        $balBefore=(int)$bq->fetchColumn();$balAfter=$balBefore+$cashbackRp;
+        $db->prepare("UPDATE users SET balance=? WHERE id=?")->execute([$balAfter,$uid]);
+        $db->prepare("INSERT INTO transactions(user_id,type,amount,balance_before,balance_after,note,created_at) VALUES(?,?,?,?,?,?,NOW())")
+           ->execute([$uid,'bonus',$cashbackRp,$balBefore,$balAfter,'Dana Bantuan Mingguan W'.date('W')]);
 
         require_once __DIR__.'/../includes/bonus_to.php';
         bonusTO_track($db,$uid,'bantuan',$cashbackRp,'Dana Bantuan W'.date('W'),1);
 
         $db->commit();
-        $bal=$db->prepare("SELECT balance FROM users WHERE id=?");$bal->execute([$uid]);
-        ok(['amount'=>$cashbackRp,'balance'=>$bal->fetchColumn()]);
+        ok(['amount'=>$cashbackRp,'balance'=>$balAfter]);
     }catch(Exception $e){$db->rollBack();err('Gagal memproses');}
 }
 
@@ -317,11 +322,14 @@ if($action==='claim_bonus_depo'){
     $uid=auth();
     $period=date('Y-m-d'); // per hari
 
-    // Auto-migrate schema (vip_claims kolom pendek kalo DB lama)
-    try{$db->exec("ALTER TABLE vip_claims MODIFY claim_type VARCHAR(30)");}catch(Exception $e){}
-    try{$db->exec("ALTER TABLE vip_claims MODIFY period VARCHAR(30)");}catch(Exception $e){}
-    try{$db->exec("ALTER TABLE vip_claims DROP INDEX uq_claim");}catch(Exception $e){}
-    try{$db->exec("ALTER TABLE vip_claims ADD UNIQUE KEY uq_claim2(user_id,claim_type,period,vip_level)");}catch(Exception $e){}
+    // Auto-migrate schema gated (sebelumnya jalan tiap request)
+    if(getSetting($db,'schema_vip_claims_v2','')!=='1'){
+        try{$db->exec("ALTER TABLE vip_claims MODIFY claim_type VARCHAR(30)");}catch(Exception $e){}
+        try{$db->exec("ALTER TABLE vip_claims MODIFY period VARCHAR(30)");}catch(Exception $e){}
+        try{$db->exec("ALTER TABLE vip_claims DROP INDEX uq_claim");}catch(Exception $e){}
+        try{$db->exec("ALTER TABLE vip_claims ADD UNIQUE KEY uq_claim2(user_id,claim_type,period,vip_level)");}catch(Exception $e){}
+        try{$db->prepare("INSERT INTO settings(`key`,`value`) VALUES('schema_vip_claims_v2','1') ON DUPLICATE KEY UPDATE `value`=VALUES(`value`)")->execute();}catch(Exception $e){}
+    }
 
     // Tiers harus sama persis dgn yg di bonusdepo.php
     // [min deposit K, bonus K]
@@ -381,18 +389,21 @@ if($action==='claim_bonus_depo'){
 if($action==='daily_checkin'){
     $uid=auth();
 
-    // Pastiin table
-    try{$db->exec("CREATE TABLE IF NOT EXISTS daily_checkin(
-        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        user_id INT UNSIGNED NOT NULL,
-        checkin_date DATE NOT NULL,
-        streak_day INT NOT NULL,
-        vip_level INT DEFAULT 0,
-        reward INT DEFAULT 0,
-        turnover_at_checkin BIGINT DEFAULT 0,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        UNIQUE KEY uq_user_date(user_id,checkin_date)
-    ) ENGINE=InnoDB");}catch(Exception $e){}
+    // Pastiin table — gated supaya CREATE TABLE IF NOT EXISTS ga lock di tiap request
+    if(getSetting($db,'schema_daily_checkin_v1','')!=='1'){
+        try{$db->exec("CREATE TABLE IF NOT EXISTS daily_checkin(
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            user_id INT UNSIGNED NOT NULL,
+            checkin_date DATE NOT NULL,
+            streak_day INT NOT NULL,
+            vip_level INT DEFAULT 0,
+            reward INT DEFAULT 0,
+            turnover_at_checkin BIGINT DEFAULT 0,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE KEY uq_user_date(user_id,checkin_date)
+        ) ENGINE=InnoDB");}catch(Exception $e){}
+        try{$db->prepare("INSERT INTO settings(`key`,`value`) VALUES('schema_daily_checkin_v1','1') ON DUPLICATE KEY UPDATE `value`=VALUES(`value`)")->execute();}catch(Exception $e){}
+    }
 
     // Hitung VIP level dari total deposit
     $VIP_DEPO=[0,1500000,3000000,15000000,30000000,150000000];
@@ -515,18 +526,22 @@ if($action==='daily_checkin'){
 if($action==='roulette_spin'){
     $uid=auth();
 
-    // Auto-fix vip_claims columns (claim_type/period might be too short)
-    try{$db->exec("ALTER TABLE vip_claims MODIFY claim_type VARCHAR(30)");}catch(Exception $e){}
-    try{$db->exec("ALTER TABLE vip_claims MODIFY period VARCHAR(30)");}catch(Exception $e){}
-    try{$db->exec("ALTER TABLE vip_claims DROP INDEX uq_claim");}catch(Exception $e){}
-    try{$db->exec("ALTER TABLE vip_claims DROP INDEX uq_claim2");}catch(Exception $e){}
+    // Schema migrations gated (sebelumnya tiap request)
+    if(getSetting($db,'schema_vip_claims_v1','')!=='1'){
+        try{$db->exec("ALTER TABLE vip_claims MODIFY claim_type VARCHAR(30)");}catch(Exception $e){}
+        try{$db->exec("ALTER TABLE vip_claims MODIFY period VARCHAR(30)");}catch(Exception $e){}
+        try{$db->exec("ALTER TABLE vip_claims DROP INDEX uq_claim");}catch(Exception $e){}
+        try{$db->exec("ALTER TABLE vip_claims DROP INDEX uq_claim2");}catch(Exception $e){}
+        try{$db->prepare("INSERT INTO settings(`key`,`value`) VALUES('schema_vip_claims_v1','1') ON DUPLICATE KEY UPDATE `value`=VALUES(`value`)")->execute();}catch(Exception $e){}
+    }
 
     // Check active session
     $ss=$db->prepare("SELECT * FROM vip_claims WHERE user_id=? AND claim_type='roulette_session' ORDER BY id DESC LIMIT 1");
     $ss->execute([$uid]);$session=$ss->fetch();
     if(!$session)err('Sesi tidak ditemukan');
-    $cycleEnd=strtotime($session['period'].' +3 days');
-    if($cycleEnd<time())err('Sesi kedaluwarsa. Refresh halaman.');
+    // NULL/invalid period → strtotime returns false → cycleEnd=0 → always expired
+    $cycleEnd=$session['period']?strtotime($session['period'].' +3 days'):false;
+    if(!$cycleEnd||$cycleEnd<time())err('Sesi kedaluwarsa. Refresh halaman.');
 
     // Check spins di session ini (bukan per hari) — 2 spin gratis HANYA di awal session
     $ts=$db->prepare("SELECT COUNT(*) FROM vip_claims WHERE user_id=? AND claim_type='roulette_spin' AND created_at>=?");
@@ -1530,11 +1545,13 @@ if($action==='debug_turnover'){
 
 if($action==='spin_init'){
     $uid=getUid();
-    // Auto-create tables
-    try{$db->exec("CREATE TABLE IF NOT EXISTS spin_prizes (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,label VARCHAR(50),amount BIGINT UNSIGNED DEFAULT 0,probability DECIMAL(6,3) DEFAULT 0,color VARCHAR(20) DEFAULT '#38bdf8',sort_order INT DEFAULT 0) ENGINE=InnoDB");}catch(Exception $e){}
-    try{$db->exec("CREATE TABLE IF NOT EXISTS spin_history (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,user_id INT UNSIGNED NOT NULL,prize_id INT UNSIGNED DEFAULT NULL,label VARCHAR(50),amount BIGINT UNSIGNED DEFAULT 0,created_at DATETIME DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB");}catch(Exception $e){}
-    // Auto-fix: kalau kolom probability masih DECIMAL(6,3) — upgrade ke DECIMAL(10,5) buat probability sangat kecil (0.00005)
-    try{$db->exec("ALTER TABLE spin_prizes MODIFY probability DECIMAL(10,5) DEFAULT 0");}catch(Exception $e){}
+    // Schema migrations gated (sebelumnya tiap request)
+    if(getSetting($db,'schema_spin_v1','')!=='1'){
+        try{$db->exec("CREATE TABLE IF NOT EXISTS spin_prizes (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,label VARCHAR(50),amount BIGINT UNSIGNED DEFAULT 0,probability DECIMAL(6,3) DEFAULT 0,color VARCHAR(20) DEFAULT '#38bdf8',sort_order INT DEFAULT 0) ENGINE=InnoDB");}catch(Exception $e){}
+        try{$db->exec("CREATE TABLE IF NOT EXISTS spin_history (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,user_id INT UNSIGNED NOT NULL,prize_id INT UNSIGNED DEFAULT NULL,label VARCHAR(50),amount BIGINT UNSIGNED DEFAULT 0,created_at DATETIME DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB");}catch(Exception $e){}
+        try{$db->exec("ALTER TABLE spin_prizes MODIFY probability DECIMAL(10,5) DEFAULT 0");}catch(Exception $e){}
+        try{$db->prepare("INSERT INTO settings(`key`,`value`) VALUES('schema_spin_v1','1') ON DUPLICATE KEY UPDATE `value`=VALUES(`value`)")->execute();}catch(Exception $e){}
+    }
 
     // Seed prizes if empty
     $cnt=$db->query("SELECT COUNT(*) FROM spin_prizes")->fetchColumn();
@@ -1592,19 +1609,30 @@ if($action==='spin_init'){
 
 if($action==='spin_do'){
     $uid=auth();
-    // Auto-create tables (safety)
-    try{$db->exec("CREATE TABLE IF NOT EXISTS spin_prizes (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,label VARCHAR(50),amount BIGINT UNSIGNED DEFAULT 0,probability DECIMAL(10,5) DEFAULT 0,color VARCHAR(20) DEFAULT '#38bdf8',sort_order INT DEFAULT 0) ENGINE=InnoDB");}catch(Exception $e){}
-    try{$db->exec("ALTER TABLE spin_prizes MODIFY probability DECIMAL(10,5) DEFAULT 0");}catch(Exception $e){}
-    try{$db->exec("CREATE TABLE IF NOT EXISTS spin_history (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,user_id INT UNSIGNED NOT NULL,prize_id INT UNSIGNED DEFAULT NULL,label VARCHAR(50),amount BIGINT UNSIGNED DEFAULT 0,created_at DATETIME DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB");}catch(Exception $e){}
-    // Hitung tiket sisa langsung dari deposit
-    $totalDep=$db->prepare("SELECT COALESCE(SUM(nominal),0) FROM deposits WHERE user_id=? AND status='paid'");
-    $totalDep->execute([$uid]);
-    $earned=intval(floor($totalDep->fetchColumn()/100000));
-    $usedQ=$db->prepare("SELECT COUNT(*) FROM spin_history WHERE user_id=?");
-    $usedQ->execute([$uid]);
-    $usedCount=intval($usedQ->fetchColumn());
-    $tickets=max(0,$earned-$usedCount);
-    if($tickets<=0)err('Tidak ada tiket. Deposit min Rp 100.000 untuk dapat tiket!');
+    // Schema migrations gated (sebelumnya jalan tiap request → lock contention)
+    if(getSetting($db,'schema_spin_v1','')!=='1'){
+        try{$db->exec("CREATE TABLE IF NOT EXISTS spin_prizes (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,label VARCHAR(50),amount BIGINT UNSIGNED DEFAULT 0,probability DECIMAL(10,5) DEFAULT 0,color VARCHAR(20) DEFAULT '#38bdf8',sort_order INT DEFAULT 0) ENGINE=InnoDB");}catch(Exception $e){}
+        try{$db->exec("ALTER TABLE spin_prizes MODIFY probability DECIMAL(10,5) DEFAULT 0");}catch(Exception $e){}
+        try{$db->exec("CREATE TABLE IF NOT EXISTS spin_history (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,user_id INT UNSIGNED NOT NULL,prize_id INT UNSIGNED DEFAULT NULL,label VARCHAR(50),amount BIGINT UNSIGNED DEFAULT 0,created_at DATETIME DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB");}catch(Exception $e){}
+        try{$db->prepare("INSERT INTO settings(`key`,`value`) VALUES('schema_spin_v1','1') ON DUPLICATE KEY UPDATE `value`=VALUES(`value`)")->execute();}catch(Exception $e){}
+    }
+
+    // Lock user row supaya spin sequencing atomic (cegah double-spin race)
+    $db->beginTransaction();
+    try{
+        $lockQ=$db->prepare("SELECT id FROM users WHERE id=? FOR UPDATE");
+        $lockQ->execute([$uid]);
+        if(!$lockQ->fetch()){$db->rollBack();err('User tidak ditemukan');}
+
+        // Hitung tiket sisa langsung dari deposit (re-check di dalam lock)
+        $totalDep=$db->prepare("SELECT COALESCE(SUM(nominal),0) FROM deposits WHERE user_id=? AND status='paid'");
+        $totalDep->execute([$uid]);
+        $earned=intval(floor($totalDep->fetchColumn()/100000));
+        $usedQ=$db->prepare("SELECT COUNT(*) FROM spin_history WHERE user_id=?");
+        $usedQ->execute([$uid]);
+        $usedCount=intval($usedQ->fetchColumn());
+        $tickets=max(0,$earned-$usedCount);
+        if($tickets<=0){$db->rollBack();err('Tidak ada tiket. Deposit min Rp 100.000 untuk dapat tiket!');}
 
     // Get prizes - auto-seed if empty
     $prizes=$db->query("SELECT * FROM spin_prizes ORDER BY sort_order ASC")->fetchAll();
@@ -1628,33 +1656,39 @@ if($action==='spin_do'){
         ('Zonk',0,20.0,'#374151',13)");
         $prizes=$db->query("SELECT * FROM spin_prizes ORDER BY sort_order ASC")->fetchAll();
     }
-    if(empty($prizes))err('Hadiah spin belum tersedia. Hubungi admin.');
+        if(empty($prizes)){$db->rollBack();err('Hadiah spin belum tersedia. Hubungi admin.');}
 
-    $total=array_sum(array_column($prizes,'probability'));
-    if($total<=0)$total=100; // fallback prevent div-by-zero
-    $rand=mt_rand(0,intval($total*1000))/1000; // 0..$total uniform
-    $cumulative=0;$winner=null;$winIdx=0;
-    foreach($prizes as $idx=>$p){
-        $cumulative+=floatval($p['probability']);
-        if($rand<=$cumulative){$winner=$p;$winIdx=$idx;break;}
-    }
-    if(!$winner){$winner=$prizes[count($prizes)-1];$winIdx=count($prizes)-1;}
+        $total=array_sum(array_column($prizes,'probability'));
+        if($total<=0)$total=100; // fallback prevent div-by-zero
+        $rand=mt_rand(0,intval($total*1000))/1000; // 0..$total uniform
+        $cumulative=0;$winner=null;$winIdx=0;
+        foreach($prizes as $idx=>$p){
+            $cumulative+=floatval($p['probability']);
+            if($rand<=$cumulative){$winner=$p;$winIdx=$idx;break;}
+        }
+        if(!$winner){$winner=$prizes[count($prizes)-1];$winIdx=count($prizes)-1;}
 
-    // Record spin
-    try{
+        // Record spin (DI DALAM transaction supaya bisa di-rollback kalau credit gagal)
         $db->prepare("INSERT INTO spin_history (user_id,prize_id,label,amount) VALUES (?,?,?,?)")
            ->execute([$uid,$winner['id'],$winner['label'],$winner['amount']]);
+
+        // Credit prize (logTx pakai user row yg sudah ke-lock di awal)
+        if(intval($winner['amount'])>0){
+            $credited=logTx($db,$uid,'spin_win',intval($winner['amount']),'Hadiah spin: '.$winner['label']);
+            if($credited===false){
+                // Credit gagal → rollback supaya spin_history ikut batal (no half-credit)
+                $db->rollBack();
+                @file_put_contents(__DIR__.'/../error_log.txt',date('Y-m-d H:i:s').' spin_do credit_failed uid='.$uid."\n",FILE_APPEND);
+                err('Gagal kredit hadiah. Coba lagi.');
+            }
+        }
+        $db->commit();
+        ok(['winner'=>$winner,'tickets_left'=>max(0,$tickets-1),'prize_index'=>$winIdx]);
     }catch(Exception $e){
-        @file_put_contents(__DIR__.'/../error_log.txt',date('Y-m-d H:i:s').' spin_history INSERT: '.$e->getMessage()."\n",FILE_APPEND);
-        err('Gagal menyimpan hasil spin. Coba lagi.');
+        try{$db->rollBack();}catch(Exception $ee){}
+        @file_put_contents(__DIR__.'/../error_log.txt',date('Y-m-d H:i:s').' spin_do EXC uid='.$uid.' '.$e->getMessage()."\n",FILE_APPEND);
+        err('Gagal memproses spin');
     }
-
-    // Credit prize via logTx (handles balance update + transaction log atomically)
-    if(intval($winner['amount'])>0){
-        logTx($db,$uid,'spin_win',intval($winner['amount']),'Hadiah spin: '.$winner['label']);
-    }
-
-    ok(['winner'=>$winner,'tickets_left'=>max(0,$tickets-1),'prize_index'=>$winIdx]);
 }
 
 // ══════ PUSH NOTIFICATION SUBSCRIPTION ══════
