@@ -205,7 +205,7 @@ body{font-family:'Plus Jakarta Sans','Outfit','Poppins',sans-serif;background:va
 </a>
 <a class="menu-i red" href="#" onclick="doLogout();return false">
 <div class="mi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div>
-<div class="mi-text"><div class="mt-title">Keluar</div>
+<div class="mi-text"><div class="mt-title">Keluar</div></div>
 <div class="mi-arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
 </a>
 </div>
