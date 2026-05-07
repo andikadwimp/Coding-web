@@ -42,11 +42,10 @@ try {
     // Critical untuk deposit expires_at matching dengan callback SQX (WIB)
     try{ $db->exec("SET time_zone = '+07:00'"); }catch(Exception $e){}
 } catch(PDOException $e) {
-    @file_put_contents(__DIR__.'/../db_error.log',date('Y-m-d H:i:s')." ".$e->getMessage()."\n",FILE_APPEND);
     if ($_is_api) {
-        die(json_encode(['ok'=>false,'error'=>'DB_UNAVAILABLE']));
+        die(json_encode(['ok'=>false,'error'=>'DB_ERROR: '.$e->getMessage()]));
     } else {
-        die('<h2>Layanan sedang gangguan</h2><p>Silakan coba beberapa saat lagi.</p>');
+        die('<h2>DB Error</h2><p>'.$e->getMessage().'</p>');
     }
 }
 

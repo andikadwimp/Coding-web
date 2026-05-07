@@ -2,15 +2,11 @@
 require_once __DIR__.'/../includes/config.php';
 $d=input();$action=$d['action']??$_GET['action']??'';
 
-// Schema migrations — run sekali via flag (sebelumnya jalan di tiap request → lock contention)
-if(getSetting($db,'schema_auth_v1','')!=='1'){
-    try{$db->exec("ALTER TABLE users ADD UNIQUE INDEX uq_phone (phone)");}catch(Exception $e){}
-    try{$db->exec("CREATE INDEX idx_acc_number ON user_banks(acc_number)");}catch(Exception $e){}
-    try{$db->prepare("INSERT INTO settings(`key`,`value`) VALUES('schema_auth_v1','1') ON DUPLICATE KEY UPDATE `value`=VALUES(`value`)")->execute();}catch(Exception $e){}
-}
-
-// Cookie lifetime: 30 hari (sebelumnya 10 tahun → token bocor = forever pwned)
-if(!defined('AUTH_COOKIE_TTL'))define('AUTH_COOKIE_TTL',86400*30);
+// Safety: enforce UNIQUE phone di DB level (anti race condition duplikat)
+// Kalau gagal (udah ada duplicate), skip silently — admin bisa manual cleanup
+try{$db->exec("ALTER TABLE users ADD UNIQUE INDEX uq_phone (phone)");}catch(Exception $e){}
+// Safety: index acc_number di user_banks buat cross-account duplicate check
+try{$db->exec("CREATE INDEX idx_acc_number ON user_banks(acc_number)");}catch(Exception $e){}
 
 if($action==='register'){
     $phone=trim($d['phone']??$d['username']??'');
@@ -105,7 +101,7 @@ if($action==='register'){
             if($defaultRtp>=1&&$defaultRtp<=95){
                 $rtpBody=json_encode(['method'=>'control_users_rtp','agent_code'=>NEXUS_AGENT,'agent_token'=>NEXUS_TOKEN,'user_codes'=>json_encode([$u]),'rtp'=>$defaultRtp]);
                 $ch=curl_init(NEXUS_URL);
-                curl_setopt_array($ch,[CURLOPT_POST=>true,CURLOPT_POSTFIELDS=>$rtpBody,CURLOPT_HTTPHEADER=>['Content-Type: application/json'],CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>10]);
+                curl_setopt_array($ch,[CURLOPT_POST=>true,CURLOPT_POSTFIELDS=>$rtpBody,CURLOPT_HTTPHEADER=>['Content-Type: application/json'],CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>10,CURLOPT_SSL_VERIFYPEER=>false]);
                 $rtpRes=curl_exec($ch);curl_close($ch);
                 @file_put_contents(__DIR__.'/../nexus_log.txt',date('Y-m-d H:i:s')." default_rtp $u -> $defaultRtp%: ".$rtpRes."\n",FILE_APPEND);
             }
@@ -121,7 +117,7 @@ if($action==='register'){
     $token=bin2hex(random_bytes(32));
     $db->prepare('UPDATE users SET auth_token=? WHERE id=?')->execute([$token,$uid]);
     setcookie('lx_token',$token,[
-        'expires'=>time()+AUTH_COOKIE_TTL,
+        'expires'=>time()+86400*3650,
         'path'=>'/',
         'secure'=>!empty($_SERVER['HTTPS']),
         'httponly'=>true,
@@ -166,7 +162,7 @@ if($action==='login'){
     $token=bin2hex(random_bytes(32));
     $db->prepare('UPDATE users SET auth_token=? WHERE id=?')->execute([$token,$user['id']]);
     setcookie('lx_token',$token,[
-        'expires'=>time()+AUTH_COOKIE_TTL,
+        'expires'=>time()+86400*3650,
         'path'=>'/',
         'secure'=>!empty($_SERVER['HTTPS']),
         'httponly'=>true,
@@ -206,17 +202,7 @@ if($action==='change_password'){
     if(!password_verify($old,$hash))err('Password lama salah');
     if(strlen($new)<6)err('Password baru minimal 6 karakter');
     if($new!==$cf)err('Konfirmasi tidak cocok');
-    // Rotate token: token lama di-invalidate, generate baru biar sesi attacker (kalau bocor) putus
-    $newToken=bin2hex(random_bytes(32));
-    $db->prepare("UPDATE users SET password=?,auth_token=? WHERE id=?")
-       ->execute([password_hash($new,PASSWORD_BCRYPT),$newToken,$uid]);
-    setcookie('lx_token',$newToken,[
-        'expires'=>time()+AUTH_COOKIE_TTL,
-        'path'=>'/',
-        'secure'=>!empty($_SERVER['HTTPS']),
-        'httponly'=>true,
-        'samesite'=>'Lax'
-    ]);
+    $db->prepare("UPDATE users SET password=? WHERE id=?")->execute([password_hash($new,PASSWORD_BCRYPT),$uid]);
     ok();
 }
 

@@ -140,7 +140,7 @@ function checkSqxAndCredit($db,$dep,$source='check'){
         CURLOPT_RETURNTRANSFER=>true,
         CURLOPT_TIMEOUT=>15,
         CURLOPT_CONNECTTIMEOUT=>5,
-
+        CURLOPT_SSL_VERIFYPEER=>false
     ]);
     $raw=curl_exec($ch);
     $errMsg=curl_error($ch);

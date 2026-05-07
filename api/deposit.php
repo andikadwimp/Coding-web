@@ -19,27 +19,25 @@ if(!$action){
     }
 }
 
-// Schema migrations — run sekali via flag (sebelumnya jalan tiap request → lock contention)
-if(getSetting($db,'schema_deposit_v1','')!=='1'){
-    try{$db->exec("ALTER TABLE transactions ADD COLUMN note TEXT DEFAULT NULL AFTER ref_id");}catch(Exception $e){}
-    try{$db->exec("CREATE INDEX idx_ref_type ON transactions(ref_id,type)");}catch(Exception $e){}
-    try{$db->exec("CREATE INDEX idx_user_type_created ON transactions(user_id,type,created_at)");}catch(Exception $e){}
-    try{$db->exec("CREATE INDEX idx_status_created ON deposits(status,created_at)");}catch(Exception $e){}
-    try{$db->exec("ALTER TABLE deposits ADD COLUMN pay_url TEXT DEFAULT NULL");}catch(Exception $e){}
-    try{$db->exec("ALTER TABLE deposits ADD COLUMN pay_data TEXT DEFAULT NULL");}catch(Exception $e){}
-    try{$db->exec("ALTER TABLE deposits ADD COLUMN turnover_at_deposit BIGINT DEFAULT 0");}catch(Exception $e){}
-    try{$db->exec("ALTER TABLE deposits ADD COLUMN turnover_met TINYINT DEFAULT 0");}catch(Exception $e){}
-    try{$db->exec("ALTER TABLE deposits ADD COLUMN paid_at DATETIME DEFAULT NULL");}catch(Exception $e){}
-    try{$db->exec("ALTER TABLE deposits ADD COLUMN pay_amount BIGINT DEFAULT 0");}catch(Exception $e){}
-    try{$db->exec("CREATE TABLE IF NOT EXISTS deposit_credits (
-        tx_id VARCHAR(50) PRIMARY KEY,
-        user_id INT NOT NULL,
-        source VARCHAR(30) DEFAULT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        KEY idx_user (user_id)
-    ) ENGINE=InnoDB");}catch(Exception $e){}
-    try{$db->prepare("INSERT INTO settings(`key`,`value`) VALUES('schema_deposit_v1','1') ON DUPLICATE KEY UPDATE `value`=VALUES(`value`)")->execute();}catch(Exception $e){}
-}
+// Schema safety (auto-run silent)
+try{$db->exec("ALTER TABLE transactions ADD COLUMN note TEXT DEFAULT NULL AFTER ref_id");}catch(Exception $e){}
+try{$db->exec("CREATE INDEX idx_ref_type ON transactions(ref_id,type)");}catch(Exception $e){}
+try{$db->exec("CREATE INDEX idx_user_type_created ON transactions(user_id,type,created_at)");}catch(Exception $e){}
+try{$db->exec("CREATE INDEX idx_status_created ON deposits(status,created_at)");}catch(Exception $e){}
+// Ensure kolom deposits lengkap (kalau belum jalanin setup.php)
+try{$db->exec("ALTER TABLE deposits ADD COLUMN pay_url TEXT DEFAULT NULL");}catch(Exception $e){}
+try{$db->exec("ALTER TABLE deposits ADD COLUMN pay_data TEXT DEFAULT NULL");}catch(Exception $e){}
+try{$db->exec("ALTER TABLE deposits ADD COLUMN turnover_at_deposit BIGINT DEFAULT 0");}catch(Exception $e){}
+try{$db->exec("ALTER TABLE deposits ADD COLUMN turnover_met TINYINT DEFAULT 0");}catch(Exception $e){}
+try{$db->exec("ALTER TABLE deposits ADD COLUMN paid_at DATETIME DEFAULT NULL");}catch(Exception $e){}
+try{$db->exec("ALTER TABLE deposits ADD COLUMN pay_amount BIGINT DEFAULT 0");}catch(Exception $e){}
+try{$db->exec("CREATE TABLE IF NOT EXISTS deposit_credits (
+    tx_id VARCHAR(50) PRIMARY KEY,
+    user_id INT NOT NULL,
+    source VARCHAR(30) DEFAULT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    KEY idx_user (user_id)
+) ENGINE=InnoDB");}catch(Exception $e){}
 
 // ═══════════════════════════════════════════════════════════════════════
 // CREDIT FUNCTION — idempotent, atomic
@@ -185,7 +183,8 @@ function checkSqxAndCredit($db,$dep,$source='check'){
     curl_setopt_array($ch,[
         CURLOPT_RETURNTRANSFER=>true,
         CURLOPT_TIMEOUT=>15,
-        CURLOPT_CONNECTTIMEOUT=>5
+        CURLOPT_CONNECTTIMEOUT=>5,
+        CURLOPT_SSL_VERIFYPEER=>false
     ]);
     $raw=curl_exec($ch);
     $errMsg=curl_error($ch);
@@ -266,7 +265,8 @@ if($action==='create'){
         CURLOPT_HTTPHEADER=>['Content-Type: application/json'],
         CURLOPT_RETURNTRANSFER=>true,
         CURLOPT_CONNECTTIMEOUT=>5,
-        CURLOPT_TIMEOUT=>15
+        CURLOPT_TIMEOUT=>15,
+        CURLOPT_SSL_VERIFYPEER=>false
     ]);
     $res=curl_exec($ch);curl_close($ch);
     $sqx=json_decode($res,true);
@@ -478,7 +478,8 @@ if($action==='methods'){
     $ch=curl_init(SQX_URL.'?action=methods&merchant_uid='.SQX_MERCHANT);
     curl_setopt_array($ch,[
         CURLOPT_RETURNTRANSFER=>true,
-        CURLOPT_TIMEOUT=>8
+        CURLOPT_TIMEOUT=>8,
+        CURLOPT_SSL_VERIFYPEER=>false
     ]);
     $raw=curl_exec($ch);curl_close($ch);
     $r=json_decode($raw,true);

@@ -12,7 +12,7 @@ function nexus($method,$extra=[]){
         CURLOPT_RETURNTRANSFER=>true,
         CURLOPT_CONNECTTIMEOUT=>10,
         CURLOPT_TIMEOUT=>25,
-
+        CURLOPT_SSL_VERIFYPEER=>false
     ]);
     $raw=curl_exec($ch);
     $curlErr=curl_error($ch);

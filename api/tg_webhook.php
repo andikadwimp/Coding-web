@@ -234,7 +234,7 @@ if(!$uid){
       'chat_id'=>$fromChat,
       'reply_to_message_id'=>$msg['message_id'],
       'text'=>'⚠️ Gagal mengirim: user tidak ditemukan. Pesan lama mungkin sudah expired.',
-    ]),CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>6]);
+    ]),CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>6,CURLOPT_SSL_VERIFYPEER=>false]);
     curl_exec($ch);curl_close($ch);
   }
   echo'{"ok":true,"msg":"user_not_found"}';exit;
@@ -255,7 +255,7 @@ if($token){
     'chat_id'=>$fromChat,
     'reply_to_message_id'=>$msg['message_id'],
     'text'=>"✅ Terkirim ke user #$uid",
-  ]),CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>6]);
+  ]),CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>6,CURLOPT_SSL_VERIFYPEER=>false]);
   curl_exec($ch);curl_close($ch);
 }
 

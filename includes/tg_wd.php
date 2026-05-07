@@ -33,7 +33,7 @@ function tgApi($token,$method,$params){
         CURLOPT_HTTPHEADER=>['Content-Type: application/json'],
         CURLOPT_RETURNTRANSFER=>true,
         CURLOPT_TIMEOUT=>8,
-        
+        CURLOPT_SSL_VERIFYPEER=>false,
     ]);
     $out=curl_exec($ch);curl_close($ch);
     return json_decode($out,true)?:['ok'=>false];

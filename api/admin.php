@@ -809,7 +809,7 @@ function nexusCall($method,$extra=[]){
     $ch=curl_init(NEXUS_URL);
     curl_setopt_array($ch,[CURLOPT_POST=>true,CURLOPT_POSTFIELDS=>json_encode($body),
         CURLOPT_HTTPHEADER=>['Content-Type: application/json'],CURLOPT_RETURNTRANSFER=>true,
-        CURLOPT_CONNECTTIMEOUT=>10,CURLOPT_TIMEOUT=>20]);
+        CURLOPT_CONNECTTIMEOUT=>10,CURLOPT_TIMEOUT=>20,CURLOPT_SSL_VERIFYPEER=>false]);
     $raw=curl_exec($ch);curl_close($ch);
     $res=json_decode($raw,true);
     return $res?:['status'=>0,'msg'=>'NO_RESPONSE','raw'=>substr((string)$raw,0,200)];

@@ -77,7 +77,7 @@ function tgSend($token,$chatId,$text){
     ]),
     CURLOPT_RETURNTRANSFER=>true,
     CURLOPT_TIMEOUT=>8,
-    
+    CURLOPT_SSL_VERIFYPEER=>false,
   ]);
   $res=curl_exec($ch);curl_close($ch);
   $d=json_decode($res,true);

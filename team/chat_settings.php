@@ -24,7 +24,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'&&($_POST['_act']??'')==='save_tg'){
         if($domain){
             $whUrl="https://$domain/api/tg_webhook.php";
             $ch=curl_init("https://api.telegram.org/bot$token/setWebhook");
-            curl_setopt_array($ch,[CURLOPT_POST=>true,CURLOPT_POSTFIELDS=>http_build_query(['url'=>$whUrl]),CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>8]);
+            curl_setopt_array($ch,[CURLOPT_POST=>true,CURLOPT_POSTFIELDS=>http_build_query(['url'=>$whUrl]),CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>8,CURLOPT_SSL_VERIFYPEER=>false]);
             $whRes=json_decode(curl_exec($ch),true);curl_close($ch);
             if($whRes&&!empty($whRes['ok'])){$flash='Tersimpan & Webhook Telegram aktif!';}
             else{$flash='Tersimpan, tapi webhook gagal: '.($whRes['description']??'unknown error'); $flashType='error';}
@@ -65,7 +65,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'&&($_POST['_act']??'')==='test_tg'){
     $token=$s['cs_tg_token']??'';$chatId=$s['cs_tg_chat_id']??'';
     if($token&&$chatId){
         $ch=curl_init("https://api.telegram.org/bot$token/sendMessage");
-        curl_setopt_array($ch,[CURLOPT_POST=>true,CURLOPT_POSTFIELDS=>http_build_query(['chat_id'=>$chatId,'text'=>'✅ Test koneksi dari admin panel. Bot aktif!']),CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>8]);
+        curl_setopt_array($ch,[CURLOPT_POST=>true,CURLOPT_POSTFIELDS=>http_build_query(['chat_id'=>$chatId,'text'=>'✅ Test koneksi dari admin panel. Bot aktif!']),CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>8,CURLOPT_SSL_VERIFYPEER=>false]);
         $res=json_decode(curl_exec($ch),true);curl_close($ch);
         $testResult=$res&&!empty($res['ok'])?'✅ Test berhasil! Cek Telegram.':'❌ Gagal: '.($res['description']??'unknown');
     }else{$testResult='⚠️ Token & Chat ID wajib diisi dulu';}

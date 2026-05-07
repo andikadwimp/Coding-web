@@ -16,7 +16,7 @@ function getBetsSince($username, $sinceDate){
             $ch=curl_init(NEXUS_URL);
             curl_setopt_array($ch,[CURLOPT_POST=>true,CURLOPT_POSTFIELDS=>$body,
                 CURLOPT_HTTPHEADER=>['Content-Type: application/json'],
-                CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>10]);
+                CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>10,CURLOPT_SSL_VERIFYPEER=>false]);
             $raw=curl_exec($ch);curl_close($ch);
             $r=json_decode($raw,true);
             if(($r['status']??0)!=1)break;
@@ -322,14 +322,11 @@ if($action==='claim_bonus_depo'){
     $uid=auth();
     $period=date('Y-m-d'); // per hari
 
-    // Auto-migrate schema gated (sebelumnya jalan tiap request)
-    if(getSetting($db,'schema_vip_claims_v2','')!=='1'){
-        try{$db->exec("ALTER TABLE vip_claims MODIFY claim_type VARCHAR(30)");}catch(Exception $e){}
-        try{$db->exec("ALTER TABLE vip_claims MODIFY period VARCHAR(30)");}catch(Exception $e){}
-        try{$db->exec("ALTER TABLE vip_claims DROP INDEX uq_claim");}catch(Exception $e){}
-        try{$db->exec("ALTER TABLE vip_claims ADD UNIQUE KEY uq_claim2(user_id,claim_type,period,vip_level)");}catch(Exception $e){}
-        try{$db->prepare("INSERT INTO settings(`key`,`value`) VALUES('schema_vip_claims_v2','1') ON DUPLICATE KEY UPDATE `value`=VALUES(`value`)")->execute();}catch(Exception $e){}
-    }
+    // Auto-migrate schema (vip_claims kolom pendek kalo DB lama)
+    try{$db->exec("ALTER TABLE vip_claims MODIFY claim_type VARCHAR(30)");}catch(Exception $e){}
+    try{$db->exec("ALTER TABLE vip_claims MODIFY period VARCHAR(30)");}catch(Exception $e){}
+    try{$db->exec("ALTER TABLE vip_claims DROP INDEX uq_claim");}catch(Exception $e){}
+    try{$db->exec("ALTER TABLE vip_claims ADD UNIQUE KEY uq_claim2(user_id,claim_type,period,vip_level)");}catch(Exception $e){}
 
     // Tiers harus sama persis dgn yg di bonusdepo.php
     // [min deposit K, bonus K]
@@ -389,21 +386,18 @@ if($action==='claim_bonus_depo'){
 if($action==='daily_checkin'){
     $uid=auth();
 
-    // Pastiin table — gated supaya CREATE TABLE IF NOT EXISTS ga lock di tiap request
-    if(getSetting($db,'schema_daily_checkin_v1','')!=='1'){
-        try{$db->exec("CREATE TABLE IF NOT EXISTS daily_checkin(
-            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            user_id INT UNSIGNED NOT NULL,
-            checkin_date DATE NOT NULL,
-            streak_day INT NOT NULL,
-            vip_level INT DEFAULT 0,
-            reward INT DEFAULT 0,
-            turnover_at_checkin BIGINT DEFAULT 0,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            UNIQUE KEY uq_user_date(user_id,checkin_date)
-        ) ENGINE=InnoDB");}catch(Exception $e){}
-        try{$db->prepare("INSERT INTO settings(`key`,`value`) VALUES('schema_daily_checkin_v1','1') ON DUPLICATE KEY UPDATE `value`=VALUES(`value`)")->execute();}catch(Exception $e){}
-    }
+    // Pastiin table
+    try{$db->exec("CREATE TABLE IF NOT EXISTS daily_checkin(
+        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        user_id INT UNSIGNED NOT NULL,
+        checkin_date DATE NOT NULL,
+        streak_day INT NOT NULL,
+        vip_level INT DEFAULT 0,
+        reward INT DEFAULT 0,
+        turnover_at_checkin BIGINT DEFAULT 0,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE KEY uq_user_date(user_id,checkin_date)
+    ) ENGINE=InnoDB");}catch(Exception $e){}
 
     // Hitung VIP level dari total deposit
     $VIP_DEPO=[0,1500000,3000000,15000000,30000000,150000000];
@@ -526,14 +520,11 @@ if($action==='daily_checkin'){
 if($action==='roulette_spin'){
     $uid=auth();
 
-    // Schema migrations gated (sebelumnya tiap request)
-    if(getSetting($db,'schema_vip_claims_v1','')!=='1'){
-        try{$db->exec("ALTER TABLE vip_claims MODIFY claim_type VARCHAR(30)");}catch(Exception $e){}
-        try{$db->exec("ALTER TABLE vip_claims MODIFY period VARCHAR(30)");}catch(Exception $e){}
-        try{$db->exec("ALTER TABLE vip_claims DROP INDEX uq_claim");}catch(Exception $e){}
-        try{$db->exec("ALTER TABLE vip_claims DROP INDEX uq_claim2");}catch(Exception $e){}
-        try{$db->prepare("INSERT INTO settings(`key`,`value`) VALUES('schema_vip_claims_v1','1') ON DUPLICATE KEY UPDATE `value`=VALUES(`value`)")->execute();}catch(Exception $e){}
-    }
+    // Auto-fix vip_claims columns (claim_type/period might be too short)
+    try{$db->exec("ALTER TABLE vip_claims MODIFY claim_type VARCHAR(30)");}catch(Exception $e){}
+    try{$db->exec("ALTER TABLE vip_claims MODIFY period VARCHAR(30)");}catch(Exception $e){}
+    try{$db->exec("ALTER TABLE vip_claims DROP INDEX uq_claim");}catch(Exception $e){}
+    try{$db->exec("ALTER TABLE vip_claims DROP INDEX uq_claim2");}catch(Exception $e){}
 
     // Check active session
     $ss=$db->prepare("SELECT * FROM vip_claims WHERE user_id=? AND claim_type='roulette_session' ORDER BY id DESC LIMIT 1");
@@ -1058,7 +1049,7 @@ if($action==='claim_rebate'){
                 $ch=curl_init(NEXUS_URL);
                 curl_setopt_array($ch,[CURLOPT_POST=>true,CURLOPT_POSTFIELDS=>$body,
                     CURLOPT_HTTPHEADER=>['Content-Type: application/json'],
-                    CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>10]);
+                    CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>10,CURLOPT_SSL_VERIFYPEER=>false]);
                 $raw=curl_exec($ch);curl_close($ch);
                 $r=json_decode($raw,true);
                 if(($r['status']??0)!=1)break;
@@ -1525,7 +1516,7 @@ if($action==='debug_turnover'){
         $ch=curl_init(NEXUS_URL);
         curl_setopt_array($ch,[CURLOPT_POST=>true,CURLOPT_POSTFIELDS=>$body,
             CURLOPT_HTTPHEADER=>['Content-Type: application/json'],
-            CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>10]);
+            CURLOPT_RETURNTRANSFER=>true,CURLOPT_TIMEOUT=>10,CURLOPT_SSL_VERIFYPEER=>false]);
         $raw=curl_exec($ch);curl_close($ch);
         $r=json_decode($raw,true);
         $result['tests'][$gt]=[
@@ -1545,13 +1536,11 @@ if($action==='debug_turnover'){
 
 if($action==='spin_init'){
     $uid=getUid();
-    // Schema migrations gated (sebelumnya tiap request)
-    if(getSetting($db,'schema_spin_v1','')!=='1'){
-        try{$db->exec("CREATE TABLE IF NOT EXISTS spin_prizes (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,label VARCHAR(50),amount BIGINT UNSIGNED DEFAULT 0,probability DECIMAL(6,3) DEFAULT 0,color VARCHAR(20) DEFAULT '#38bdf8',sort_order INT DEFAULT 0) ENGINE=InnoDB");}catch(Exception $e){}
-        try{$db->exec("CREATE TABLE IF NOT EXISTS spin_history (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,user_id INT UNSIGNED NOT NULL,prize_id INT UNSIGNED DEFAULT NULL,label VARCHAR(50),amount BIGINT UNSIGNED DEFAULT 0,created_at DATETIME DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB");}catch(Exception $e){}
-        try{$db->exec("ALTER TABLE spin_prizes MODIFY probability DECIMAL(10,5) DEFAULT 0");}catch(Exception $e){}
-        try{$db->prepare("INSERT INTO settings(`key`,`value`) VALUES('schema_spin_v1','1') ON DUPLICATE KEY UPDATE `value`=VALUES(`value`)")->execute();}catch(Exception $e){}
-    }
+    // Auto-create tables
+    try{$db->exec("CREATE TABLE IF NOT EXISTS spin_prizes (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,label VARCHAR(50),amount BIGINT UNSIGNED DEFAULT 0,probability DECIMAL(6,3) DEFAULT 0,color VARCHAR(20) DEFAULT '#38bdf8',sort_order INT DEFAULT 0) ENGINE=InnoDB");}catch(Exception $e){}
+    try{$db->exec("CREATE TABLE IF NOT EXISTS spin_history (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,user_id INT UNSIGNED NOT NULL,prize_id INT UNSIGNED DEFAULT NULL,label VARCHAR(50),amount BIGINT UNSIGNED DEFAULT 0,created_at DATETIME DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB");}catch(Exception $e){}
+    // Auto-fix: kalau kolom probability masih DECIMAL(6,3) — upgrade ke DECIMAL(10,5) buat probability sangat kecil (0.00005)
+    try{$db->exec("ALTER TABLE spin_prizes MODIFY probability DECIMAL(10,5) DEFAULT 0");}catch(Exception $e){}
 
     // Seed prizes if empty
     $cnt=$db->query("SELECT COUNT(*) FROM spin_prizes")->fetchColumn();
@@ -1609,13 +1598,10 @@ if($action==='spin_init'){
 
 if($action==='spin_do'){
     $uid=auth();
-    // Schema migrations gated (sebelumnya jalan tiap request → lock contention)
-    if(getSetting($db,'schema_spin_v1','')!=='1'){
-        try{$db->exec("CREATE TABLE IF NOT EXISTS spin_prizes (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,label VARCHAR(50),amount BIGINT UNSIGNED DEFAULT 0,probability DECIMAL(10,5) DEFAULT 0,color VARCHAR(20) DEFAULT '#38bdf8',sort_order INT DEFAULT 0) ENGINE=InnoDB");}catch(Exception $e){}
-        try{$db->exec("ALTER TABLE spin_prizes MODIFY probability DECIMAL(10,5) DEFAULT 0");}catch(Exception $e){}
-        try{$db->exec("CREATE TABLE IF NOT EXISTS spin_history (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,user_id INT UNSIGNED NOT NULL,prize_id INT UNSIGNED DEFAULT NULL,label VARCHAR(50),amount BIGINT UNSIGNED DEFAULT 0,created_at DATETIME DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB");}catch(Exception $e){}
-        try{$db->prepare("INSERT INTO settings(`key`,`value`) VALUES('schema_spin_v1','1') ON DUPLICATE KEY UPDATE `value`=VALUES(`value`)")->execute();}catch(Exception $e){}
-    }
+    // Auto-create tables (safety)
+    try{$db->exec("CREATE TABLE IF NOT EXISTS spin_prizes (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,label VARCHAR(50),amount BIGINT UNSIGNED DEFAULT 0,probability DECIMAL(10,5) DEFAULT 0,color VARCHAR(20) DEFAULT '#38bdf8',sort_order INT DEFAULT 0) ENGINE=InnoDB");}catch(Exception $e){}
+    try{$db->exec("ALTER TABLE spin_prizes MODIFY probability DECIMAL(10,5) DEFAULT 0");}catch(Exception $e){}
+    try{$db->exec("CREATE TABLE IF NOT EXISTS spin_history (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,user_id INT UNSIGNED NOT NULL,prize_id INT UNSIGNED DEFAULT NULL,label VARCHAR(50),amount BIGINT UNSIGNED DEFAULT 0,created_at DATETIME DEFAULT CURRENT_TIMESTAMP) ENGINE=InnoDB");}catch(Exception $e){}
 
     // Lock user row supaya spin sequencing atomic (cegah double-spin race)
     $db->beginTransaction();
