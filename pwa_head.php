@@ -465,5 +465,76 @@ window.requireLogin = function(actionLabel){
 body{animation:pageFadeIn .3s ease-out both}
 /* Disable for game iframe (in-app overlay) */
 .game-overlay,#gameOverlay{animation:none !important}
+
+/* ═══ LIVE WINNER POPUP ═══ */
+.lw-pop{position:fixed;top:14px;right:14px;z-index:9000;display:none;align-items:center;gap:10px;padding:8px 12px;background:rgba(15,23,42,.92);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);border:1px solid rgba(var(--pri-rgb,56,189,248),.35);border-radius:14px;max-width:280px;box-shadow:0 8px 22px rgba(0,0,0,.45),0 0 18px rgba(var(--pri-rgb,56,189,248),.18);overflow:hidden;pointer-events:none}
+.lw-pop.show{display:flex;animation:lwIn .45s cubic-bezier(.34,1.56,.64,1) both}
+.lw-pop.leaving{animation:lwOut .3s cubic-bezier(.4,0,.6,0) both}
+@keyframes lwIn{from{transform:translateX(120%) scale(.85);opacity:0}to{transform:translateX(0) scale(1);opacity:1}}
+@keyframes lwOut{from{transform:translateX(0) scale(1);opacity:1}to{transform:translateX(120%) scale(.9);opacity:0}}
+.lw-pop::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(var(--pri-rgb,56,189,248),.85),transparent);animation:lwSpark 2.5s linear infinite}
+@keyframes lwSpark{from{left:-100%}to{left:100%}}
+.lw-img{width:42px;height:42px;border-radius:9px;flex-shrink:0;overflow:hidden;background:rgba(255,255,255,.04);position:relative}
+.lw-img img{width:100%;height:100%;object-fit:cover}
+.lw-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,rgba(var(--pri-rgb,56,189,248),.4));pointer-events:none}
+.lw-info{flex:1;min-width:0;line-height:1.25}
+.lw-user{font-size:.7rem;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.005em}
+.lw-game{font-size:.6rem;color:rgba(203,213,225,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;margin-top:1px}
+.lw-amt{font-family:'Chakra Petch','Poppins',sans-serif;font-size:.82rem;font-weight:800;color:var(--pri,#38bdf8);font-variant-numeric:tabular-nums;letter-spacing:-.01em;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;line-height:1;text-shadow:0 0 12px rgba(var(--pri-rgb,56,189,248),.4)}
+.lw-amt small{font-size:.52rem;font-weight:600;color:rgba(74,222,128,.95);text-transform:uppercase;letter-spacing:.6px;margin-top:3px;text-shadow:none}
+.lw-amt-prefix{color:#4ade80}
+@media(max-width:480px){.lw-pop{top:8px;right:8px;max-width:240px;padding:7px 10px;gap:8px}.lw-img{width:36px;height:36px}.lw-user{font-size:.66rem}.lw-game{font-size:.56rem}.lw-amt{font-size:.76rem}}
+@media(prefers-reduced-motion:reduce){.lw-pop,.lw-pop::before{animation-duration:.01ms!important}}
 </style>
+<script>
+/* Live winner widget — append div + auto-rotate every ~5-7s */
+(function(){
+  var data=[];var idx=0;var timer;var fetched=0;
+  function fmtRp(n){if(n>=1e9)return(n/1e9).toFixed(1).replace('.0','')+'B';if(n>=1e6)return(n/1e6).toFixed(1).replace('.0','')+'M';if(n>=1e3)return Math.floor(n/1e3)+'K';return n;}
+  function ensureEl(){
+    var el=document.getElementById('lwPop');
+    if(!el){el=document.createElement('div');el.id='lwPop';el.className='lw-pop';document.body.appendChild(el);}
+    return el;
+  }
+  function show(){
+    if(!data.length){return;}
+    var w=data[idx%data.length];idx++;
+    var el=ensureEl();
+    el.classList.remove('leaving');
+    var imgHtml=w.banner?'<img src="'+w.banner.replace(/"/g,'&quot;')+'" loading="lazy" onerror="this.style.display=\'none\'">':'';
+    el.innerHTML='<div class="lw-img">'+imgHtml+'</div>'+
+      '<div class="lw-info"><div class="lw-user">'+w.username+'</div><div class="lw-game">'+w.game_name+'</div></div>'+
+      '<div class="lw-amt"><span><span class="lw-amt-prefix">+</span>Rp '+fmtRp(w.amount)+'</span><small>menang</small></div>';
+    el.classList.add('show');
+    setTimeout(function(){
+      el.classList.add('leaving');
+      setTimeout(function(){el.classList.remove('show');el.classList.remove('leaving');},300);
+    },4500);
+  }
+  function load(){
+    if(fetched>10)return; // safety cap
+    fetched++;
+    fetch('/api/data.php',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({action:'live_winners'})})
+      .then(function(r){return r.json();}).then(function(d){
+        if(d&&d.ok&&d.winners&&d.winners.length){data=d.winners;idx=0;start();}
+      }).catch(function(){});
+  }
+  function start(){
+    if(timer)clearInterval(timer);
+    setTimeout(show,1500); // first popup after 1.5s
+    timer=setInterval(function(){
+      show();
+      // Refresh data every cycle of N popups
+      if(idx>0 && idx%data.length===0)load();
+    }, 6500); // one popup every 6.5s
+  }
+  function init(){
+    // Skip in admin / login / iframe
+    if(location.pathname.indexOf('/team/')!==-1)return;
+    if(window.self!==window.top)return;
+    load();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
 

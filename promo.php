@@ -49,7 +49,7 @@ try{
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 html{font-size:16px!important;overflow-x:hidden}
-body{overflow-x:hidden;max-width:100vw;font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;padding-bottom:70px}
+body{overflow-x:hidden;max-width:100vw;font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
 .tabs{display:flex;padding:10px 12px 0;gap:0;overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid rgba(var(--sec-rgb,56,189,248),.25)}
 .tabs::-webkit-scrollbar{display:none}
 .tab-i{padding:12px 14px;font-size:.78rem;font-weight:700;color:var(--t3);cursor:pointer;position:relative;white-space:nowrap;flex-shrink:0}

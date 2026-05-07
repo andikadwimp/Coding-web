@@ -20,7 +20,7 @@ $sn=$sets['site_name']??'Situs';
 <link rel="stylesheet" href="theme.php?v=<?=time()?>">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}
-html{font-size:16px!important;overflow-x:hidden}body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;overflow-x:hidden;max-width:100vw;padding-bottom:70px}
+html{font-size:16px!important;overflow-x:hidden}body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;overflow-x:hidden;max-width:100vw;padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
 .hdr{display:flex;align-items:center;gap:10px;padding:20px 16px 16px}.hdr h1{font-size:1.3rem;font-weight:800}.hdr .h-icon{width:34px;height:34px;border-radius:50%;background:var(--sec);display:flex;align-items:center;justify-content:center}.hdr .h-icon svg{width:18px;height:18px}
 .info{margin:0 16px 20px;padding:14px 16px;background:linear-gradient(135deg,rgba(var(--sec-rgb,56,189,248),.08),rgba(var(--sec-rgb,56,189,248),.03));border:1px solid var(--bd);border-radius:12px}.info p{font-size:.75rem;color:var(--t2);line-height:1.6}.info a{color:var(--sec);font-weight:700;text-decoration:none}
 .sec-label{

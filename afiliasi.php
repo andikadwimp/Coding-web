@@ -157,31 +157,97 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-he
 </div>
 
 <!-- TAB 1: Tutorial Promosi -->
+<style>
+.tut-card{position:relative;overflow:hidden}
+.tut-card .tc-illust{position:absolute;right:-10px;top:-10px;width:120px;height:120px;opacity:.13;pointer-events:none;color:var(--pri)}
+.tut-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;position:relative;z-index:1}
+.tut-head .tc-num{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--pri-d));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;box-shadow:0 2px 8px rgba(var(--pri-rgb,56,189,248),.35)}
+.tut-card h4{font-size:.95rem;font-weight:800;letter-spacing:-.015em;margin:0;flex:1}
+.tut-tier-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:9px 12px;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;margin-top:8px;transition:transform .2s cubic-bezier(.16,1,.3,1),border-color .15s}
+.tut-tier-row:hover{transform:translateX(2px);border-color:rgba(var(--pri-rgb,56,189,248),.4)}
+.tut-tier-row .ttr-label{font-size:.74rem;color:var(--t2);font-weight:600}
+.tut-tier-row .ttr-pct{font-family:'Chakra Petch','Poppins',sans-serif;font-weight:800;font-size:.95rem;color:var(--pri);font-variant-numeric:tabular-nums}
+.tut-flow{display:flex;flex-direction:column;gap:8px;margin-top:6px;position:relative;z-index:1}
+.tut-flow-row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:8px 12px;background:var(--bg2);border:1px solid var(--bd);border-radius:9px;font-size:.76rem}
+.tut-flow-row .ttf-tag{font-family:'Chakra Petch',sans-serif;font-weight:800;color:var(--pri);background:rgba(var(--pri-rgb,56,189,248),.12);padding:3px 8px;border-radius:6px;font-size:.7rem;letter-spacing:.3px}
+.tut-flow-row .ttf-mid{color:var(--t2);font-weight:500}
+.tut-flow-row .ttf-val{font-family:'Chakra Petch','Poppins',sans-serif;font-weight:700;font-variant-numeric:tabular-nums;color:var(--t)}
+.tut-total{margin-top:12px;padding:11px 14px;border-radius:10px;background:linear-gradient(135deg,rgba(var(--pri-rgb,56,189,248),.18),rgba(var(--pri-rgb,56,189,248),.06));border:1.5px solid rgba(var(--pri-rgb,56,189,248),.4);display:flex;align-items:center;justify-content:space-between;font-size:.82rem}
+.tut-total b{color:var(--t);font-weight:800}
+.tut-total .tt-amt{font-family:'Chakra Petch','Poppins',sans-serif;font-weight:900;color:var(--pri);font-size:1.1rem;font-variant-numeric:tabular-nums;text-shadow:0 0 12px rgba(var(--pri-rgb,56,189,248),.4)}
+.tut-summary-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:8px;position:relative;z-index:1}
+.tut-summary-item{display:flex;gap:12px;padding:11px;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;align-items:flex-start}
+.tut-summary-item .tsi-icon{width:34px;height:34px;border-radius:9px;background:rgba(var(--pri-rgb,56,189,248),.12);border:1px solid rgba(var(--pri-rgb,56,189,248),.25);display:flex;align-items:center;justify-content:center;color:var(--pri);flex-shrink:0}
+.tut-summary-item .tsi-icon svg{width:17px;height:17px}
+.tut-summary-item .tsi-text{flex:1;line-height:1.5}
+.tut-summary-item .tsi-text b{display:block;font-size:.82rem;font-weight:800;letter-spacing:-.005em;color:var(--t);margin-bottom:2px}
+.tut-summary-item .tsi-text span{font-size:.72rem;color:var(--t2);font-weight:500}
+.tut-note{margin-top:12px;padding:10px 12px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.22);border-radius:9px;font-size:.7rem;color:#86efac;line-height:1.55;display:flex;gap:8px;align-items:flex-start}
+.tut-note svg{width:14px;height:14px;color:#4ade80;flex-shrink:0;margin-top:2px}
+</style>
+
 <div class="panel" id="p1">
+
+<!-- 1: Cara Kerja -->
 <div class="tut-card">
-<h4>Cara Kerja Komisi</h4>
-<p>Sistem komisi berdasarkan <b>taruhan efektif</b> bawahan Anda. Semakin banyak bawahan yang aktif bermain, semakin besar komisi yang Anda dapatkan.</p>
-<p><b>Tingkat Rebate:</b></p>
-<p>Taruhan 0 - 10,000K: Rebate <span class="hl">1%</span></p>
-<p>Taruhan 10,000K - 50,000K: Rebate <span class="hl">2%</span></p>
-<p>Taruhan 50,000K+: Rebate <span class="hl">3%</span></p>
+  <svg class="tc-illust" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="50" cy="50" r="32"/><path d="M50 30v40M30 50h40"/><circle cx="50" cy="50" r="8" fill="currentColor"/></svg>
+  <div class="tut-head"><div class="tc-num">1</div><h4>Cara Kerja Komisi</h4></div>
+  <p>Sistem komisi berdasarkan <b>taruhan efektif</b> bawahan Anda. Makin aktif bawahan main, makin besar komisi.</p>
+  <div class="tut-tier-row">
+    <div class="ttr-label">Taruhan 0 – 10,000K</div>
+    <div class="ttr-pct">1%</div>
+  </div>
+  <div class="tut-tier-row">
+    <div class="ttr-label">Taruhan 10,000K – 50,000K</div>
+    <div class="ttr-pct">2%</div>
+  </div>
+  <div class="tut-tier-row">
+    <div class="ttr-label">Taruhan 50,000K +</div>
+    <div class="ttr-pct">3%</div>
+  </div>
 </div>
+
+<!-- 2: Contoh Perhitungan -->
 <div class="tut-card">
-<h4>Contoh Perhitungan</h4>
-<p>Anda mengajak <b>B1</b>, <b>B2</b>, <b>B3</b> untuk bergabung.</p>
-<p>B1 taruhan efektif: <span class="hl">500</span>, B2: <span class="hl">3000</span>, B3: <span class="hl">2000</span></p>
-<p>Total taruhan langsung: <b>5,500</b></p>
-<p>Komisi langsung (3%): <span class="hl">165</span></p>
-<p>B3 mengajak C1, C2, C3. C3 taruhan efektif <span class="hl">20,000</span></p>
-<p>Kontribusi dari bawahan lain: <span class="hl">60</span></p>
-<p><b>Total komisi Anda: <span class="hl">225</span></b></p>
+  <svg class="tc-illust" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="20" y="22" width="60" height="58" rx="6"/><line x1="32" y1="38" x2="68" y2="38"/><line x1="32" y1="50" x2="68" y2="50"/><line x1="32" y1="62" x2="55" y2="62"/></svg>
+  <div class="tut-head"><div class="tc-num">2</div><h4>Contoh Perhitungan</h4></div>
+  <p>Anda mengajak <b>B1</b>, <b>B2</b>, <b>B3</b> untuk bergabung.</p>
+  <div class="tut-flow">
+    <div class="tut-flow-row"><span class="ttf-tag">B1</span><span class="ttf-mid">taruhan efektif</span><span class="ttf-val">500</span></div>
+    <div class="tut-flow-row"><span class="ttf-tag">B2</span><span class="ttf-mid">taruhan efektif</span><span class="ttf-val">3,000</span></div>
+    <div class="tut-flow-row"><span class="ttf-tag">B3</span><span class="ttf-mid">taruhan efektif</span><span class="ttf-val">2,000</span></div>
+    <div class="tut-flow-row"><span class="ttf-tag" style="background:rgba(74,222,128,.14);color:#4ade80">+C3</span><span class="ttf-mid">via B3 (2 tingkat)</span><span class="ttf-val">20,000</span></div>
+  </div>
+  <div class="tut-total">
+    <span>Komisi langsung 3% + tim lain</span>
+    <span class="tt-amt">225</span>
+  </div>
 </div>
+
+<!-- 3: Ringkasan -->
 <div class="tut-card">
-<h4>Ringkasan</h4>
-<p><b>(1) Tim langsung</b>: bawahan yang Anda ajak sendiri (tingkat 1).</p>
-<p><b>(2) Tim lain</b>: bawahan dari bawahan Anda (tingkat 2+). Pengembangan tidak dibatasi.</p>
-<p>Tidak peduli kapan bawahan bergabung, penghasilan Anda tidak akan terpengaruh. Model agensi yang adil dan tidak memihak.</p>
+  <svg class="tc-illust" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="35" cy="40" r="10"/><circle cx="65" cy="40" r="10"/><path d="M20 75c0-9 7-15 15-15s15 6 15 15M50 75c0-9 7-15 15-15s15 6 15 15"/></svg>
+  <div class="tut-head"><div class="tc-num">3</div><h4>Ringkasan</h4></div>
+  <div class="tut-summary-grid">
+    <div class="tut-summary-item">
+      <div class="tsi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg></div>
+      <div class="tsi-text"><b>Tim Langsung</b><span>Bawahan yang Anda ajak sendiri (tingkat&nbsp;1).</span></div>
+    </div>
+    <div class="tut-summary-item">
+      <div class="tsi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+      <div class="tsi-text"><b>Tim Lain</b><span>Bawahan dari bawahan Anda (tingkat 2+). Tidak ada batasan.</span></div>
+    </div>
+    <div class="tut-summary-item">
+      <div class="tsi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div class="tsi-text"><b>Tanpa Batas Waktu</b><span>Kapanpun bawahan bergabung, komisi tetap mengalir.</span></div>
+    </div>
+  </div>
+  <div class="tut-note">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    <span>Model agensi adil — tanpa pengurangan diam-diam.</span>
+  </div>
 </div>
+
 </div>
 
 <!-- TAB 2: Kinerja saya -->

@@ -1710,4 +1710,50 @@ if($action==='push_test'){
     ok(['sent'=>$r['sent']??0,'failed'=>$r['failed']??0]);
 }
 
+// ══════ LIVE WINNERS — popup widget feed ══════
+// Random believable winners (mix of real game banner + masked username + weighted amount)
+if($action==='live_winners'){
+    $games=[];$users=[];
+    try{$games=$db->query("SELECT game_code,game_name,banner,provider_code FROM games WHERE status=1 AND banner!='' ORDER BY RAND() LIMIT 20")->fetchAll();}catch(Exception $e){}
+    try{$users=$db->query("SELECT username FROM users WHERE role='user' AND username IS NOT NULL ORDER BY RAND() LIMIT 20")->fetchAll();}catch(Exception $e){}
+    // Fallback bila DB belum ada user/game
+    if(!$users)$users=[['username'=>'k7777player1'],['username'=>'lucky88user'],['username'=>'goldwin99'],['username'=>'megaplayer7'],['username'=>'sultanjp'],['username'=>'rajawin21']];
+    $tiers=[
+        [25000,80000,42],   // 42% chance: 25k-80k
+        [80000,250000,28],  // 28%: 80k-250k
+        [250000,750000,18], // 18%: 250k-750k
+        [750000,2000000,9], // 9%: 750k-2jt
+        [2000000,5000000,2],// 2%: 2-5jt jackpot
+        [5000000,15000000,1],// 1%: mega
+    ];
+    $winners=[];
+    $cnt=min(count($games)?:6,15);
+    for($i=0;$i<$cnt;$i++){
+        $u=$users[$i%count($users)]['username']??'user';
+        // Mask username: ab****yz (preserve 2 first + 2 last)
+        $ulen=strlen($u);
+        $masked=$ulen<=4?$u:(substr($u,0,2).str_repeat('*',min(4,$ulen-4)).substr($u,-2));
+        // Weighted amount
+        $r=mt_rand(1,100);$cum=0;$tier=$tiers[0];
+        foreach($tiers as $t){$cum+=$t[2];if($r<=$cum){$tier=$t;break;}}
+        $amt=mt_rand($tier[0],$tier[1]);
+        $amt=intval(round($amt/1000)*1000); // round to thousands
+        $g=$games[$i]??null;
+        $gname='';$banner='';$provider='';
+        if($g){
+            $gname=is_string($g['game_name'])?$g['game_name']:'';
+            $banner=$g['banner']??'';
+            $provider=$g['provider_code']??'';
+        }
+        $winners[]=[
+            'username'=>$masked,
+            'game_name'=>$gname?:'Slot Game',
+            'banner'=>$banner,
+            'provider'=>$provider,
+            'amount'=>$amt,
+        ];
+    }
+    ok(['winners'=>$winners]);
+}
+
 err('INVALID_ACTION');

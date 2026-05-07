@@ -67,7 +67,7 @@ try{
 <link rel="stylesheet" href="style.css">
 <style>
 *{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}html{font-size:16px!important;overflow-x:hidden}
-body{overflow-x:hidden;max-width:100vw;background:var(--bg);color:var(--t);padding-bottom:66px}
+body{overflow-x:hidden;max-width:100vw;background:var(--bg);color:var(--t);padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
 button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.hdr,.bnav{will-change:auto;-webkit-transform:translateZ(0);transform:translateZ(0)}
 
 .hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg);position:sticky;top:0;z-index:100}
@@ -158,16 +158,18 @@ button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.hdr,
 .prov-sec-more svg{width:12px;height:12px;color:var(--pri)}
 
 .gc{position:relative;width:100%;aspect-ratio:1/1;border-radius:12px;overflow:hidden;cursor:pointer;-webkit-transform:translateZ(0);transform:translateZ(0);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .3s ease,border-color .25s ease;background:var(--s);border:1.5px solid rgba(var(--pri-rgb),.18);box-shadow:0 2px 8px rgba(0,0,0,.25),0 0 0 1px rgba(255,255,255,.03) inset;display:block;padding:0;isolation:isolate}
-.gc::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.4) 100%);opacity:0;transition:opacity .25s ease;pointer-events:none;z-index:1}
+.gc::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(var(--pri-rgb),.35) 100%);opacity:0;transition:opacity .25s ease;pointer-events:none;z-index:1;mix-blend-mode:multiply}
 .gc:hover::after{opacity:1}
-.gc:hover{transform:translateY(-3px);border-color:rgba(var(--pri-rgb),.45);box-shadow:0 8px 20px rgba(0,0,0,.35),0 0 0 1px rgba(var(--pri-rgb),.15) inset}
+.gc:hover{transform:translateY(-3px);border-color:rgba(var(--pri-rgb),.55);box-shadow:0 8px 22px rgba(var(--pri-rgb),.18),0 0 0 1px rgba(var(--pri-rgb),.25) inset}
 .gc.featured-game{border:1.5px solid rgba(var(--pri-rgb,56,189,248),.55);box-shadow:0 0 0 1px rgba(var(--pri-rgb,56,189,248),.25) inset,0 4px 14px rgba(var(--pri-rgb,56,189,248),.18),0 2px 6px rgba(0,0,0,.3);animation:gcFeatured 3.5s ease-in-out infinite}
 @keyframes gcFeatured{0%,100%{box-shadow:0 0 0 1px rgba(var(--pri-rgb,56,189,248),.25) inset,0 4px 14px rgba(var(--pri-rgb,56,189,248),.18),0 2px 6px rgba(0,0,0,.3)}50%{box-shadow:0 0 0 1px rgba(var(--pri-rgb,56,189,248),.45) inset,0 6px 22px rgba(var(--pri-rgb,56,189,248),.32),0 2px 6px rgba(0,0,0,.3)}}
 .gc img{transition:transform .5s cubic-bezier(.16,1,.3,1)}
 .gc:hover img{transform:scale(1.06)}
 .gc:active{transform:scale(.96)}
 .gc img{position:absolute!important;top:0!important;left:0!important;width:100%!important;height:100%!important;object-fit:cover!important;display:block}
-.gc .thumb{position:absolute!important;top:0!important;left:0!important;width:100%!important;height:100%!important;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:rgba(255,255,255,.6);text-align:center;padding:4px;font-weight:700}
+.gc .thumb{position:absolute!important;top:0!important;left:0!important;width:100%!important;height:100%!important;display:flex;align-items:center;justify-content:center;font-size:.78rem;color:#fff;text-align:center;padding:8px;font-weight:800;letter-spacing:.4px;text-shadow:0 2px 6px rgba(0,0,0,.5),0 0 12px rgba(var(--pri-rgb,56,189,248),.4);background:linear-gradient(135deg,rgba(var(--pri-rgb,56,189,248),.22) 0%,rgba(var(--pri-rgb,56,189,248),.08) 50%,var(--bg2) 100%);overflow:hidden;line-height:1.2}
+.gc .thumb::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 30%,rgba(var(--pri-rgb,56,189,248),.28),transparent 60%);pointer-events:none}
+.gc .thumb::after{content:'';position:absolute;bottom:-30%;right:-30%;width:120%;height:120%;background:radial-gradient(circle,rgba(var(--pri-rgb,56,189,248),.15),transparent 65%);pointer-events:none}
 .gc .rtp{position:absolute;top:3px;left:3px;background:rgba(0,0,0,.7);color:#4ade80;font-size:.38rem;font-weight:700;padding:1px 4px;border-radius:3px;z-index:2}
 .gc .pbadge{position:absolute;top:3px;left:3px;width:18px;height:18px;background:rgba(0,0,0,.6);border-radius:4px;display:flex;align-items:center;justify-content:center;z-index:2}
 .gc .pbadge img{width:14px;height:14px;object-fit:contain}
@@ -713,6 +715,79 @@ button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.hdr,
 <div class="wp-tabs"></div>
 <div class="wp-remind"><input type="checkbox" id="wpNoShow"> Jangan ingatkan lagi hari ini</div>
 </div><button class="wp-close" onclick="closeWP()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+
+<!-- ═══ FOOTER: Penyedia & Lisensi ═══ -->
+<style>
+.site-foot{margin:24px 14px 24px;padding:18px 14px 16px;border-radius:14px;background:linear-gradient(180deg,rgba(var(--pri-rgb,56,189,248),.04),transparent);border:1px solid rgba(var(--pri-rgb,56,189,248),.15);position:relative;overflow:hidden}
+.site-foot::before{content:'';position:absolute;top:0;left:14px;right:14px;height:1px;background:linear-gradient(90deg,transparent,rgba(var(--pri-rgb,56,189,248),.55),transparent)}
+.sf-title{font-size:.62rem;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:1.4px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.sf-title::before{content:'';width:3px;height:11px;background:linear-gradient(180deg,var(--pri),var(--pri-d));border-radius:2px}
+.sf-prov{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.sf-prov-pill{display:flex;align-items:center;gap:5px;padding:5px 10px;background:var(--bg2);border:1px solid var(--bd);border-radius:8px;font-size:.62rem;font-weight:700;color:var(--t2);letter-spacing:.3px;transition:transform .2s cubic-bezier(.16,1,.3,1),border-color .15s,background .15s}
+.sf-prov-pill:hover{transform:translateY(-1px);border-color:rgba(var(--pri-rgb,56,189,248),.4);background:var(--s)}
+.sf-prov-pill img{width:14px;height:14px;object-fit:contain;border-radius:3px}
+.sf-lic{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;align-items:center}
+.sf-badge{display:inline-flex;align-items:center;gap:5px;padding:6px 9px;background:var(--bg2);border:1px solid var(--bd);border-radius:8px;font-size:.62rem;font-weight:800;color:var(--t2);letter-spacing:.3px;transition:transform .2s cubic-bezier(.16,1,.3,1),border-color .15s}
+.sf-badge:hover{transform:translateY(-1px);border-color:rgba(var(--pri-rgb,56,189,248),.4)}
+.sf-badge.age{background:linear-gradient(135deg,rgba(239,68,68,.16),rgba(239,68,68,.06));border-color:rgba(239,68,68,.45);color:#fca5a5}
+.sf-badge svg{width:13px;height:13px;color:currentColor;flex-shrink:0}
+.sf-foot-logo{display:flex;align-items:center;justify-content:center;margin:14px 0 6px;opacity:.55}
+.sf-foot-logo img{height:28px;width:auto;object-fit:contain;max-width:140px;filter:grayscale(.35)}
+.sf-disc{font-size:.6rem;color:var(--t3);text-align:center;line-height:1.55;font-weight:500;letter-spacing:.1px}
+.sf-disc b{color:var(--t2);font-weight:700}
+@media(prefers-reduced-motion:reduce){.sf-prov-pill,.sf-badge{transition:none}}
+</style>
+<div class="site-foot">
+  <div class="sf-title">Penyedia Game</div>
+  <div class="sf-prov" id="sfProv">
+    <?php try{
+      $_provs=$db->query("SELECT name,logo FROM providers WHERE status=1 AND game_count>0 ORDER BY sort_order ASC,game_count DESC LIMIT 14")->fetchAll();
+      foreach($_provs as $_p){
+        $_lg=normUrl($_p['logo']??'');
+        echo '<span class="sf-prov-pill">';
+        if($_lg)echo '<img src="'.htmlspecialchars($_lg).'" loading="lazy" onerror="this.style.display=\'none\'">';
+        echo htmlspecialchars($_p['name']).'</span>';
+      }
+    }catch(Exception $_e){} ?>
+  </div>
+
+  <div class="sf-title">Lisensi & Tanggung Jawab</div>
+  <div class="sf-lic">
+    <span class="sf-badge age" title="18+ only">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+      18+
+    </span>
+    <span class="sf-badge age" title="21+ recommended">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      21+
+    </span>
+    <span class="sf-badge" title="GameAware — bermain bertanggung jawab">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><line x1="12" y1="11" x2="12" y2="11.01"/><line x1="8" y1="11" x2="8" y2="11.01"/><line x1="16" y1="11" x2="16" y2="11.01"/></svg>
+      GameAware
+    </span>
+    <span class="sf-badge" title="GameCare — dukungan pemain">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      GameCare
+    </span>
+    <span class="sf-badge" title="GGR Gaming License">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+      GGR Gaming
+    </span>
+    <span class="sf-badge" title="Verified Random Number Generator">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      RNG Tested
+    </span>
+  </div>
+
+  <?php $_footLogo=$sets['footer_logo']??$sets['logo_url']??''; if($_footLogo): ?>
+  <div class="sf-foot-logo"><img src="<?=htmlspecialchars(normUrl($_footLogo))?>" alt="<?=htmlspecialchars($sets['site_name']??'Logo')?>"></div>
+  <?php endif; ?>
+
+  <div class="sf-disc">
+    Bermain bertanggung jawab. Hanya untuk <b>18+</b>.<br>
+    &copy; <?=date('Y')?> <?=htmlspecialchars($sets['site_name']??'Situs')?>. All rights reserved.
+  </div>
+</div>
 
 <?php echo renderBnav($db,'beranda',$isLoggedIn); ?>
 

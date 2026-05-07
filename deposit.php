@@ -20,7 +20,7 @@ $uid=getUid();
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 html{font-size:16px!important;overflow-x:hidden}
-body{overflow-x:hidden;max-width:100vw;font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;padding-bottom:70px}
+body{overflow-x:hidden;max-width:100vw;font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
 .hdr{display:flex;align-items:center;gap:10px;padding:20px 16px 16px}
 .hdr h1{font-size:1.3rem;font-weight:800}
 .hdr .h-icon{width:34px;height:34px;border-radius:50%;background:var(--sec);display:flex;align-items:center;justify-content:center}

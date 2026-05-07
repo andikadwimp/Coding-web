@@ -46,7 +46,7 @@ $themeImgOpen  =$themeFiles[$undangTheme]['open'];
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 html{font-size:16px!important;overflow-x:hidden}
-body{overflow-x:hidden;max-width:100vw;font-family:'Plus Jakarta Sans','Outfit','Poppins',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;padding-bottom:70px}
+body{overflow-x:hidden;max-width:100vw;font-family:'Plus Jakarta Sans','Outfit','Poppins',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
 
 /* Header */
 .hdr{display:flex;align-items:center;padding:14px 16px;position:sticky;top:0;z-index:10;background:var(--bg)}
