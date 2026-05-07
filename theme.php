@@ -322,6 +322,20 @@ hr{border:none;border-top:1px solid var(--bd)}
   align-items:flex-end!important;
   height:64px;
   padding:6px 4px env(safe-area-inset-bottom,6px)!important;
+  position:fixed!important;
+  bottom:0;left:0;right:0;
+  z-index:100;
+  background:var(--nav-bg)!important;
+  border-top:1px solid rgba(var(--pri-rgb),.22)!important;
+  border-radius:14px 14px 0 0!important;
+  box-shadow:0 -4px 20px rgba(0,0,0,.5)!important;
+}
+.bnav::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent 2%,var(--pri) 15%,var(--pri-l,var(--pri)) 50%,var(--pri) 85%,transparent 98%);
+  pointer-events:none;
 }
 .bnav-i{
   flex:1;
