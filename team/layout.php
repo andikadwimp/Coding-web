@@ -6,27 +6,41 @@ if($adminUid){try{$r=$db->prepare("SELECT role FROM users WHERE id=?");$r->execu
 if(!$isAdmin&&basename($_SERVER['PHP_SELF'])!=='index.php'){header('Location:index.php');exit;}
 
 function adminHeader($title='Dashboard'){
+    // ─── Inject admin accent dari theme settings (ikut warna user-facing) ───
+    global $db;
+    $_at=['theme_primary'=>'#2563eb','theme_primary_d'=>'#1d4ed8','theme_primary_l'=>'#eff6ff'];
+    try{
+        $_r=$db->query("SELECT `key`,`value` FROM settings WHERE `key` IN('theme_primary','theme_primary_d','theme_primary_l')")->fetchAll(PDO::FETCH_KEY_PAIR);
+        foreach($_at as $_k=>$_v)if(!empty($_r[$_k]))$_at[$_k]=$_r[$_k];
+    }catch(Exception $_e){}
+    if(!function_exists('admHex2Rgb')){
+        function admHex2Rgb($hex){$hex=ltrim($hex,'#');if(strlen($hex)===3)$hex=$hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2];if(strlen($hex)!==6||!ctype_xdigit($hex))return '37,99,235';return hexdec(substr($hex,0,2)).','.hexdec(substr($hex,2,2)).','.hexdec(substr($hex,4,2));}
+        function admHexLighten($hex,$amt=.92){$hex=ltrim($hex,'#');if(strlen($hex)===3)$hex=$hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2];$r=hexdec(substr($hex,0,2));$g=hexdec(substr($hex,2,2));$b=hexdec(substr($hex,4,2));$r=intval($r+(255-$r)*$amt);$g=intval($g+(255-$g)*$amt);$b=intval($b+(255-$b)*$amt);return sprintf('#%02x%02x%02x',$r,$g,$b);}
+    }
+    $_atRgb=admHex2Rgb($_at['theme_primary']);
+    $_atSoft=admHexLighten($_at['theme_primary'],.92); // very-light tint untuk bg
 ?>
 <!DOCTYPE html><html lang="id"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title><?=$title?> - Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
-/* ═══ ADMIN — Editorial Minimal · refined typography, generous space ═══ */
+/* ═══ ADMIN — Editorial Minimal · accent ikut tema user-facing ═══ */
 :root{
   --bg:#fafaf9;            /* warm off-white surface */
   --bg2:#ffffff;
   --bg3:#f4f4f3;           /* hover */
   --s:#fafaf9;
-  --pri:#1f2937;           /* charcoal — primary action */
+  --pri:#1f2937;           /* charcoal — primary action (kontras text) */
   --pri-d:#111827;
   --pri-l:#f3f4f6;
-  --accent:#2563eb;        /* sparing blue accent for links/active */
-  --accent-d:#1d4ed8;
-  --accent-l:#eff6ff;
-  --sec:#2563eb;
-  --sec-d:#1d4ed8;
-  --sec-rgb:37,99,235;
+  --accent:<?=htmlspecialchars($_at['theme_primary'])?>;       /* dari theme_primary settings */
+  --accent-d:<?=htmlspecialchars($_at['theme_primary_d'])?>;
+  --accent-l:<?=htmlspecialchars($_atSoft)?>;
+  --accent-rgb:<?=$_atRgb?>;
+  --sec:<?=htmlspecialchars($_at['theme_primary'])?>;
+  --sec-d:<?=htmlspecialchars($_at['theme_primary_d'])?>;
+  --sec-rgb:<?=$_atRgb?>;
   --pri-rgb:31,41,55;
   --t:#0a0a0a;             /* near-black text */
   --t2:#404040;
@@ -85,7 +99,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,system-ui,
 .fg{margin-bottom:18px}
 .fg label{display:block;font-size:.75rem;font-weight:700;color:var(--t);margin-bottom:6px;letter-spacing:-.005em}
 .fg input,.fg select,.fg textarea{width:100%;padding:10px 13px;background:#fff;border:1px solid var(--bd2);border-radius:7px;color:var(--t);font-family:inherit;font-size:.85rem;font-weight:500;outline:none;transition:border-color .12s,box-shadow .12s;letter-spacing:-.005em}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(var(--accent-rgb),.12)}
 .fg input::placeholder,.fg textarea::placeholder{color:var(--t4);font-weight:400}
 .fg textarea{resize:vertical;min-height:80px;font-family:inherit}
 .fg-row{display:flex;gap:12px}.fg-row .fg{flex:1}
@@ -178,7 +192,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,system-ui,
 .btn{transition:background .15s,border-color .15s,color .15s,transform .15s ease}
 .btn:active{transform:scale(.97)}
 .sb-i{position:relative;overflow:hidden}
-.sb-i::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at center,rgba(37,99,235,.08),transparent 70%);opacity:0;transition:opacity .25s ease;pointer-events:none}
+.sb-i::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at center,rgba(var(--accent-rgb),.08),transparent 70%);opacity:0;transition:opacity .25s ease;pointer-events:none}
 .sb-i:hover::after{opacity:1}
 .tbl tr{transition:background .15s ease}
 /* Admin loader (frosted glass shimmer) */
@@ -211,7 +225,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,system-ui,
 /* Badges */
 .sb-badge{flex-shrink:0;font-family:'JetBrains Mono','SF Mono',monospace;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:10px;background:var(--bg3);color:var(--t2);letter-spacing:-.01em;line-height:1.4;border:1px solid var(--bd);font-feature-settings:'tnum';min-width:24px;text-align:center}
 .sb-badge-soft{background:var(--bg);color:var(--t3);border:1px solid var(--bd)}
-.sb-badge-info{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe}
+.sb-badge-info{background:var(--accent-l);color:var(--accent-d);border-color:rgba(var(--accent-rgb),.25)}
 .sb-badge-urgent{background:#fef2f2;color:#dc2626;border-color:#fecaca;animation:sbPulse 1.6s ease-in-out infinite;position:relative}
 .sb-badge-urgent::before{content:'';position:absolute;inset:-2px;border-radius:12px;border:1.5px solid rgba(220,38,38,.4);animation:sbPulseRing 1.6s ease-out infinite;pointer-events:none}
 @keyframes sbPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
@@ -374,7 +388,105 @@ foreach($menu as $m){
 <?php } // end adminHeader
 
 function adminFooter(){ ?>
-</div></div></body></html>
+</div></div>
+
+<!-- ═══ GLOBAL UPLOAD HELPER ═══ -->
+<!-- Pakai: <input class="upl-target" data-upl-type="banner" name="..."> di sebelahnya
+     muncul tombol "📷 Unggah". Atau panggil window.admUpload(input, type) manual. -->
+<style>
+.upl-row{display:flex;gap:8px;align-items:stretch}
+.upl-row input{flex:1}
+.upl-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 13px;background:#fff;border:1px solid var(--bd2);border-radius:7px;color:var(--t);font-family:inherit;font-size:.78rem;font-weight:600;cursor:pointer;transition:background .15s,border-color .15s,color .15s,transform .12s;letter-spacing:-.005em;white-space:nowrap}
+.upl-btn:hover{background:var(--accent-l);border-color:var(--accent);color:var(--accent)}
+.upl-btn:active{transform:scale(.97)}
+.upl-btn svg{width:14px;height:14px}
+.upl-btn.busy{pointer-events:none;opacity:.6}
+.upl-prev{margin-top:6px;display:flex;align-items:center;gap:8px;font-size:.7rem;color:var(--t3)}
+.upl-prev img{width:48px;height:48px;border-radius:6px;object-fit:cover;border:1px solid var(--bd);background:var(--bg3)}
+.upl-prev a{color:var(--accent);font-weight:600;text-decoration:none;letter-spacing:-.005em}
+.upl-toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--t);color:#fff;padding:10px 16px;border-radius:8px;font-size:.78rem;font-weight:600;z-index:10000;opacity:0;transition:opacity .25s,transform .25s cubic-bezier(.16,1,.3,1)}
+.upl-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.upl-toast.err{background:var(--red)}
+.upl-toast.ok{background:var(--green)}
+</style>
+<script>
+window.admUpload=function(targetInput,type){
+  type=type||targetInput.getAttribute('data-upl-type')||'general';
+  var fi=document.createElement('input');fi.type='file';fi.accept='image/*,.gif,.png,.jpg,.jpeg,.webp,.svg,.apk,.aab';fi.style.display='none';
+  document.body.appendChild(fi);
+  fi.onchange=function(){
+    var f=fi.files[0];if(!f){fi.remove();return;}
+    if(f.size>50*1024*1024){admToast('File terlalu besar (max 50MB)','err');fi.remove();return;}
+    var btn=targetInput.parentElement.querySelector('.upl-btn');var orig=btn?btn.innerHTML:'';
+    if(btn){btn.classList.add('busy');btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-dasharray="60" stroke-dashoffset="20"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/></circle></svg> Mengunggah';}
+    var fd=new FormData();fd.append('file',f);fd.append('type',type);fd.append('action','upload');
+    fetch('/api/admin.php?action=upload',{method:'POST',body:fd,credentials:'same-origin'})
+      .then(function(r){return r.json();}).then(function(d){
+        if(btn){btn.classList.remove('busy');btn.innerHTML=orig;}
+        if(d&&d.ok&&d.url){
+          targetInput.value=d.url;
+          targetInput.dispatchEvent(new Event('input',{bubbles:true}));
+          targetInput.dispatchEvent(new Event('change',{bubbles:true}));
+          admUpdatePreview(targetInput);
+          admToast('Berhasil diunggah','ok');
+        }else{admToast('Gagal: '+(d&&d.error||'unknown'),'err');}
+      }).catch(function(e){
+        if(btn){btn.classList.remove('busy');btn.innerHTML=orig;}
+        admToast('Error: '+e.message,'err');
+      }).finally(function(){fi.remove();});
+  };
+  fi.click();
+};
+window.admUpdatePreview=function(input){
+  var url=input.value.trim();
+  var prev=input.parentElement.parentElement.querySelector('.upl-prev');
+  if(!url){if(prev)prev.remove();return;}
+  if(!prev){prev=document.createElement('div');prev.className='upl-prev';input.parentElement.parentElement.appendChild(prev);}
+  prev.innerHTML='<img src="'+url.replace(/"/g,'&quot;')+'" onerror="this.style.display=\'none\'"><a href="'+url.replace(/"/g,'&quot;')+'" target="_blank">Buka</a>';
+};
+window.admToast=function(msg,kind){
+  var t=document.getElementById('admToast');if(!t){t=document.createElement('div');t.id='admToast';t.className='upl-toast';document.body.appendChild(t);}
+  t.className='upl-toast '+(kind||'');t.textContent=msg;
+  setTimeout(function(){t.classList.add('show');},10);
+  clearTimeout(window.__admToastT);
+  window.__admToastT=setTimeout(function(){t.classList.remove('show');},2400);
+};
+// Auto-wire: input dengan class .upl-target ATAU name yg cocok pattern image/logo/banner
+(function(){
+  function isUploadField(input){
+    if(input.tagName!=='INPUT')return false;
+    if(input.type==='file'||input.type==='hidden'||input.type==='submit'||input.type==='button')return false;
+    if(input.classList.contains('upl-target'))return true;
+    if(input.hasAttribute('data-upload'))return true;
+    if(input.classList.contains('no-upload'))return false; // opt-out
+    var n=((input.name||'')+' '+(input.id||'')).toLowerCase();
+    if(/(image_url|logo|banner|favicon|^icon$|background|bg_image|image$|qr_url|^url$|cover_url|thumb_url|avatar)/.test(n))return true;
+    return false;
+  }
+  function wire(input){
+    if(input.dataset.uplWired)return;
+    input.dataset.uplWired='1';
+    // Wrap input dengan .upl-row kalau belum
+    var par=input.parentElement;
+    if(!par.classList.contains('upl-row')){
+      var row=document.createElement('div');row.className='upl-row';
+      par.insertBefore(row,input);row.appendChild(input);
+    }
+    var btn=document.createElement('button');btn.type='button';btn.className='upl-btn';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Unggah';
+    btn.onclick=function(){window.admUpload(input)};
+    input.parentElement.appendChild(btn);
+    if(input.value)admUpdatePreview(input);
+    input.addEventListener('input',function(){admUpdatePreview(input);});
+  }
+  function scan(){document.querySelectorAll('input').forEach(function(i){if(isUploadField(i))wire(i);});}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scan);else scan();
+  // Re-scan when content changes (mutation observer light)
+  var obs=new MutationObserver(function(muts){for(var m of muts){if(m.addedNodes.length){scan();break;}}});
+  obs.observe(document.body,{childList:true,subtree:true});
+})();
+</script>
+</body></html>
 <?php } // end adminFooter
 
 // Logout

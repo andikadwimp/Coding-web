@@ -57,6 +57,19 @@ body{overflow-x:hidden;max-width:100vw;font-family:'Plus Jakarta Sans','Outfit',
 /* Banner */
 /* Share */
 /* Hero invite — banner utama */
+/* Banner section — placeholder & uploaded */
+.u-banner-wrap{margin:0 14px 14px;border-radius:16px;overflow:hidden;position:relative;aspect-ratio:3/1;background:var(--bg2);box-shadow:0 6px 18px rgba(0,0,0,.18);animation:bnIn .55s cubic-bezier(.16,1,.3,1) both}
+@keyframes bnIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.u-banner-img{display:block;width:100%;height:100%;object-fit:cover}
+.u-banner-fail .u-banner-img{display:none}
+.u-banner-fail{aspect-ratio:3/1;display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(45deg,var(--bg2) 0 12px,var(--s) 12px 24px);color:var(--t3);font-size:.78rem;font-weight:600}
+.u-banner-fail::before{content:'Banner gagal dimuat'}
+.u-banner-placeholder{aspect-ratio:3/1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px;background:linear-gradient(135deg,var(--bg2),var(--s));border:2px dashed rgba(var(--pri-rgb),.25);border-radius:16px;color:var(--t2);position:relative;overflow:hidden}
+.u-banner-placeholder::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent 0 14px,rgba(var(--pri-rgb),.04) 14px 28px);pointer-events:none}
+.u-banner-ph-title{font-size:.92rem;font-weight:800;letter-spacing:-.02em;color:var(--t);margin-bottom:4px;position:relative;z-index:1}
+.u-banner-ph-sub{font-size:.66rem;color:var(--t3);line-height:1.55;font-weight:500;position:relative;z-index:1}
+.u-banner-ph-sub b{color:var(--t2);font-weight:700;font-family:'Chakra Petch','Poppins',monospace;letter-spacing:.1px}
+/* Legacy fallback gradient block (jaga-jaga) */
 .u-hero{margin:0 14px 14px;padding:22px 20px 20px;background:linear-gradient(135deg,var(--pri) 0%,var(--pri-d) 100%);border-radius:16px;position:relative;overflow:hidden;box-shadow:0 8px 24px rgba(var(--pri-rgb),.35)}
 .u-hero::before{content:'';position:absolute;top:-50%;right:-20%;width:260px;height:260px;background:radial-gradient(circle,var(--tint-3),transparent 70%);border-radius:50%;pointer-events:none}
 .u-hero::after{content:'';position:absolute;bottom:-60%;left:-10%;width:220px;height:220px;background:radial-gradient(circle,var(--tint-2),transparent 70%);border-radius:50%;pointer-events:none}
@@ -226,14 +239,22 @@ body{overflow-x:hidden;max-width:100vw;font-family:'Plus Jakarta Sans','Outfit',
 <button class="hdr-btn" onclick="openDetail()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg></button>
 </div>
 
-<!-- Hero banner -->
-<div class="u-hero">
-  <div class="u-hero-in">
-    <div class="u-hero-eyebrow">Program Referral</div>
-    <div class="u-hero-title">Undang Teman, Dapat Bonus!</div>
-    <div class="u-hero-sub">Bagikan link referral kamu. Setiap teman yang daftar & deposit, kamu dapat bonus sampai ratusan ribu.</div>
+<!-- Hero banner — pakai banner kustom dari admin kalau ada, fallback ke placeholder atau gradient -->
+<?php $undangBanner=$sets['undang_banner']??''; ?>
+<?php if($undangBanner): ?>
+<div class="u-banner-wrap">
+  <img src="<?=htmlspecialchars(normUrl($undangBanner))?>" alt="Undang Teman" class="u-banner-img" onerror="this.parentElement.classList.add('u-banner-fail')">
+</div>
+<?php else: ?>
+<!-- Placeholder kotak abu-abu (admin belum upload banner) -->
+<div class="u-banner-wrap">
+  <div class="u-banner-placeholder">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:36px;height:36px;opacity:.55;margin-bottom:8px"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+    <div class="u-banner-ph-title">Banner Undang</div>
+    <div class="u-banner-ph-sub">Belum diunggah. Rasio rekomendasi <b>3:1</b> (~1200×400px)<br>Atur di <b>Admin → Settings → undang_banner</b></div>
   </div>
 </div>
+<?php endif; ?>
 
 <!-- Ref link card -->
 <div class="ref-card">

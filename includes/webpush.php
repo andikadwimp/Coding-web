@@ -175,11 +175,17 @@ function webpush_send($sub,$payload,$vapid){
         CURLOPT_HTTPHEADER=>$headers,
         CURLOPT_RETURNTRANSFER=>true,
         CURLOPT_TIMEOUT=>10,
+        CURLOPT_SSL_VERIFYPEER=>false,
+        CURLOPT_SSL_VERIFYHOST=>0,
     ]);
     $res=curl_exec($ch);
     $status=curl_getinfo($ch,CURLINFO_HTTP_CODE);
     $err=curl_error($ch);
     curl_close($ch);
+    // Log push send for debugging (rotate: keep last 100 lines)
+    @file_put_contents(__DIR__.'/../push_log.txt',
+        date('Y-m-d H:i:s')." status=$status ".(strlen($err)?"err=$err ":"").substr($endpoint,0,80)."\n",
+        FILE_APPEND);
     return ['ok'=>($status>=200&&$status<300),'status'=>$status,'error'=>$err,'body'=>$res];
 }
 
