@@ -118,12 +118,7 @@ body{font-family:'Plus Jakarta Sans','Outfit','Poppins',sans-serif;background:va
 .btn-act:active{transform:scale(.97)}
 .btn-act .ba-icon{color:#fff;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .btn-act svg{width:18px;height:18px}
-/* Nav */
-.bnav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;background:var(--nav-bg,#0a1628);padding:8px 0 env(safe-area-inset-bottom,6px);overflow:hidden;border-radius:14px 14px 0 0;box-shadow:0 -4px 20px rgba(0,0,0,.5);border-top:1px solid rgba(var(--sec-rgb,56,189,248),.2)}
-.bnav::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 2%,var(--pri) 15%,var(--sec-l, var(--pri-l)) 50%,var(--pri) 85%,transparent 98%)}
-.bnav-i{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;color:var(--t3);font-size:.6rem;font-weight:600;text-decoration:none}
-.bnav-i.active{color:var(--sec)}
-.bnav-i img{width:36px;height:36px;object-fit:contain}
+/* Nav: theme.php handles .bnav globally — no local overrides */
 .toast-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9998}
 .toast-box{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--s);border:1px solid var(--bd);border-radius:14px;padding:24px 30px;text-align:center;z-index:9999;max-width:280px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
 .toast-box p{font-size:.85rem;font-weight:600;color:var(--t);line-height:1.5;margin-bottom:16px}
