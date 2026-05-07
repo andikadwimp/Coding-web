@@ -14,7 +14,7 @@ $sn=$sets['site_name']??'Situs';
 ?>
 <!DOCTYPE html><html lang="id"><head>
 <?php require_once dirname(__FILE__).'/pwa_head.php'; ?>
-<meta charset="UTF-8"><meta name="viewport" content="width=390, user-scalable=no">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Penarikan - <?php echo $sn; ?></title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="theme.php?v=<?=time()?>">
@@ -149,7 +149,7 @@ html{font-size:16px!important;overflow-x:hidden}body{font-family:'Poppins',sans-
 <div class="qk" onclick="setAmt(5000)">5,000K</div>
 </div>
 <div class="amt-input">
-<input type="number" id="wdAmt" placeholder="50 - 50,000" inputmode="numeric">
+<input type="tel" id="wdAmt" placeholder="50 - 50,000" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
 <div class="k-u">K</div>
 <button class="btn-max" onclick="setAmt(<?php echo floor($balK); ?>)">Maksimal</button>
 </div>

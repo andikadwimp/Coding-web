@@ -19,7 +19,7 @@ header('Cache-Control: no-store, no-cache, must-revalidate');
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Clear Cache</title>
 <style>
 @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}

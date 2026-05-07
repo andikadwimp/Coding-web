@@ -36,7 +36,7 @@ $jackpot=$sets['jackpot_amount']??'57338479876';
 })();
 </script>
 <?php require_once 'pwa_head.php'; ?>
-<meta name="viewport" content="width=390,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Chakra+Petch:wght@700;800;900&display=swap" rel="stylesheet">
 <title><?=$sn?> - Official Mobile Site</title>
 <style>

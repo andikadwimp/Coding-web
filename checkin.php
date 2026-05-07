@@ -10,7 +10,7 @@ $sn=$sets['site_name']??'Situs';
 if(!$uid){header('Location: index.php');exit;}
 ?><!DOCTYPE html><html lang="id"><head><meta charset="UTF-8">
 <?php require_once 'pwa_head.php'; ?>
-<meta name="viewport" content="width=390,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="theme.php?v=<?=time()?>">
 <title>Check-in 7 Hari - <?=htmlspecialchars($sn)?></title>

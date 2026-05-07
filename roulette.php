@@ -40,7 +40,7 @@ $target=100;$remaining=max(0,$target-$accumulated);$progress=min(100,($accumulat
 $remTime=max(0,$cycleEnd-time());$rD=floor($remTime/86400);$rH=floor(($remTime%86400)/3600);$rM=floor(($remTime%3600)/60);$rS=$remTime%60;
 ?><!DOCTYPE html><html lang="id"><head><meta charset="UTF-8">
 <?php require_once 'pwa_head.php'; ?>
-<meta name="viewport" content="width=390,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Chakra+Petch:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="theme.php?v=<?=time()?>">
 <title>Mendapatkan 100.00 Emas Gratis - <?=$sn?></title>

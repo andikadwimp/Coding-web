@@ -61,7 +61,7 @@ try{
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<?php require_once 'pwa_head.php'; ?><meta name="viewport" content="width=390, user-scalable=no">
+<?php require_once 'pwa_head.php'; ?><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title><?php echo htmlspecialchars($sets['site_name']??'Dashboard'); ?> — Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Cinzel:wght@700;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -1019,7 +1019,7 @@ function gcCard(g,onclick){
   var pn=(g.prov&&(g.prov.name||g.prov.code))||'';
   var bn=g.banner||'';
   if(!bn || bn.length<4) return '';  // game tanpa banner di-skip (maintenance)
-  var imgHtml='<img src="'+bn+'" loading="lazy" onload="if(this.naturalWidth<50||this.naturalHeight<50){this.onerror();}" onerror="this.onerror=null;var c=this.closest(\'.gwrap\');if(c)c.remove();">';
+  var imgHtml='<img src="'+bn+'" loading="lazy" onload="if(this.naturalWidth<50||this.naturalHeight<50){this.onerror();}" onerror="this.onerror=null;this.style.visibility=\'hidden\';">';
   return '<div class="gwrap"><a class="gc" href="#" onclick="'+onclick+';return false">'+imgHtml+'<div class="gc-rtp">'+rtp+'%</div><div class="gc-fav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="display:inline-block;vertical-align:middle"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div><div class="gn"><div class="gn-name">'+gn+'</div><div class="gn-prov">'+pn+'</div></div></a></div>';
 }
 function doSearch(){
@@ -1236,7 +1236,7 @@ function renderPopular(){
     var pl=(g.prov&&g.prov.logo)?g.prov.logo:'';
     var provBadge=pl?'<img src="'+pl+'" alt="">':'<span class="gc-prov-name">'+pn+'</span>';
     h+='<div class="gwrap" onclick="launchGame(\''+g.prov.code+'\',\''+g.code+'\');return false" style="cursor:pointer"><a class="gc" href="#" onclick="event.preventDefault();launchGame(\''+g.prov.code+'\',\''+g.code+'\');return false">';
-    h+='<img src="'+bn+'" loading="lazy" onload="if(this.naturalWidth<50||this.naturalHeight<50){this.onerror();}" onerror="this.onerror=null;var c=this.closest(\'.gwrap\');if(c)c.remove();">';
+    h+='<img src="'+bn+'" loading="lazy" onload="if(this.naturalWidth<50||this.naturalHeight<50){this.onerror();}" onerror="this.onerror=null;this.style.visibility=\'hidden\';">';
     h+='<div class="gc-overlay">'+provBadge+'</div></a><div class="gn">'+gn+'</div></div>'}
     grid.innerHTML=h;
     grid.classList.add('content-loaded');
@@ -1261,7 +1261,7 @@ function renderProvSection(id){
     var pl=p.logo||'';
     var provBadge=pl?'<img src="'+pl+'" alt="">':'<span class="gc-prov-name">'+pn+'</span>';
     h+='<div class="gwrap"><a class="gc" href="#" onclick="launchGame(\''+p.code+'\',\''+g.game_code+'\');return false">';
-    h+='<img src="'+bn+'" loading="lazy" onload="if(this.naturalWidth<50||this.naturalHeight<50){this.onerror();}" onerror="this.onerror=null;var c=this.closest(\'.gwrap\');if(c)c.remove();">';
+    h+='<img src="'+bn+'" loading="lazy" onload="if(this.naturalWidth<50||this.naturalHeight<50){this.onerror();}" onerror="this.onerror=null;this.style.visibility=\'hidden\';">';
     h+='<div class="gc-overlay">'+provBadge+'</div></a><div class="gn">'+gn+'</div></div>'}
     el.innerHTML=h;
     var btn=document.getElementById('more_'+id);
@@ -1280,7 +1280,7 @@ function renderProvSections(){
     var pl=p.logo||'';
     var provBadge=pl?'<img src="'+pl+'" alt="">':'<span class="gc-prov-name">'+pn+'</span>';
     h+='<div class="gwrap"><a class="gc" href="#" onclick="launchGame(\''+p.code+'\',\''+g.game_code+'\');return false">';
-    h+='<img src="'+bn+'" loading="lazy" onload="if(this.naturalWidth<50||this.naturalHeight<50){this.onerror();}" onerror="this.onerror=null;var c=this.closest(\'.gwrap\');if(c)c.remove();">';
+    h+='<img src="'+bn+'" loading="lazy" onload="if(this.naturalWidth<50||this.naturalHeight<50){this.onerror();}" onerror="this.onerror=null;this.style.visibility=\'hidden\';">';
     h+='<div class="gc-overlay">'+provBadge+'</div></a><div class="gn">'+gn+'</div></div>'}
 
     h+='</div>';

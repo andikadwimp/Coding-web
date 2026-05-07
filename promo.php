@@ -42,7 +42,7 @@ try{
 <head>
 <?php require_once dirname(__FILE__).'/pwa_head.php'; ?>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=390, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Promosi - <?php echo $sn; ?></title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="theme.php?v=<?=time()?>">

@@ -18,7 +18,7 @@ $nextMon=strtotime('next monday');$rem=max(0,$nextMon-time());
 $rD=floor($rem/86400);$rH=floor(($rem%86400)/3600);$rM=floor(($rem%3600)/60);$rS=$rem%60;
 ?><!DOCTYPE html><html lang="id"><head><meta charset="UTF-8">
 <?php require_once 'pwa_head.php'; ?>
-<meta name="viewport" content="width=390,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="theme.php?v=<?=time()?>">
 <title>Dana Bantuan - <?=$sn?></title>

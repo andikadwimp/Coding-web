@@ -62,7 +62,7 @@ $HISTORY_JSON=json_encode($_history);
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=390,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Lucky Spin - <?=$sn?></title>
 <?php if(file_exists('pwa_head.php'))require_once 'pwa_head.php'; ?>
 <link rel="stylesheet" href="theme.php?v=<?=time()?>">

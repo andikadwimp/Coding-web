@@ -13,7 +13,7 @@ $uid=getUid();
 <head>
 <?php require_once dirname(__FILE__).'/pwa_head.php'; ?>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=390, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Deposit - <?php echo $sn; ?></title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="theme.php?v=<?=time()?>">
@@ -313,7 +313,7 @@ body{overflow-x:hidden;max-width:100vw;font-family:'Poppins',sans-serif;backgrou
   </span>
 </div>
 <div class="amt-input">
-<input type="number" id="amtInput" placeholder="10 - 10,000" inputmode="numeric">
+<input type="tel" id="amtInput" placeholder="10 - 10,000" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
 <div class="k-unit">K</div>
 </div>
 <div class="amt-note" onclick="openKinfo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> Nominal dalam K (1K = Rp1000)</div>

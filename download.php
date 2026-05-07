@@ -35,7 +35,7 @@ $shots=[
   }
 })();
 </script>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title><?=htmlspecialchars($sn)?> - Unduh Aplikasi</title>
 <link rel="manifest" href="/manifest.php">
 <meta name="theme-color" content="#fff">
