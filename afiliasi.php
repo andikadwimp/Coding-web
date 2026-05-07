@@ -188,165 +188,206 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-he
 
 <div class="panel" id="p1">
 
-<!-- BIG HERO ILLUSTRATION: referral flow diagram -->
+<!-- ═══ TUTOR HERO: Top stats card + 2-level downline tree ═══ -->
 <style>
-.aff-hero{position:relative;background:linear-gradient(160deg,var(--s) 0%,rgba(var(--pri-rgb,56,189,248),.07) 50%,var(--s) 100%);border:1px solid rgba(var(--pri-rgb,56,189,248),.22);border-radius:14px;padding:18px 14px 14px;margin-bottom:14px;overflow:hidden}
-.aff-hero::before{content:'';position:absolute;top:-30px;right:-30px;width:160px;height:160px;background:radial-gradient(circle,rgba(var(--pri-rgb,56,189,248),.18),transparent 70%);pointer-events:none}
-.aff-hero h3{font-size:.95rem;font-weight:800;letter-spacing:-.015em;text-align:center;margin-bottom:6px;color:var(--t);position:relative}
-.aff-hero p{font-size:.72rem;color:var(--t2);text-align:center;font-weight:500;margin-bottom:14px;line-height:1.55;position:relative}
-.aff-hero p b{color:var(--pri);font-weight:700}
-.aff-svg{display:block;width:100%;height:auto;max-width:340px;margin:0 auto;position:relative;z-index:1}
-@keyframes affDash{to{stroke-dashoffset:-12}}
-@keyframes affPulse{0%,100%{opacity:.4;transform:scale(.95)}50%{opacity:1;transform:scale(1.05)}}
-@keyframes affFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-.aff-svg .arrow{stroke:var(--pri);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-dasharray:4 3;animation:affDash 1.4s linear infinite}
-.aff-svg .you{filter:drop-shadow(0 4px 8px rgba(var(--pri-rgb,56,189,248),.4))}
-.aff-svg .person{animation:affFloat 3s ease-in-out infinite}
-.aff-svg .person:nth-of-type(2){animation-delay:.3s}
-.aff-svg .person:nth-of-type(3){animation-delay:.6s}
-.aff-svg .person:nth-of-type(4){animation-delay:.9s}
-.aff-svg .coin{animation:affPulse 1.6s ease-in-out infinite}
-.aff-step-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
-.aff-step{padding:10px 6px;text-align:center;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;position:relative}
-.aff-step .as-num{font-family:'Chakra Petch',sans-serif;font-size:1.05rem;font-weight:800;color:var(--pri);line-height:1;margin-bottom:4px;font-variant-numeric:tabular-nums}
-.aff-step .as-lbl{font-size:.62rem;color:var(--t2);font-weight:600;letter-spacing:.2px;line-height:1.3}
-.aff-step::after{content:'→';position:absolute;right:-9px;top:50%;transform:translateY(-50%);color:var(--pri);font-size:.85rem;font-weight:700;z-index:2}
-.aff-step:last-child::after{display:none}
-@media(max-width:380px){.aff-step .as-lbl{font-size:.58rem}}
+/* TOP CARD: avatar A + stats list */
+.aff-top{background:var(--s);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:14px;display:flex;gap:14px;align-items:flex-start;animation:secFadeIn .4s cubic-bezier(.16,1,.3,1) both}
+.aff-top .at-av{width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,var(--bg2),var(--s2));border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;overflow:hidden}
+.aff-top .at-av svg{width:46px;height:46px;color:var(--t2)}
+.aff-top .at-av-badge{position:absolute;bottom:-2px;right:-2px;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#fbbf24,#f59e0b);border:2px solid var(--s);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Chakra Petch',sans-serif;font-weight:800;font-size:.78rem;letter-spacing:-.5px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.aff-top .at-stats{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;font-size:.74rem}
+.aff-top .at-row{display:flex;justify-content:space-between;align-items:center;gap:8px;line-height:1.3}
+.aff-top .at-row span:first-child{color:var(--t2);font-weight:500}
+.aff-top .at-row span:last-child{font-family:'Chakra Petch',sans-serif;font-weight:800;color:#fb923c;font-variant-numeric:tabular-nums;letter-spacing:.3px}
+.aff-top .at-row.dim span:last-child{color:var(--t)}
+
+/* DOWNLINE TREE: 3 columns × 2 levels */
+.aff-tree{position:relative;margin-bottom:14px;animation:secFadeIn .4s cubic-bezier(.16,1,.3,1) .05s both}
+.aff-tree-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;position:relative;z-index:2}
+.aff-node{background:var(--s);border:1.5px solid var(--bd);border-radius:11px;padding:9px 6px 10px;text-align:center;position:relative;transition:transform .2s cubic-bezier(.16,1,.3,1),border-color .15s}
+.aff-node:hover{transform:translateY(-2px);border-color:rgba(var(--pri-rgb),.4)}
+.aff-node.lvl-b{border-color:rgba(74,222,128,.35)}
+.aff-node.lvl-c{border-color:rgba(var(--pri-rgb),.32)}
+.aff-node .an-top{font-size:.62rem;color:var(--t2);font-weight:600;margin-bottom:5px;line-height:1.25}
+.aff-node .an-top b{display:block;color:var(--t);font-family:'Chakra Petch',sans-serif;font-weight:800;font-size:.66rem;margin-bottom:1px}
+.aff-node .an-top .an-amt{font-family:'Chakra Petch',sans-serif;font-weight:800;color:#fb923c;font-variant-numeric:tabular-nums;font-size:.78rem}
+.aff-node .an-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--bg2),var(--s2));border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;margin:6px auto 6px;position:relative;overflow:hidden}
+.aff-node .an-av svg{width:26px;height:26px;color:var(--t2)}
+.aff-node .an-av-badge{position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-radius:50%;border:2px solid var(--s);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Chakra Petch',sans-serif;font-weight:800;font-size:.6rem}
+.aff-node.lvl-b .an-av-badge{background:linear-gradient(135deg,#4ade80,#22c55e)}
+.aff-node.lvl-c .an-av-badge{background:linear-gradient(135deg,var(--pri),var(--pri-d))}
+.aff-node .an-bet{background:var(--bg2);border:1px solid var(--bd);border-radius:7px;padding:5px 4px;font-size:.6rem;color:var(--t2);font-weight:600;line-height:1.3}
+.aff-node .an-bet b{display:block;font-family:'Chakra Petch',sans-serif;font-weight:800;color:var(--t);font-variant-numeric:tabular-nums;font-size:.78rem;margin-top:1px}
+
+/* ARROW STRIPS between rows */
+.aff-arrows{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0 10px;position:relative;z-index:1}
+.aff-arrow{padding:6px 6px;border-radius:8px;font-size:.55rem;color:var(--t2);font-weight:600;line-height:1.35;text-align:center;background:rgba(var(--pri-rgb),.06);border:1px dashed rgba(var(--pri-rgb),.3);position:relative}
+.aff-arrow b{font-family:'Chakra Petch',sans-serif;font-weight:800;color:#fb923c;font-variant-numeric:tabular-nums;font-size:.72rem}
+.aff-arrow::before{content:'';position:absolute;top:-7px;left:50%;transform:translateX(-50%);border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:6px solid rgba(var(--pri-rgb),.4)}
+.aff-arrow.green{background:rgba(74,222,128,.06);border-color:rgba(74,222,128,.3)}
+.aff-arrow.green::before{border-bottom-color:rgba(74,222,128,.4)}
+.aff-arrow.dim{background:rgba(148,163,184,.06);border-color:rgba(148,163,184,.25)}
+.aff-arrow.dim b{color:var(--t3)}
+.aff-arrow.dim::before{border-bottom-color:rgba(148,163,184,.35)}
+
+/* Note card */
+.aff-note{margin-top:10px;padding:10px 12px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.22);border-radius:9px;font-size:.7rem;color:#86efac;line-height:1.5;display:flex;gap:8px;align-items:flex-start}
+.aff-note svg{width:14px;height:14px;color:#4ade80;flex-shrink:0;margin-top:2px}
+
+/* Tier list */
+.aff-tier-card{background:var(--s);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:14px}
+.aff-tier-head{font-size:.85rem;font-weight:800;letter-spacing:-.015em;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.aff-tier-head svg{width:16px;height:16px;color:var(--pri)}
+.aff-tier{display:grid;grid-template-columns:1fr auto;gap:10px;padding:9px 12px;background:var(--bg2);border:1px solid var(--bd);border-radius:9px;margin-bottom:6px;transition:transform .2s cubic-bezier(.16,1,.3,1),border-color .15s}
+.aff-tier:last-child{margin-bottom:0}
+.aff-tier:hover{transform:translateX(2px);border-color:rgba(var(--pri-rgb),.4)}
+.aff-tier-label{font-size:.74rem;color:var(--t2);font-weight:600}
+.aff-tier-pct{font-family:'Chakra Petch',sans-serif;font-weight:800;font-size:.92rem;color:var(--pri);font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+.aff-tier-pct .tp-bg{padding:3px 11px;background:rgba(var(--pri-rgb),.14);border-radius:7px;border:1px solid rgba(var(--pri-rgb),.3)}
+
+/* Summary list */
+.aff-sum{background:var(--s);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:14px}
+.aff-sum-row{display:flex;gap:11px;padding:10px;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;margin-bottom:6px;align-items:flex-start;transition:transform .2s cubic-bezier(.16,1,.3,1),border-color .15s}
+.aff-sum-row:last-child{margin-bottom:0}
+.aff-sum-row:hover{transform:translateX(2px);border-color:rgba(var(--pri-rgb),.4)}
+.aff-sum-icon{width:32px;height:32px;border-radius:9px;background:rgba(var(--pri-rgb),.12);border:1px solid rgba(var(--pri-rgb),.25);display:flex;align-items:center;justify-content:center;color:var(--pri);flex-shrink:0}
+.aff-sum-icon svg{width:16px;height:16px}
+.aff-sum-text{flex:1;line-height:1.45}
+.aff-sum-text b{display:block;font-size:.8rem;font-weight:800;letter-spacing:-.005em;color:var(--t);margin-bottom:2px}
+.aff-sum-text span{font-size:.7rem;color:var(--t2);font-weight:500}
+
+@media(max-width:380px){
+  .aff-top{padding:12px;gap:10px}
+  .aff-top .at-av{width:60px;height:60px}
+  .aff-top .at-av svg{width:36px;height:36px}
+  .aff-top .at-stats{font-size:.68rem}
+  .aff-node .an-top{font-size:.55rem}
+  .aff-arrow{font-size:.5rem;padding:5px 4px}
+}
 </style>
 
-<div class="aff-hero">
-  <h3>🎁 Cara Kerja Sistem Afiliasi</h3>
-  <p>Ajak teman <b>daftar &amp; deposit</b> → kamu dapat komisi dari taruhan mereka <b>SELAMANYA</b>.</p>
-
-  <!-- SVG: 1 user (YOU) connected by arrows to 3 friends, each holding coins -->
-  <svg class="aff-svg" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg" aria-label="Referral flow: kamu mengundang 3 teman">
-    <!-- Top: YOU -->
-    <g class="you" transform="translate(170,38)">
-      <circle r="22" fill="rgba(var(--pri-rgb,56,189,248),.22)" stroke="var(--pri)" stroke-width="2"/>
-      <!-- Person silhouette -->
-      <circle cy="-6" r="7" fill="var(--pri)"/>
-      <path d="M-12 12 Q-12 0 0 0 Q12 0 12 12 Z" fill="var(--pri)"/>
-      <!-- Crown above -->
-      <path d="M-8 -16 L-5 -22 L0 -18 L5 -22 L8 -16 Z" fill="#fbbf24" stroke="#f59e0b" stroke-width=".8"/>
-    </g>
-    <text x="170" y="78" text-anchor="middle" font-size="9" font-weight="800" fill="var(--t)" font-family="'Chakra Petch',sans-serif" letter-spacing=".5">KAMU</text>
-
-    <!-- Arrows: from YOU to 3 friends below -->
-    <path class="arrow" d="M155 56 Q120 80 65 110"/>
-    <path class="arrow" d="M170 60 L170 110"/>
-    <path class="arrow" d="M185 56 Q220 80 275 110"/>
-
-    <!-- Friend 1 (left) -->
-    <g class="person" transform="translate(65,128)">
-      <circle r="18" fill="var(--bg2)" stroke="var(--pri)" stroke-width="1.8"/>
-      <circle cy="-5" r="6" fill="var(--pri)"/>
-      <path d="M-10 10 Q-10 -1 0 -1 Q10 -1 10 10 Z" fill="var(--pri)"/>
-    </g>
-    <text x="65" y="162" text-anchor="middle" font-size="7.5" font-weight="700" fill="var(--t2)" font-family="'Plus Jakarta Sans',sans-serif">Teman A</text>
-
-    <!-- Friend 2 (middle) -->
-    <g class="person" transform="translate(170,128)">
-      <circle r="18" fill="var(--bg2)" stroke="var(--pri)" stroke-width="1.8"/>
-      <circle cy="-5" r="6" fill="var(--pri)"/>
-      <path d="M-10 10 Q-10 -1 0 -1 Q10 -1 10 10 Z" fill="var(--pri)"/>
-    </g>
-    <text x="170" y="162" text-anchor="middle" font-size="7.5" font-weight="700" fill="var(--t2)" font-family="'Plus Jakarta Sans',sans-serif">Teman B</text>
-
-    <!-- Friend 3 (right) -->
-    <g class="person" transform="translate(275,128)">
-      <circle r="18" fill="var(--bg2)" stroke="var(--pri)" stroke-width="1.8"/>
-      <circle cy="-5" r="6" fill="var(--pri)"/>
-      <path d="M-10 10 Q-10 -1 0 -1 Q10 -1 10 10 Z" fill="var(--pri)"/>
-    </g>
-    <text x="275" y="162" text-anchor="middle" font-size="7.5" font-weight="700" fill="var(--t2)" font-family="'Plus Jakarta Sans',sans-serif">Teman C</text>
-
-    <!-- Coins flowing back up to YOU -->
-    <g class="coin" transform="translate(95,90)">
-      <circle r="6" fill="#fbbf24" stroke="#d97706" stroke-width="1"/>
-      <text y="2" text-anchor="middle" font-size="6" font-weight="900" fill="#7c2d12" font-family="sans-serif">$</text>
-    </g>
-    <g class="coin" transform="translate(245,90)" style="animation-delay:.5s">
-      <circle r="6" fill="#fbbf24" stroke="#d97706" stroke-width="1"/>
-      <text y="2" text-anchor="middle" font-size="6" font-weight="900" fill="#7c2d12" font-family="sans-serif">$</text>
-    </g>
-    <g class="coin" transform="translate(170,98)" style="animation-delay:.25s">
-      <circle r="5" fill="#fbbf24" stroke="#d97706" stroke-width="1"/>
-      <text y="1.8" text-anchor="middle" font-size="5" font-weight="900" fill="#7c2d12" font-family="sans-serif">$</text>
-    </g>
-
-    <!-- Reward label at top -->
-    <g transform="translate(170,12)">
-      <rect x="-32" y="-9" width="64" height="16" rx="8" fill="rgba(74,222,128,.14)" stroke="#4ade80" stroke-width="1"/>
-      <text y="2" text-anchor="middle" font-size="8" font-weight="800" fill="#4ade80" font-family="'Chakra Petch',sans-serif" letter-spacing=".5">+ KOMISI</text>
-    </g>
-  </svg>
-
-  <!-- 3-step compact summary -->
-  <div class="aff-step-row">
-    <div class="aff-step"><div class="as-num">1</div><div class="as-lbl">Bagikan link</div></div>
-    <div class="aff-step"><div class="as-num">2</div><div class="as-lbl">Teman main</div></div>
-    <div class="aff-step"><div class="as-num">3</div><div class="as-lbl">Komisi cair</div></div>
+<!-- ═══ HEADER: Avatar A + Performance breakdown ═══ -->
+<div class="aff-top">
+  <div class="at-av">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <div class="at-av-badge">A</div>
+  </div>
+  <div class="at-stats">
+    <div class="at-row"><span>Kinerja total</span><span>28,500</span></div>
+    <div class="at-row"><span>Total komisi</span><span>225</span></div>
+    <div class="at-row dim"><span>Kinerja langsung</span><span>5,500</span></div>
+    <div class="at-row"><span>Potongan 3% komisi langsung</span><span>165</span></div>
+    <div class="at-row dim"><span>Kinerja lainnya</span><span>23,000</span></div>
+    <div class="at-row"><span>2% Komisi lainnya</span><span>60</span></div>
   </div>
 </div>
 
-<!-- 1: Cara Kerja -->
-<div class="tut-card">
-  <svg class="tc-illust" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="50" cy="50" r="32"/><path d="M50 30v40M30 50h40"/><circle cx="50" cy="50" r="8" fill="currentColor"/></svg>
-  <div class="tut-head"><div class="tc-num">1</div><h4>Cara Kerja Komisi</h4></div>
-  <p>Sistem komisi berdasarkan <b>taruhan efektif</b> bawahan Anda. Makin aktif bawahan main, makin besar komisi.</p>
-  <div class="tut-tier-row">
-    <div class="ttr-label">Taruhan 0 – 10,000K</div>
-    <div class="ttr-pct">1%</div>
+<!-- ═══ TREE: arrows from level-2 (C) up to A ═══ -->
+<div class="aff-tree">
+  <!-- Top arrows: C kontribusi via B → A -->
+  <div class="aff-arrows">
+    <div class="aff-arrow"><b>C1 berkontribusi ke A: 20</b><br>Dari perbedaan level 2%</div>
+    <div class="aff-arrow dim"><b>C2 berkontribusi ke A: 40</b><br>Dari perbedaan level 2%</div>
+    <div class="aff-arrow dim"><b>C3 berkontribusi ke A: 0</b><br>tanpa gradasi (tidak ada selisih level)</div>
   </div>
-  <div class="tut-tier-row">
-    <div class="ttr-label">Taruhan 10,000K – 50,000K</div>
-    <div class="ttr-pct">2%</div>
-  </div>
-  <div class="tut-tier-row">
-    <div class="ttr-label">Taruhan 50,000K +</div>
-    <div class="ttr-pct">3%</div>
-  </div>
-</div>
 
-<!-- 2: Contoh Perhitungan -->
-<div class="tut-card">
-  <svg class="tc-illust" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="20" y="22" width="60" height="58" rx="6"/><line x1="32" y1="38" x2="68" y2="38"/><line x1="32" y1="50" x2="68" y2="50"/><line x1="32" y1="62" x2="55" y2="62"/></svg>
-  <div class="tut-head"><div class="tc-num">2</div><h4>Contoh Perhitungan</h4></div>
-  <p>Anda mengajak <b>B1</b>, <b>B2</b>, <b>B3</b> untuk bergabung.</p>
-  <div class="tut-flow">
-    <div class="tut-flow-row"><span class="ttf-tag">B1</span><span class="ttf-mid">taruhan efektif</span><span class="ttf-val">500</span></div>
-    <div class="tut-flow-row"><span class="ttf-tag">B2</span><span class="ttf-mid">taruhan efektif</span><span class="ttf-val">3,000</span></div>
-    <div class="tut-flow-row"><span class="ttf-tag">B3</span><span class="ttf-mid">taruhan efektif</span><span class="ttf-val">2,000</span></div>
-    <div class="tut-flow-row"><span class="ttf-tag" style="background:rgba(74,222,128,.14);color:#4ade80">+C3</span><span class="ttf-mid">via B3 (2 tingkat)</span><span class="ttf-val">20,000</span></div>
+  <!-- Level B (direct downline) -->
+  <div class="aff-tree-row">
+    <div class="aff-node lvl-b">
+      <div class="an-top"><b>B1 Komisi</b><span>Kontribusi <span class="an-amt">15</span></span></div>
+      <div class="an-av">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <div class="an-av-badge">B1</div>
+      </div>
+      <div class="an-bet">Taruhan efektif<b>500</b></div>
+    </div>
+    <div class="aff-node lvl-b">
+      <div class="an-top"><b>B2 Komisi</b><span>Kontribusi <span class="an-amt">90</span></span></div>
+      <div class="an-av">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <div class="an-av-badge">B2</div>
+      </div>
+      <div class="an-bet">Taruhan efektif<b>3,000</b></div>
+    </div>
+    <div class="aff-node lvl-b">
+      <div class="an-top"><b>B3 Komisi</b><span>Kontribusi <span class="an-amt">60</span></span></div>
+      <div class="an-av">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <div class="an-av-badge">B3</div>
+      </div>
+      <div class="an-bet">Taruhan efektif<b>2,000</b></div>
+    </div>
   </div>
-  <div class="tut-total">
-    <span>Komisi langsung 3% + tim lain</span>
-    <span class="tt-amt">225</span>
-  </div>
-</div>
 
-<!-- 3: Ringkasan -->
-<div class="tut-card">
-  <svg class="tc-illust" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="35" cy="40" r="10"/><circle cx="65" cy="40" r="10"/><path d="M20 75c0-9 7-15 15-15s15 6 15 15M50 75c0-9 7-15 15-15s15 6 15 15"/></svg>
-  <div class="tut-head"><div class="tc-num">3</div><h4>Ringkasan</h4></div>
-  <div class="tut-summary-grid">
-    <div class="tut-summary-item">
-      <div class="tsi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg></div>
-      <div class="tsi-text"><b>Tim Langsung</b><span>Bawahan yang Anda ajak sendiri (tingkat&nbsp;1).</span></div>
+  <!-- Mid arrows: B owns C -->
+  <div class="aff-arrows">
+    <div class="aff-arrow green"><b>C1 ke B1: 10</b><br>1% rebate B1</div>
+    <div class="aff-arrow green"><b>C2 ke B2: 20</b><br>1% rebate B2</div>
+    <div class="aff-arrow green"><b>C3 ke B3: 600</b><br>3% rebate B3 (tier tinggi)</div>
+  </div>
+
+  <!-- Level C (level 2 downline) -->
+  <div class="aff-tree-row">
+    <div class="aff-node lvl-c">
+      <div class="an-top"><b>C1 Komisi</b><span>Kontribusi <span class="an-amt">10</span></span></div>
+      <div class="an-av">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <div class="an-av-badge">C1</div>
+      </div>
+      <div class="an-bet">Taruhan efektif<b>1,000</b></div>
     </div>
-    <div class="tut-summary-item">
-      <div class="tsi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
-      <div class="tsi-text"><b>Tim Lain</b><span>Bawahan dari bawahan Anda (tingkat 2+). Tidak ada batasan.</span></div>
+    <div class="aff-node lvl-c">
+      <div class="an-top"><b>C2 Komisi</b><span>Kontribusi <span class="an-amt">20</span></span></div>
+      <div class="an-av">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <div class="an-av-badge">C2</div>
+      </div>
+      <div class="an-bet">Taruhan efektif<b>2,000</b></div>
     </div>
-    <div class="tut-summary-item">
-      <div class="tsi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-      <div class="tsi-text"><b>Tanpa Batas Waktu</b><span>Kapanpun bawahan bergabung, komisi tetap mengalir.</span></div>
+    <div class="aff-node lvl-c">
+      <div class="an-top"><b>C3 Komisi</b><span>Kontribusi <span class="an-amt">600</span></span></div>
+      <div class="an-av">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <div class="an-av-badge">C3</div>
+      </div>
+      <div class="an-bet">Taruhan efektif<b>20,000</b></div>
     </div>
   </div>
-  <div class="tut-note">
+
+  <div class="aff-note">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-    <span>Model agensi adil — tanpa pengurangan diam-diam.</span>
+    <span>Total komisi A = 165 (langsung) + 60 (selisih level) = <b style="color:#fff;font-family:'Chakra Petch',sans-serif">225</b>. Bawahan tidak terbatas — tim makin besar, komisi makin tinggi.</span>
+  </div>
+</div>
+
+<!-- ═══ TIER REBATE TABLE ═══ -->
+<div class="aff-tier-card">
+  <div class="aff-tier-head">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    Tingkat Rebate
+  </div>
+  <div class="aff-tier"><div class="aff-tier-label">Taruhan 0 — 10,000K</div><div class="aff-tier-pct"><span class="tp-bg">1%</span></div></div>
+  <div class="aff-tier"><div class="aff-tier-label">Taruhan 10,000K — 50,000K</div><div class="aff-tier-pct"><span class="tp-bg">2%</span></div></div>
+  <div class="aff-tier"><div class="aff-tier-label">Taruhan 50,000K +</div><div class="aff-tier-pct"><span class="tp-bg">3%</span></div></div>
+</div>
+
+<!-- ═══ SUMMARY LIST ═══ -->
+<div class="aff-sum">
+  <div class="aff-tier-head">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    Ringkasan
+  </div>
+  <div class="aff-sum-row">
+    <div class="aff-sum-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg></div>
+    <div class="aff-sum-text"><b>Tim Langsung (B)</b><span>Bawahan yang Anda ajak sendiri (level 1). Anda dapat rebate sesuai tier mereka.</span></div>
+  </div>
+  <div class="aff-sum-row">
+    <div class="aff-sum-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+    <div class="aff-sum-text"><b>Tim Lain (C, D, E…)</b><span>Bawahan dari bawahan Anda (level 2+). Anda dapat <b>selisih</b> antara tier Anda dan tier upline mereka.</span></div>
+  </div>
+  <div class="aff-sum-row">
+    <div class="aff-sum-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+    <div class="aff-sum-text"><b>Tanpa Batas Waktu</b><span>Kapanpun bawahan bergabung &amp; main, komisi tetap mengalir ke saldo Anda otomatis.</span></div>
   </div>
 </div>
 

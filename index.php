@@ -758,6 +758,78 @@ button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.hdr,
 </style>
 <div class="site-foot">
   <div class="sf-inner">
+    <!-- ═══ APP DOWNLOAD CTA ═══ -->
+    <style>
+    .sf-app{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:14px 16px;background:linear-gradient(135deg,rgba(var(--pri-rgb,56,189,248),.18),rgba(var(--pri-rgb,56,189,248),.06));border:1px solid rgba(var(--pri-rgb,56,189,248),.35);border-radius:14px;margin-bottom:18px;position:relative;overflow:hidden}
+    .sf-app::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(var(--pri-rgb,56,189,248),.2),transparent 70%);pointer-events:none}
+    .sf-app-text{position:relative;z-index:1}
+    .sf-app-title{font-size:.85rem;font-weight:800;color:var(--t);margin-bottom:3px;letter-spacing:-.015em}
+    .sf-app-sub{font-size:.66rem;color:var(--t2);font-weight:500;line-height:1.4}
+    .sf-app-btn{padding:9px 14px;background:linear-gradient(135deg,var(--pri),var(--pri-d));color:#fff;border:none;border-radius:9px;font-family:inherit;font-size:.74rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;transition:transform .15s cubic-bezier(.16,1,.3,1),box-shadow .25s;box-shadow:0 3px 10px rgba(var(--pri-rgb,56,189,248),.4);letter-spacing:.2px;position:relative;z-index:1}
+    .sf-app-btn:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(var(--pri-rgb,56,189,248),.55)}
+    .sf-app-btn svg{width:14px;height:14px}
+    .sf-pay{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:14px 0 4px;margin-bottom:14px;border-top:1px dashed var(--bd);border-bottom:1px dashed var(--bd)}
+    .sf-pay-item{display:flex;align-items:center;justify-content:center;min-width:48px;height:30px;padding:4px 10px;background:#fff;border-radius:6px;color:#0f172a;font-family:'Chakra Petch','Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.62rem;letter-spacing:.4px;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+    .sf-pay-item.dim{background:rgba(255,255,255,.08);color:var(--t2);box-shadow:none;border:1px solid var(--bd)}
+    .sf-pay-item.qris{background:linear-gradient(135deg,#ed1c24,#a30303);color:#fff}
+    .sf-pay-item.dana{background:#118EEA;color:#fff}
+    .sf-pay-item.ovo{background:#4d2d9a;color:#fff}
+    .sf-pay-item.gopay{background:#01a4dc;color:#fff}
+    .sf-pay-item.bca{background:#0060ab;color:#fff}
+    .sf-pay-item.bri{background:#003d79;color:#fff}
+    .sf-pay-item.bni{background:#ee7600;color:#fff}
+    .sf-pay-item.mandiri{background:#003366;color:#fff}
+    .sf-pay-item.pulsa{background:linear-gradient(135deg,#10b981,#047857);color:#fff}
+    .sf-pay-item.linkaja{background:#e62a39;color:#fff}
+    .sf-pay-item.shopeepay{background:#ee4d2d;color:#fff}
+    .sf-pay-title{font-size:.6rem;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:1.4px;text-align:center;margin-bottom:8px;display:flex;align-items:center;gap:7px;justify-content:center}
+    .sf-pay-title::before,.sf-pay-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--bd),var(--bd))}
+    .sf-pay-title::after{background:linear-gradient(90deg,var(--bd),var(--bd),transparent)}
+    .sf-approval{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:14px 0 10px}
+    .sf-approval-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;background:linear-gradient(135deg,rgba(74,222,128,.14),rgba(74,222,128,.04));border:1px solid rgba(74,222,128,.4);border-radius:999px;font-size:.62rem;font-weight:800;color:#86efac;letter-spacing:.5px;text-transform:uppercase}
+    .sf-approval-pill svg{width:13px;height:13px}
+    .sf-approval-pill .ap-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:apDot 1.5s ease-in-out infinite}
+    @keyframes apDot{0%,100%{opacity:1}50%{opacity:.4}}
+    </style>
+
+    <div class="sf-app">
+      <div class="sf-app-text">
+        <div class="sf-app-title">📱 Pasang Aplikasi</div>
+        <div class="sf-app-sub">Akses lebih cepat, notifikasi real-time, mode offline</div>
+      </div>
+      <a href="download.php" class="sf-app-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Unduh
+      </a>
+    </div>
+
+    <!-- ═══ PAYMENT METHODS ═══ -->
+    <div class="sf-pay-title">Metode Pembayaran</div>
+    <div class="sf-pay">
+      <span class="sf-pay-item qris">QRIS</span>
+      <span class="sf-pay-item dana">DANA</span>
+      <span class="sf-pay-item ovo">OVO</span>
+      <span class="sf-pay-item gopay">GOPAY</span>
+      <span class="sf-pay-item shopeepay">SHOPEEPAY</span>
+      <span class="sf-pay-item linkaja">LINKAJA</span>
+      <span class="sf-pay-item bca">BCA</span>
+      <span class="sf-pay-item bri">BRI</span>
+      <span class="sf-pay-item bni">BNI</span>
+      <span class="sf-pay-item mandiri">MANDIRI</span>
+      <span class="sf-pay-item pulsa">PULSA</span>
+    </div>
+
+    <!-- ═══ APPROVAL BADGES ═══ -->
+    <div class="sf-approval">
+      <span class="sf-approval-pill"><span class="ap-dot"></span>ONLINE</span>
+      <span class="sf-approval-pill" style="background:linear-gradient(135deg,rgba(var(--pri-rgb),.14),rgba(var(--pri-rgb),.04));border-color:rgba(var(--pri-rgb),.4);color:var(--pri)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>VERIFIED
+      </span>
+      <span class="sf-approval-pill" style="background:linear-gradient(135deg,rgba(251,191,36,.14),rgba(251,191,36,.04));border-color:rgba(251,191,36,.4);color:#fbbf24">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>CASINO LEADER
+      </span>
+    </div>
+
     <!-- Brand -->
     <?php $_footLogo=$sets['footer_logo']??$sets['logo_url']??''; ?>
     <div class="sf-brand">
@@ -1289,7 +1361,20 @@ function init(){
 }
 
 function renderBanners(){
-    if(!BANNERS.length){var el=document.getElementById('bTrack');if(el)el.innerHTML='';document.getElementById('bDots').innerHTML='';ts=0;return;}
+    if(!BANNERS.length){
+      // Show placeholder banner when admin hasn't uploaded any
+      var el=document.getElementById('bTrack');
+      if(el){
+        el.style.transform='translateX(0)';
+        el.innerHTML='<div style="width:100%;flex-shrink:0;aspect-ratio:3/1;border-radius:14px;background:linear-gradient(135deg,var(--bg2),var(--s));border:2px dashed rgba(var(--pri-rgb,56,189,248),.32);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--t3);text-align:center;padding:14px;position:relative;overflow:hidden">'+
+          '<div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent 0 14px,rgba(var(--pri-rgb,56,189,248),.04) 14px 28px);pointer-events:none"></div>'+
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:32px;height:32px;opacity:.5;margin-bottom:8px;color:var(--pri);position:relative"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>'+
+          '<div style="font-size:.78rem;font-weight:800;color:var(--t2);margin-bottom:3px;position:relative">Banner Promosi</div>'+
+          '<div style="font-size:.62rem;color:var(--t3);font-family:\'Chakra Petch\',monospace;letter-spacing:.5px;position:relative">Belum diunggah · Rasio 3:1 (~1200×400)<br>Atur di <b style="color:var(--t2)">Admin → Banner & Promo</b></div>'+
+          '</div>';
+      }
+      document.getElementById('bDots').innerHTML='';ts=0;return;
+    }
     ts=BANNERS.length;var el=document.getElementById('bTrack');if(!el)return;
     var h='',dots='';
     BANNERS.forEach(function(b,i){
