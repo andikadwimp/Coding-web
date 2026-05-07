@@ -61,27 +61,21 @@ body{font-family:'Plus Jakarta Sans','Outfit','Poppins',sans-serif;background:va
 .bal-col .bl-val .bl-refresh.spinning{animation:balSpin .8s linear infinite}
 @keyframes balSpin{to{transform:rotate(360deg)}}
 .bal-col .bl-val .bl-refresh svg{width:16px;height:16px}
-/* Buttons */
-/* VIP Card — refined casino, layered shadows, ambient glow */
-.vip-card{margin:14px 16px 16px;border-radius:16px;padding:18px 16px;background:linear-gradient(160deg,var(--s) 0%,rgba(var(--pri-rgb,56,189,248),.05) 50%,var(--s) 100%);position:relative;overflow:hidden;border:1px solid rgba(var(--pri-rgb,56,189,248),.2);box-shadow:0 4px 16px rgba(0,0,0,.18),0 0 0 1px rgba(255,255,255,.03) inset;transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s ease;animation:vipIn .55s cubic-bezier(.16,1,.3,1) both}
-@keyframes vipIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.vip-card::before{content:'';display:block!important;position:absolute;top:-50px;right:-30px;width:160px;height:160px;background:radial-gradient(circle,rgba(var(--pri-rgb,56,189,248),.18),transparent 65%);pointer-events:none;animation:vipFloat 6s ease-in-out infinite}
-.vip-card::after{content:'';position:absolute;left:14px;right:14px;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(var(--pri-rgb,56,189,248),.55),transparent)}
-@keyframes vipFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(-6px,4px)}}
-.vc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;position:relative;z-index:1}
-.vc-badge{display:inline-flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:7px 13px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.vc-badge .vbi{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--pri-d));display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 2px 8px rgba(var(--pri-rgb,56,189,248),.4),0 0 0 1px rgba(255,255,255,.08) inset}
+/* VIP Card — flat, minimal */
+.vip-card{margin:14px 16px 16px;border-radius:12px;padding:16px;background:var(--s);border:1px solid var(--bd);position:relative}
+.vc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.vc-badge{display:inline-flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:7px 13px}
+.vc-badge .vbi{width:24px;height:24px;border-radius:50%;background:var(--pri);display:flex;align-items:center;justify-content:center;color:#fff}
 .vc-badge .vbi svg{width:14px;height:14px}
 .vc-badge .vbt{font-size:.82rem;font-weight:800;color:var(--t);letter-spacing:-.01em}
-.vc-label{font-size:.66rem;color:var(--t3);margin-top:1px;display:block;width:100%;letter-spacing:.3px}
-.vc-detail{padding:9px 15px;background:linear-gradient(135deg,var(--pri),var(--pri-d));border-radius:10px;font-size:.76rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:6px;cursor:pointer;text-decoration:none;border:none;font-family:inherit;box-shadow:0 4px 12px rgba(var(--pri-rgb,56,189,248),.35),0 0 0 1px rgba(255,255,255,.1) inset;transition:transform .15s cubic-bezier(.16,1,.3,1),box-shadow .25s ease}
-.vc-detail:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(var(--pri-rgb,56,189,248),.5),0 0 0 1px rgba(255,255,255,.15) inset}
+.vc-label{font-size:.66rem;color:var(--t3);margin-top:1px;display:block;width:100%}
+.vc-detail{padding:8px 14px;background:transparent;border:1px solid var(--pri);border-radius:8px;font-size:.74rem;font-weight:700;color:var(--pri);display:flex;align-items:center;gap:6px;cursor:pointer;text-decoration:none;font-family:inherit;transition:background .15s}
+.vc-detail:hover{background:rgba(var(--pri-rgb),.08)}
 .vc-detail:active{transform:scale(.97)}
-.vc-detail svg{width:14px;height:14px;transition:transform .25s cubic-bezier(.16,1,.3,1)}
-.vc-detail:hover svg{transform:translateX(2px)}
-.vc-prog{display:flex;align-items:center;gap:10px;margin-bottom:8px;position:relative;z-index:1}
-.vc-bar{flex:1;height:8px;border-radius:4px;background:var(--bg2);overflow:hidden;border:1px solid var(--bd);box-shadow:inset 0 1px 2px rgba(0,0,0,.2)}
-.vc-bar .fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--pri-d),var(--pri),var(--pri2,var(--pri)));background-size:200% 100%;transition:width .8s cubic-bezier(.16,1,.3,1);box-shadow:0 0 8px rgba(var(--pri-rgb,56,189,248),.5);animation:vipBarShim 3s ease-in-out infinite}
+.vc-detail svg{width:14px;height:14px}
+.vc-prog{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.vc-bar{flex:1;height:6px;border-radius:3px;background:var(--bg2);overflow:hidden;border:1px solid var(--bd)}
+.vc-bar .fill{height:100%;border-radius:3px;background:var(--pri);transition:width .4s ease}
 @keyframes vipBarShim{0%,100%{background-position:0% 0}50%{background-position:100% 0}}
 .vc-next{display:flex;align-items:center;gap:5px;font-size:.62rem;color:var(--t3);font-weight:700}
 .vc-next .vni{width:20px;height:20px;border-radius:50%;background:var(--bg2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;color:var(--t3)}
@@ -113,10 +107,10 @@ body{font-family:'Plus Jakarta Sans','Outfit','Poppins',sans-serif;background:va
 
 /* Action button (Deposit/Penarikan) — FW66 style */
 .btn-row{display:flex;gap:10px;margin-bottom:0}
-.btn-act{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;padding:13px 10px;border-radius:12px;font-size:.88rem;font-weight:700;text-decoration:none;position:relative;overflow:hidden;transition:transform .15s cubic-bezier(.16,1,.3,1),box-shadow .25s ease;letter-spacing:-.005em;background:linear-gradient(135deg,var(--pri),var(--pri-d));color:#fff;border:1.5px solid var(--pri);box-shadow:0 4px 12px rgba(var(--pri-rgb),.3),0 0 0 1px rgba(255,255,255,.08) inset}
-.btn-act:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(var(--pri-rgb),.45),0 0 0 1px rgba(255,255,255,.14) inset}
+.btn-act{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;padding:13px 10px;border-radius:12px;font-size:.88rem;font-weight:700;text-decoration:none;transition:background .15s,border-color .15s,transform .12s;letter-spacing:-.005em;background:var(--bg2);color:var(--t);border:1px solid var(--bd2)}
+.btn-act:hover{background:var(--s);border-color:var(--pri)}
 .btn-act:active{transform:scale(.97)}
-.btn-act .ba-icon{color:#fff;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.btn-act .ba-icon{color:var(--pri);width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .btn-act svg{width:18px;height:18px}
 /* Nav: theme.php handles .bnav globally — no local overrides */
 .toast-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9998}

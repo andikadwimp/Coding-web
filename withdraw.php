@@ -44,7 +44,7 @@ html{font-size:16px!important;overflow-x:hidden}body{font-family:'Poppins',sans-
 .amt-card h4{font-size:.88rem;font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
 .amt-card h4 span{font-size:.62rem;color:var(--t3);font-weight:400;background:var(--bg2);padding:4px 10px;border-radius:6px}
 .quick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
-.qk{padding:14px 8px;text-align:center;background:linear-gradient(135deg,rgba(var(--sec-rgb,56,189,248),.08),rgba(var(--sec-rgb,56,189,248),.03));border:1.5px solid rgba(var(--sec-rgb,56,189,248),.3);border-radius:12px;font-size:.88rem;font-weight:800;color:var(--sec);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2),inset 0 1px 0 var(--tint-1);transition:all .15s}.qk:active{transform:scale(.95);background:linear-gradient(135deg,var(--sec),var(--sec-d,var(--sec-d)));color:#fff;border-color:var(--sec);box-shadow:0 0 16px rgba(var(--sec-rgb,56,189,248),.5)}
+.qk{padding:13px 8px;text-align:center;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;font-size:.86rem;font-weight:700;color:var(--t);cursor:pointer;transition:background .15s,border-color .15s,transform .12s}.qk:hover{border-color:var(--pri);background:var(--s)}.qk:active{transform:scale(.97)}.qk.on{background:rgba(var(--pri-rgb),.08);border-color:var(--pri);color:var(--pri)}
 .amt-input{display:flex;align-items:center;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:0 12px}
 .amt-input input{flex:1;background:none;border:none;color:var(--t);font-family:inherit;font-size:1rem;font-weight:700;padding:13px 0;outline:none}
 .amt-input input::placeholder{color:var(--t3);font-weight:400}
@@ -56,14 +56,14 @@ html{font-size:16px!important;overflow-x:hidden}body{font-family:'Poppins',sans-
 .bank-sec h4 a{font-size:.72rem;color:var(--sec);text-decoration:none;font-weight:700}
 .bank-empty{background:var(--s);border:1px solid var(--bd);border-radius:14px;padding:24px;text-align:center}
 .bank-empty p{font-size:.78rem;color:var(--t2);margin-bottom:14px}
-.bank-empty button{padding:10px 20px;background:transparent;border:1px solid var(--sec);border-radius:8px;color:var(--sec);font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit}
+.bank-empty button{padding:10px 20px;background:transparent;border:1px solid var(--bd2);border-radius:8px;color:var(--t2);font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;transition:border-color .15s,color .15s}.bank-empty button:hover{border-color:var(--pri);color:var(--pri)}
 .bank-info{background:var(--s);border:1px solid var(--bd);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px}
 .bank-info .bi-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
 .bank-info .bi-text{flex:1}.bank-info .bi-text .bt-name{font-size:.82rem;font-weight:700}.bank-info .bi-text .bt-num{font-size:.72rem;color:var(--t3)}
 /* Submit */
-.submit{display:block;width:calc(100% - 32px);margin:20px 16px;padding:15px;text-align:center;font-size:.95rem;font-weight:800;color:#ffffff;background:linear-gradient(135deg,var(--sec) 0%,var(--sec-d) 100%);border:1.5px solid rgba(var(--sec-rgb),.5);border-radius:12px;cursor:pointer;font-family:inherit;box-shadow:0 0 16px rgba(var(--sec-rgb),.45),0 4px 14px rgba(var(--sec-rgb),.3);transition:all .2s;letter-spacing:.3px}
-.submit:hover{box-shadow:0 0 22px rgba(var(--sec-rgb),.7),0 6px 18px rgba(var(--sec-rgb),.4);border-color:rgba(var(--sec-rgb),.8);transform:translateY(-1px)}
-.submit:active{transform:translateY(0)}
+.submit{display:block;width:calc(100% - 32px);margin:20px 16px;padding:14px;text-align:center;font-size:.92rem;font-weight:700;color:#fff;background:var(--pri);border:1px solid var(--pri);border-radius:10px;cursor:pointer;font-family:inherit;transition:background .15s,transform .12s;letter-spacing:.2px}
+.submit:hover{background:var(--pri-d)}
+.submit:active{transform:scale(.98)}
 /* Overlays */
 .ov{position:fixed;inset:0;z-index:200;display:none;flex-direction:column;background:var(--bg)}.ov.open{display:flex}
 .ov-hdr{display:flex;align-items:center;padding:14px 16px;flex-shrink:0}.ov-hdr button{width:32px;height:32px;background:none;border:none;color:var(--t2);cursor:pointer;display:flex;align-items:center;justify-content:center}.ov-hdr button svg{width:22px;height:22px}.ov-hdr h2{flex:1;text-align:center;font-size:1rem;font-weight:700}
