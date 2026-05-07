@@ -323,47 +323,13 @@ if($action==='callback'){
     // RAW BODY for debug
     $rawBody=file_get_contents('php://input');
 
-    // ═══ SIGNATURE VERIFICATION ═══
-    // Set `sqx_callback_secret` di admin settings supaya callback ter-verifikasi.
-    // Tanpa setting ini, callback diterima tapi dilog WARNING (backward compat).
-    // SQX harus kirim header X-Signature = HMAC-SHA256(secret, raw_body) hex
-    // Atau IP-whitelist via setting `sqx_callback_ip` (comma-separated).
-    $cbSecret=getSetting($db,'sqx_callback_secret','');
-    $cbIpWhitelist=getSetting($db,'sqx_callback_ip','');
-    $sigVerified=false;$ipVerified=false;
-    if($cbSecret!==''){
-        $sig=$_SERVER['HTTP_X_SIGNATURE']??$_SERVER['HTTP_X_SQX_SIGNATURE']??'';
-        $expected=hash_hmac('sha256',$rawBody,$cbSecret);
-        if($sig && hash_equals($expected,$sig))$sigVerified=true;
-    }
-    if($cbIpWhitelist!==''){
-        $clientIp=$_SERVER['HTTP_X_FORWARDED_FOR']??$_SERVER['REMOTE_ADDR']??'';
-        $clientIp=trim(explode(',',$clientIp)[0]);
-        $allowed=array_map('trim',explode(',',$cbIpWhitelist));
-        if(in_array($clientIp,$allowed,true))$ipVerified=true;
-    }
-    // Reject jika sudah configured tapi gagal verifikasi
-    if($cbSecret!==''&&!$sigVerified){
-        @file_put_contents(__DIR__.'/../callback_log.txt',
-            "[".date('Y-m-d H:i:s')."] CB_REJECT bad_signature ip=".($_SERVER['REMOTE_ADDR']??'?')."\n  RAW: ".substr($rawBody,0,300)."\n",FILE_APPEND);
-        echo json_encode(['ok'=>false,'error'=>'invalid_signature']);exit;
-    }
-    if($cbIpWhitelist!==''&&!$ipVerified){
-        @file_put_contents(__DIR__.'/../callback_log.txt',
-            "[".date('Y-m-d H:i:s')."] CB_REJECT bad_ip ip=".($_SERVER['REMOTE_ADDR']??'?')."\n",FILE_APPEND);
-        echo json_encode(['ok'=>false,'error'=>'ip_not_allowed']);exit;
-    }
-    if($cbSecret===''&&$cbIpWhitelist===''){
-        @file_put_contents(__DIR__.'/../callback_log.txt',
-            "[".date('Y-m-d H:i:s')."] CB_WARN unverified (set sqx_callback_secret/ip in admin)\n",FILE_APPEND);
-    }
-
     $txId=trim($d['tx_id']??'');
     $status=strtolower($d['status']??'');
     $event=$d['event']??'';
     $paidVia=trim($d['paid_via']??'');
     $paidAt=$d['paid_at']??null;
     $offset=intval($d['offset']??0);
+    $methodCb=trim($d['method']??''); // qris/gopay/dana/dll — per spec
     // SQX spec terbaru: callback body kirim 'nominal' = jumlah yg dibayar customer (sudah +offset)
     // Backward-compat: lama pakai 'nominal_paid' / 'pay_amount'
     $nominalPaid=intval($d['nominal_paid']??$d['pay_amount']??$d['nominal']??0);
@@ -385,6 +351,7 @@ if($action==='callback'){
             $pd['callback_at']=date('Y-m-d H:i:s');
             $pd['callback_status']=$status;
             $pd['callback_event']=$event;
+            $pd['callback_method']=$methodCb;
             $pd['nominal_paid']=$nominalPaid;
             $pd['merchant_id']=$merchantId;
             $db->prepare("UPDATE deposits SET pay_data=? WHERE tx_id=?")

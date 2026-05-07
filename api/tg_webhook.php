@@ -14,21 +14,6 @@ header('Content-Type: application/json; charset=UTF-8');
 $raw=file_get_contents('php://input');
 @file_put_contents(__DIR__.'/../tg_log.txt',date('Y-m-d H:i:s')." IN: ".$raw."\n",FILE_APPEND);
 
-// ═══ TELEGRAM SECRET TOKEN VERIFICATION ═══
-// Set di admin → settings: tg_webhook_secret. Lalu setWebhook dengan secret_token=<value>.
-// Telegram kirim header X-Telegram-Bot-Api-Secret-Token. Tanpa setting ini, webhook
-// terbuka untuk siapa aja yg tau URL → fake WD approval/reject possible.
-$tgSecret=getSetting($db,'tg_webhook_secret','');
-if($tgSecret!==''){
-    $hdr=$_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN']??'';
-    if(!hash_equals($tgSecret,$hdr)){
-        @file_put_contents(__DIR__.'/../tg_log.txt',
-            date('Y-m-d H:i:s')." REJECT bad_secret_token ip=".($_SERVER['REMOTE_ADDR']??'?')."\n",FILE_APPEND);
-        http_response_code(401);
-        echo'{"ok":false,"error":"unauthorized"}';exit;
-    }
-}
-
 $upd=json_decode($raw,true);
 if(!$upd){echo'{"ok":false}';exit;}
 
