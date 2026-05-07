@@ -130,11 +130,6 @@ body{overflow-x:hidden;max-width:100vw;font-family:'Poppins',sans-serif;backgrou
 .rb-desc p{font-size:.75rem;color:var(--t2);line-height:1.7;margin-bottom:6px}
 /* BNAV */
 @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-.bnav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;background:var(--nav-bg,#0a1628);padding:8px 0 env(safe-area-inset-bottom,6px);overflow:hidden;border-radius:14px 14px 0 0;box-shadow:0 -4px 20px rgba(0,0,0,.5);border-top:1px solid rgba(var(--sec-rgb,56,189,248),.2)}
-.bnav-i{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;color:var(--t3);font-size:.6rem;font-weight:600;text-decoration:none}
-.bnav-i.active{color:var(--sec,var(--sec))}
-.bnav::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 2%,var(--pri,var(--sec)) 15%,var(--gl,var(--sec-l, var(--pri-l))) 50%,var(--pri,var(--sec)) 85%,transparent 98%);animation:shimmer 3s linear infinite;background-size:200% 100%}
-.bnav-i img{width:36px;height:36px;object-fit:contain}
 .toast-box{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--s);border:1px solid var(--bd);border-radius:14px;padding:24px 30px;text-align:center;z-index:9999;max-width:300px;box-shadow:0 10px 40px rgba(0,0,0,.5);animation:fadeIn .2s}
 .toast-box p{font-size:.85rem;font-weight:600;color:var(--t);line-height:1.5;margin-bottom:16px}
 .toast-box button{padding:8px 30px;background:var(--sec);border:none;border-radius:8px;color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit}

@@ -216,11 +216,6 @@ body{overflow-x:hidden;max-width:100vw;font-family:'Plus Jakarta Sans','Outfit',
 .dt-empty p{color:var(--t3);font-size:.85rem}
 
 /* Nav */
-.bnav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;background:var(--nav-bg,#0a1628);padding:8px 0 env(safe-area-inset-bottom,6px);overflow:hidden;border-radius:14px 14px 0 0;box-shadow:0 -4px 20px rgba(0,0,0,.5);border-top:1px solid rgba(var(--sec-rgb,56,189,248),.2)}
-.bnav::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 2%,var(--pri,var(--sec)) 15%,var(--sec-l, var(--pri-l)) 50%,var(--pri,var(--sec)) 85%,transparent 98%)}
-.bnav-i{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;color:var(--t3);font-size:.6rem;font-weight:600;text-decoration:none}
-.bnav-i.active{color:var(--sec)}
-.bnav-i img{width:36px;height:36px;object-fit:contain}
 
 /* Toast */
 .toast-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9998}

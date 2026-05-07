@@ -309,10 +309,7 @@ button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.hdr,
 .wp-remind input{accent-color:var(--pri);width:14px;height:14px}
 
 /* Bottom nav */
-.bnav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;background:var(--nav-bg,#0a1628);padding:8px 0 env(safe-area-inset-bottom,6px);overflow:hidden;border-radius:14px 14px 0 0;box-shadow:0 -4px 20px rgba(0,0,0,.5);border-top:1px solid rgba(var(--sec-rgb,56,189,248),.2)}
-.bnav::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 2%,var(--pri) 15%,var(--gl,var(--pri2)) 50%,var(--pri) 85%,transparent 98%);animation:shimmer 3s linear infinite;background-size:200% 100%}
 @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-.bnav-i{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;color:var(--t3);font-size:.6rem;font-weight:600}.bnav-i.active{color:var(--sec)}.bnav-i svg{width:30px;height:30px}.bnav-i img{width:36px;height:36px;object-fit:contain}
 
 .ft{padding:16px 14px 8px;background:var(--bg)}
 .ft-title{font-size:.95rem;font-weight:700;color:var(--t2);margin-bottom:10px;display:flex;align-items:center;gap:6px}
@@ -518,9 +515,6 @@ button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.hdr,
 .ft-legal{text-align:center;font-size:.52rem;color:var(--t3);line-height:1.8;padding-top:10px;border-top:1px solid var(--bd)}
 .ft-copy{text-align:center;font-size:.52rem;color:var(--t3);margin-top:8px}
 
-.bnav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;background:var(--nav-bg,#0a1628);padding:8px 0 env(safe-area-inset-bottom,6px);overflow:hidden;border-radius:14px 14px 0 0;box-shadow:0 -4px 20px rgba(0,0,0,.5);border-top:1px solid rgba(var(--sec-rgb,56,189,248),.2)}
-.bnav::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 2%,var(--pri) 15%,var(--gl) 50%,var(--pri) 85%,transparent 98%);animation:shimmer 3s linear infinite;background-size:200% 100%}
-.bnav-i{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;color:var(--t3);font-size:.6rem;font-weight:600}.bnav-i.active{color:var(--sec)}.bnav-i svg{width:30px;height:30px}.bnav-i img{width:36px;height:36px;object-fit:contain}
 
 /* ═══ LOGIN/REGISTER MODAL — polished ═══ */
 .mo{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0);backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0);display:none;align-items:flex-end;justify-content:center;transition:background .35s cubic-bezier(.16,1,.3,1),backdrop-filter .35s cubic-bezier(.16,1,.3,1)}

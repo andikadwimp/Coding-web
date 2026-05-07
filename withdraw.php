@@ -121,9 +121,6 @@ html{font-size:16px!important;overflow-x:hidden}body{font-family:'Poppins',sans-
 .st-approved{background:rgba(74,222,128,.1);color:#4ade80}
 .st-rejected{background:rgba(239,68,68,.1);color:#ef4444}
 /* Nav */
-.bnav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;background:var(--nav-bg,#0a1628);padding:8px 0 env(safe-area-inset-bottom,6px);overflow:hidden;border-radius:14px 14px 0 0;box-shadow:0 -4px 20px rgba(0,0,0,.5);border-top:1px solid rgba(var(--sec-rgb,56,189,248),.2)}
-.bnav::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 2%,var(--pri) 15%,var(--sec-l, var(--pri-l)) 50%,var(--pri) 85%,transparent 98%)}
-.bnav-i{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;color:var(--t3);font-size:.6rem;font-weight:600;text-decoration:none}.bnav-i.active{color:var(--sec)}.bnav-i img{width:36px;height:36px;object-fit:contain}
 .to-item{background:rgba(var(--sec-rgb,56,189,248),.06);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:10px}
 .to-item h5{font-size:.78rem;font-weight:700;margin-bottom:4px;color:var(--pri)}
 .to-item .to-info{font-size:.65rem;color:var(--t3);margin-bottom:10px;line-height:1.5}
