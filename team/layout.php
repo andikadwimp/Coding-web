@@ -111,12 +111,18 @@ body{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,system-ui,
 .btn-sm{padding:6px 10px;font-size:.7rem;border-radius:5px}
 
 /* ── Tables ── */
-.tbl{width:100%;border-collapse:collapse;font-size:.815rem;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--bd)}
-.tbl th{text-align:left;padding:11px 14px;background:var(--bg);color:var(--t3);font-size:.65rem;text-transform:uppercase;letter-spacing:.7px;font-weight:700;border-bottom:1px solid var(--bd)}
-.tbl td{padding:13px 14px;border-bottom:1px solid var(--bd);color:var(--t);font-weight:500;letter-spacing:-.005em}
-.tbl tr:hover td{background:var(--bg)}
+.tbl{width:100%;border-collapse:collapse;font-size:.815rem;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--bd);transition:border-color .2s,box-shadow .25s}
+.tbl:hover{box-shadow:0 4px 14px rgba(0,0,0,.04)}
+.tbl th{text-align:left;padding:11px 14px;background:var(--bg);color:var(--t3);font-size:.65rem;text-transform:uppercase;letter-spacing:.7px;font-weight:700;border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:1}
+.tbl td{padding:13px 14px;border-bottom:1px solid var(--bd);color:var(--t);font-weight:500;letter-spacing:-.005em;transition:background .15s,color .15s}
+.tbl tr{transition:background .15s ease}
+.tbl tr:hover td{background:var(--bg);color:var(--t)}
 .tbl tr:last-child td{border-bottom:none}
 .tbl .num,.tbl td b{font-family:'JetBrains Mono','SF Mono',monospace;font-feature-settings:'tnum';font-weight:600}
+/* Custom thin scrollbar in admin */
+.main *::-webkit-scrollbar,.content *::-webkit-scrollbar{width:6px;height:6px}
+.main *::-webkit-scrollbar-thumb,.content *::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px}
+.main *::-webkit-scrollbar-thumb:hover,.content *::-webkit-scrollbar-thumb:hover{background:var(--t4)}
 
 /* ── Item rows ── */
 .item-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#fff;border:1px solid var(--bd);border-radius:8px;margin-bottom:8px;transition:border-color .12s}

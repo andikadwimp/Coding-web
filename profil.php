@@ -79,12 +79,17 @@ body{font-family:'Plus Jakarta Sans','Outfit','Poppins',sans-serif;background:va
 .vc-info span{color:var(--pri);font-weight:800}
 
 /* Menu — style natural casino, list rapi */
-.menu{margin:0 16px 16px;border-radius:10px;overflow:hidden;border:1px solid var(--bd);background:var(--s)}
-.menu-i{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--s);border-bottom:1px solid var(--bd);cursor:pointer;text-decoration:none;color:var(--t);transition:background .15s}
-.menu-i:active{background:var(--bg2)}
+.menu{margin:0 16px 16px;border-radius:12px;overflow:hidden;border:1px solid var(--bd);background:var(--s);animation:menuIn .45s cubic-bezier(.16,1,.3,1) both}
+@keyframes menuIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.menu-i{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--s);border-bottom:1px solid var(--bd);cursor:pointer;text-decoration:none;color:var(--t);transition:background .15s,padding-left .2s cubic-bezier(.16,1,.3,1)}
+.menu-i:hover{background:var(--bg2);padding-left:20px}
+.menu-i:hover .mi-icon{transform:scale(1.06);color:var(--pri2,var(--pri))}
+.menu-i:hover .mi-arr{transform:translateX(3px)}
+.menu-i:active{background:var(--bg2);transform:scale(.99)}
 .menu-i:last-child{border:none}
-.menu-i .mi-icon{width:34px;height:34px;border-radius:8px;background:var(--bg2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--pri)}
+.menu-i .mi-icon{width:36px;height:36px;border-radius:9px;background:var(--bg2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--pri);transition:transform .25s cubic-bezier(.34,1.56,.64,1),color .15s,border-color .15s}
 .menu-i .mi-icon svg{width:18px;height:18px}
+.menu-i .mi-arr{transition:transform .2s cubic-bezier(.16,1,.3,1)}
 .menu-i .mi-text{flex:1;min-width:0}
 .menu-i .mi-text .mt-title{font-size:.85rem;font-weight:700;color:var(--t)}
 .menu-i .mi-text .mt-sub{font-size:.62rem;color:var(--t3);margin-top:2px}
