@@ -1249,7 +1249,7 @@ function renderPopular(){
     if(secBody)secBody.style.display='';
     if(!pageState['pop'])pageState['pop']={page:0,expanded:false};
     var ps=pageState['pop'];
-    var perPage=ps.expanded?40:9;
+    var perPage=ps.expanded?40:12;
     var pg=ps.page;var mx=Math.ceil(all.length/perPage)-1;
     if(pg<0)pg=mx;if(pg>mx)pg=0;ps.page=pg;
     var st=pg*perPage;var en=Math.min(st+perPage,all.length);
@@ -1271,12 +1271,10 @@ function renderPopular(){
 function renderProvSection(id){
     var el=document.getElementById('sec_'+id);if(!el)return;
     var p=PROVS.find(function(x){return x.code===id});if(!p)return;
-    // PRE-FILTER: only games with valid banner (>=4 chars). Pagination after filter
-    // so perPage=9 always renders 9 cards, never short.
     var games=(p.games||[]).filter(function(g){return g.banner && (''+g.banner).length>=4;});
     if(!pageState[id])pageState[id]={page:0,expanded:false};
     var ps=pageState[id];
-    var perPage=ps.expanded?40:9;
+    var perPage=ps.expanded?40:12; // Bump to 12 so even if 2-3 banners fail, masih 9+ visible
     var pg=ps.page;var mx=Math.ceil(games.length/perPage)-1;
     if(pg<0)pg=mx;if(pg>mx)pg=0;ps.page=pg;
     var st=pg*perPage;var en=Math.min(st+perPage,games.length);
@@ -1285,7 +1283,7 @@ function renderProvSection(id){
     var pl=p.logo||'';
     var provBadge=pl?'<img src="'+pl+'" alt="">':'<span class="gc-prov-name">'+pn+'</span>';
     h+='<div class="gwrap"><a class="gc" href="#" onclick="launchGame(\''+p.code+'\',\''+g.game_code+'\');return false">';
-    h+='<img src="'+bn+'" loading="lazy" onload="if(this.naturalWidth<50||this.naturalHeight<50){this.onerror();}" onerror="this.onerror=null;this.style.visibility=\'hidden\';">';
+    h+='<img src="'+bn+'" loading="lazy" onload="if(this.naturalWidth<50||this.naturalHeight<50){this.onerror();}" onerror="var w=this.closest(\'.gwrap\');if(w)w.remove();">';
     h+='<div class="gc-overlay">'+provBadge+'</div></a><div class="gn">'+gn+'</div></div>'}
     el.innerHTML=h;
     var btn=document.getElementById('more_'+id);
