@@ -265,20 +265,20 @@ catKeys.forEach(function(k,i){
           if(lnk!='#')ph+='<a href="'+lnk+'" style="display:block;position:relative"><img src="'+p.image_url+'" loading="lazy" onerror="promoImgFail(this)"></a>';
           else ph+='<img src="'+p.image_url+'" loading="lazy" onerror="promoImgFail(this)">';
         }
-        ph+='<div class="promo-body"><div class="pb-text">'+(p.description||p.title||'')+'</div><a class="pb-btn" href="'+lnk+'">'+(p.button_text||'Proses')+'</a></div></div>';
+        ph+='<div class="promo-body"><div class="pb-text">'+(p.description||p.title||'')+'</div><a class="pb-btn" href="'+lnk+'">'+(p.button_text||'Lihat Semua')+'</a></div></div>';
       });
       // Show feature cards only if NOT already in DB
       var features=[
-        {title:'SPIN & MENANG JUTAAN!',desc:'Putar roda keberuntungan setiap hari, hadiah hingga 5 JUTA!',link:'spin.php',btn:'Putar Sekarang'},
-        {title:'NAIK LEVEL, GAJI NAIK!',desc:'Member VIP dapat gaji harian + mingguan + bulanan SELAMANYA',link:'promo.php?tab=vip',btn:'Lihat Hadiah'},
-        {title:'HADIAH SPESIAL MEMBER',desc:'Apresiasi setia member! Klaim bonus besar tiap tanggal 5',link:'apresiasi.php',btn:'Ambil Hadiah'},
-        {title:'BUKA PETI MISTERI',desc:'Bonus rahasia menanti! Semakin lama bermain, semakin besar hadiahnya',link:'misteri.php',btn:'Buka Sekarang'},
-        {title:'KALAH? KAMI GANTI!',desc:'Dana bantuan mingguan hingga 30% dari kerugian Anda',link:'bantuan.php',btn:'Klaim Cashback'},
-        {title:'GRATIS 100K EMAS!',desc:'Spin roulette gratis setiap hari, kumpulkan & tarik tunai!',link:'roulette.php',btn:'Main Gratis'},
-        {title:'LOGIN = CUAN!',desc:'Masuk 7 hari berturut-turut, bonus makin besar tiap hari!',link:'checkin.php',btn:'Absen Sekarang'},
-        {title:'DEPOSIT DAPAT EXTRA!',desc:'Semakin banyak deposit hari ini, semakin besar bonus tambahan!',link:'bonusdepo.php',btn:'Deposit & Klaim'},
-        {title:'TARUHAN = CASHBACK!',desc:'Setiap taruhan Anda menghasilkan rebate otomatis tanpa batas',link:'promo.php?tab=rebate',btn:'Lihat Rebate'},
-        {title:'AJAK TEMAN DAPAT 50K!',desc:'Bagikan link, teman daftar & deposit, Anda langsung dapat bonus!',link:'undang.php',btn:'Undang Sekarang'},
+        {title:'SPIN & MENANG JUTAAN!',desc:'Putar roda keberuntungan setiap hari, hadiah hingga 5 JUTA!',link:'spin.php',btn:'Lihat Semua'},
+        {title:'NAIK LEVEL, GAJI NAIK!',desc:'Member VIP dapat gaji harian + mingguan + bulanan SELAMANYA',link:'promo.php?tab=vip',btn:'Lihat Semua'},
+        {title:'HADIAH SPESIAL MEMBER',desc:'Apresiasi setia member! Klaim bonus besar tiap tanggal 5',link:'apresiasi.php',btn:'Lihat Semua'},
+        {title:'BUKA PETI MISTERI',desc:'Bonus rahasia menanti! Semakin lama bermain, semakin besar hadiahnya',link:'misteri.php',btn:'Lihat Semua'},
+        {title:'KALAH? KAMI GANTI!',desc:'Dana bantuan mingguan hingga 30% dari kerugian Anda',link:'bantuan.php',btn:'Lihat Semua'},
+        {title:'GRATIS 100K EMAS!',desc:'Spin roulette gratis setiap hari, kumpulkan & tarik tunai!',link:'roulette.php',btn:'Lihat Semua'},
+        {title:'LOGIN = CUAN!',desc:'Masuk 7 hari berturut-turut, bonus makin besar tiap hari!',link:'checkin.php',btn:'Lihat Semua'},
+        {title:'DEPOSIT DAPAT EXTRA!',desc:'Semakin banyak deposit hari ini, semakin besar bonus tambahan!',link:'bonusdepo.php',btn:'Lihat Semua'},
+        {title:'TARUHAN = CASHBACK!',desc:'Setiap taruhan Anda menghasilkan rebate otomatis tanpa batas',link:'promo.php?tab=rebate',btn:'Lihat Semua'},
+        {title:'AJAK TEMAN DAPAT 50K!',desc:'Bagikan link, teman daftar & deposit, Anda langsung dapat bonus!',link:'undang.php',btn:'Lihat Semua'},
       ];
       features.forEach(function(f){
         // Skip if DB already has this link or title
@@ -302,7 +302,7 @@ catKeys.forEach(function(k,i){
       }
       ph+='<div class="promo-body">';
       ph+='<div class="pb-text">'+(p.description||p.title||'')+'</div>';
-      ph+='<a class="pb-btn" href="'+lnk+'">'+(p.button_text||'Proses')+'</a>';
+      ph+='<a class="pb-btn" href="'+lnk+'">'+(p.button_text||'Lihat Semua')+'</a>';
       ph+='</div>';
       ph+='</div>';
     })}
