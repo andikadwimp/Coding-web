@@ -221,3 +221,126 @@ input,select,textarea,button{font-family:inherit}
 /* === SAFE-AREA HELPERS === */
 .safe-top{padding-top:env(safe-area-inset-top,0)}
 .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0)}
+
+/* ═══════════════════════════════════════════════════════════════
+   NUCLEAR — Force uniform game card grid (3 col, square, identical)
+   This block lives at the END of style.css with !important + cache-bust
+   so it always wins against any inline / earlier definition.
+   ═══════════════════════════════════════════════════════════════ */
+.prov-sec-grid,
+.srch-grid,
+.prov-ov-games,
+.gc-grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-auto-flow:row!important;
+  grid-auto-rows:auto!important;
+  align-items:start!important;
+}
+.prov-sec-grid > *,
+.srch-grid > *,
+.prov-ov-games > *{
+  grid-column:span 1!important;
+  grid-row:span 1!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+}
+.prov-sec-grid > .gwrap,
+.srch-grid > .gwrap{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:6px!important;
+}
+.prov-sec-grid .gc,
+.srch-grid .gc,
+.prov-ov-games .gc{
+  width:100%!important;
+  aspect-ratio:1/1!important;
+  height:auto!important;
+  max-width:none!important;
+  min-width:0!important;
+  display:block!important;
+  position:relative!important;
+}
+/* Ensure .gc img truly fills regardless of natural size or zoom */
+.prov-sec-grid .gc > img,
+.srch-grid .gc > img,
+.prov-ov-games .gc > img{
+  position:absolute!important;
+  top:0!important;left:0!important;right:0!important;bottom:0!important;
+  width:100%!important;height:100%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  display:block!important;
+  max-width:none!important;
+}
+
+/* ═══ LIVE WINNER POPUP — transparent + theme-tinted (was too dark/opaque) ═══ */
+.lw-pop{
+  background:linear-gradient(135deg,rgba(var(--pri-rgb,56,189,248),.16),rgba(var(--pri-rgb,56,189,248),.06)) !important;
+  border:1px solid rgba(var(--pri-rgb,56,189,248),.32) !important;
+  backdrop-filter:blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter:blur(20px) saturate(180%) !important;
+  box-shadow:0 6px 18px rgba(0,0,0,.18),0 0 14px rgba(var(--pri-rgb,56,189,248),.1) !important;
+  opacity:.92;
+}
+.lw-pop:hover{opacity:1;transition:opacity .2s ease}
+.lw-pop .lw-user{color:rgba(255,255,255,.95) !important}
+.lw-pop .lw-game{color:rgba(255,255,255,.65) !important}
+
+/* ═══ BACK BUTTON — premium pill, smooth hover (catches plain .hdr>button:first-child too) ═══ */
+.back-btn,
+.hdr-btn,
+.tb-back,
+.btn-back,
+.bk,
+.cs-back,
+.hdr > button:first-child,
+.hdr > a:first-child{
+  width:38px;height:38px;
+  display:inline-flex;align-items:center;justify-content:center;
+  border-radius:10px;
+  background:rgba(var(--pri-rgb),.08);
+  border:1px solid rgba(var(--pri-rgb),.22);
+  color:var(--t,inherit);
+  cursor:pointer;
+  transition:transform .2s cubic-bezier(.16,1,.3,1),background .15s,border-color .15s,color .15s;
+  text-decoration:none;
+  flex-shrink:0;
+}
+.back-btn:hover,.hdr-btn:hover,.tb-back:hover,.btn-back:hover,.bk:hover,.cs-back:hover,.hdr > button:first-child:hover,.hdr > a:first-child:hover{
+  background:rgba(var(--pri-rgb),.16);
+  border-color:rgba(var(--pri-rgb),.45);
+  color:var(--pri,inherit);
+  transform:translateX(-2px);
+}
+.back-btn:active,.hdr-btn:active,.tb-back:active,.btn-back:active,.bk:active,.cs-back:active,.hdr > button:first-child:active,.hdr > a:first-child:active{
+  transform:translateX(-2px) scale(.94);
+}
+.back-btn svg,.hdr-btn svg,.tb-back svg,.btn-back svg,.bk svg,.cs-back svg,.hdr > button:first-child svg,.hdr > a:first-child svg{
+  width:18px;height:18px;
+  transition:transform .25s cubic-bezier(.16,1,.3,1);
+}
+.back-btn:hover svg,.bk:hover svg,.cs-back:hover svg,.hdr > button:first-child:hover svg{transform:translateX(-2px)}
+
+/* ═══ IMAGE PLACEHOLDER (untuk logo/banner/icon yang belum di-upload) ═══ */
+.img-placeholder{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--bg2),var(--s));
+  border:2px dashed rgba(var(--pri-rgb),.28);
+  border-radius:12px;
+  color:var(--t3,#64748b);
+  text-align:center;
+  padding:14px;
+  position:relative;overflow:hidden;
+  font-family:'Plus Jakarta Sans','Poppins',sans-serif;
+}
+.img-placeholder::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(45deg,transparent 0 12px,rgba(var(--pri-rgb),.04) 12px 24px);
+  pointer-events:none;
+}
+.img-placeholder svg{width:28px;height:28px;opacity:.5;margin-bottom:6px;color:var(--pri)}
+.img-placeholder-label{font-size:.7rem;font-weight:700;color:var(--t2);margin-bottom:2px;letter-spacing:-.005em;position:relative;z-index:1}
+.img-placeholder-size{font-size:.62rem;font-weight:600;color:var(--t3);font-family:'Chakra Petch','Poppins',monospace;letter-spacing:.5px;position:relative;z-index:1}

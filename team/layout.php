@@ -440,9 +440,26 @@ window.admUpload=function(targetInput,type){
 window.admUpdatePreview=function(input){
   var url=input.value.trim();
   var prev=input.parentElement.parentElement.querySelector('.upl-prev');
-  if(!url){if(prev)prev.remove();return;}
+  // Resolusi rekomendasi berdasarkan name input
+  var n=((input.name||'')+' '+(input.id||'')).toLowerCase();
+  var dim='Belum ada gambar';var label='Gambar';
+  if(/favicon/.test(n)){dim='64×64px';label='Favicon';}
+  else if(/pwa.?icon|icon_192/.test(n)){dim='192×192px';label='PWA Icon';}
+  else if(/icon_512|appicon/.test(n)){dim='512×512px';label='App Icon';}
+  else if(/^logo|logo_url|footer_logo/.test(n)){dim='400×120px (atau 4:1)';label='Logo';}
+  else if(/banner|hero|cover|undang_banner|promo_image|misteri_banner/.test(n)){dim='1200×400px (atau 3:1)';label='Banner';}
+  else if(/avatar|profile_pic/.test(n)){dim='200×200px (1:1)';label='Avatar';}
+  else if(/qr|qris/.test(n)){dim='400×400px (1:1)';label='QR Code';}
+  else if(/provider/.test(n)){dim='80×80px (1:1)';label='Provider Logo';}
+  else if(/promo|p\d+/.test(n)){dim='800×400px (atau 2:1)';label='Promo Image';}
+  else if(/bg|background/.test(n)){dim='1920×1080px';label='Background';}
+  if(!url){
+    if(!prev){prev=document.createElement('div');prev.className='upl-prev';input.parentElement.parentElement.appendChild(prev);}
+    prev.innerHTML='<div class="img-placeholder" style="width:48px;height:48px;border-radius:8px;padding:4px;flex-shrink:0;border-width:1.5px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:16px;height:16px;margin:0;opacity:.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><div><div style="font-weight:700;color:var(--t2);font-size:.72rem;line-height:1.3">'+label+' belum diunggah</div><div style="font-size:.62rem;color:var(--t3);font-family:\'Chakra Petch\',monospace;letter-spacing:.4px;margin-top:1px">Rekomendasi: '+dim+'</div></div>';
+    return;
+  }
   if(!prev){prev=document.createElement('div');prev.className='upl-prev';input.parentElement.parentElement.appendChild(prev);}
-  prev.innerHTML='<img src="'+url.replace(/"/g,'&quot;')+'" onerror="this.style.display=\'none\'"><a href="'+url.replace(/"/g,'&quot;')+'" target="_blank">Buka</a>';
+  prev.innerHTML='<img src="'+url.replace(/"/g,'&quot;')+'" onerror="this.style.display=\'none\'"><a href="'+url.replace(/"/g,'&quot;')+'" target="_blank">Buka</a><span style="font-size:.6rem;color:var(--t3);margin-left:auto;font-family:\'Chakra Petch\',monospace">'+label+'</span>';
 };
 window.admToast=function(msg,kind){
   var t=document.getElementById('admToast');if(!t){t=document.createElement('div');t.id='admToast';t.className='upl-toast';document.body.appendChild(t);}
@@ -476,7 +493,7 @@ window.admToast=function(msg,kind){
     btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Unggah';
     btn.onclick=function(){window.admUpload(input)};
     input.parentElement.appendChild(btn);
-    if(input.value)admUpdatePreview(input);
+    admUpdatePreview(input); // always call — shows placeholder when empty
     input.addEventListener('input',function(){admUpdatePreview(input);});
   }
   function scan(){document.querySelectorAll('input').forEach(function(i){if(isUploadField(i))wire(i);});}
