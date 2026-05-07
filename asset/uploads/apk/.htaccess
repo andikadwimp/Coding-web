@@ -1,0 +1,6 @@
+AddType application/vnd.android.package-archive .apk
+AddType application/vnd.android.package-archive .aab
+<FilesMatch "\.(apk|aab)$">
+  Header set Content-Disposition "attachment"
+  Header set Content-Type "application/vnd.android.package-archive"
+</FilesMatch>

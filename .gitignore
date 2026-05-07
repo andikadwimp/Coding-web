@@ -1,0 +1,7 @@
+SITE_K7777_AUTH_FIXES.zip
+*_log.txt
+db_error.log
+deposit_recovery.log
+db_config.php
+*.bak
+.DS_Store
