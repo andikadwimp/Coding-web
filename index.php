@@ -1234,6 +1234,8 @@ function renderPopular(){
     var more=document.getElementById('popMore');
     var all=[];var featured=[];var rest=[];
     PROVS.forEach(function(p){(p.games||[]).forEach(function(g){
+        // Skip games tanpa banner valid — biar grid Populer ga kurang
+        if(!g.banner || (''+g.banner).length<4)return;
         var obj={name:g.game_name,banner:g.banner,code:g.game_code,prov:p,feat:g.featured||0};
         if(g.featured)featured.push(obj);else rest.push(obj);
     })});
@@ -1275,7 +1277,9 @@ function renderPopular(){
 function renderProvSection(id){
     var el=document.getElementById('sec_'+id);if(!el)return;
     var p=PROVS.find(function(x){return x.code===id});if(!p)return;
-    var games=p.games||[];
+    // PRE-FILTER: only games with valid banner (>=4 chars). Pagination after filter
+    // so perPage=9 always renders 9 cards, never short.
+    var games=(p.games||[]).filter(function(g){return g.banner && (''+g.banner).length>=4;});
     if(!pageState[id])pageState[id]={page:0,expanded:false};
     var ps=pageState[id];
     var perPage=ps.expanded?40:9;
@@ -1284,7 +1288,6 @@ function renderProvSection(id){
     var st=pg*perPage;var en=Math.min(st+perPage,games.length);
     var h='';
     for(var i=st;i<en;i++){var g=games[i];var bn=g.banner||'';var gn=g.game_name||'Game';var pn=p.name||p.code;
-    if(!bn || bn.length<4) continue;
     var pl=p.logo||'';
     var provBadge=pl?'<img src="'+pl+'" alt="">':'<span class="gc-prov-name">'+pn+'</span>';
     h+='<div class="gwrap"><a class="gc" href="#" onclick="launchGame(\''+p.code+'\',\''+g.game_code+'\');return false">';
