@@ -240,13 +240,20 @@ if($action==='create'){
 
     $bonusAmt=0;
     if($bonusId>0){
-        $bq=$db->prepare("SELECT * FROM bonuses WHERE id=? AND active=1");$bq->execute([$bonusId]);
+        // Schema: bonuses.status='active' (varchar), bonuses.percentage (numeric)
+        $bq=$db->prepare("SELECT * FROM bonuses WHERE id=? AND status='active'");$bq->execute([$bonusId]);
         $bonus=$bq->fetch();
         if($bonus){
-            $pct=floatval($bonus['percent']??0);
+            $pct=floatval($bonus['percentage']??$bonus['percent']??0);
             $max=intval($bonus['max_amount']??0);
-            $bonusAmt=intval($nominal*$pct/100);
-            if($max>0&&$bonusAmt>$max)$bonusAmt=$max;
+            $minDep=intval($bonus['min_deposit']??0);
+            // Honor min_deposit kalau di-set (kalau nominal kurang, skip bonus tapi DEPOSIT TETAP JALAN)
+            if($minDep>0 && $nominal<$minDep){
+                $bonusAmt=0;
+            }else{
+                $bonusAmt=intval($nominal*$pct/100);
+                if($max>0&&$bonusAmt>$max)$bonusAmt=$max;
+            }
         }
     }
 
