@@ -1249,7 +1249,7 @@ function renderPopular(){
     if(secBody)secBody.style.display='';
     if(!pageState['pop'])pageState['pop']={page:0,expanded:false};
     var ps=pageState['pop'];
-    var perPage=ps.expanded?40:12;
+    var perPage=ps.expanded?40:6;
     var pg=ps.page;var mx=Math.ceil(all.length/perPage)-1;
     if(pg<0)pg=mx;if(pg>mx)pg=0;ps.page=pg;
     var st=pg*perPage;var en=Math.min(st+perPage,all.length);
@@ -1274,7 +1274,7 @@ function renderProvSection(id){
     var games=(p.games||[]).filter(function(g){return g.banner && (''+g.banner).length>=4;});
     if(!pageState[id])pageState[id]={page:0,expanded:false};
     var ps=pageState[id];
-    var perPage=ps.expanded?40:12; // Bump to 12 so even if 2-3 banners fail, masih 9+ visible
+    var perPage=ps.expanded?40:6; // Bump to 12 so even if 2-3 banners fail, masih 9+ visible
     var pg=ps.page;var mx=Math.ceil(games.length/perPage)-1;
     if(pg<0)pg=mx;if(pg>mx)pg=0;ps.page=pg;
     var st=pg*perPage;var en=Math.min(st+perPage,games.length);
@@ -1298,7 +1298,7 @@ function renderProvSections(){
     var games=(p.games||[]).filter(function(g){return g.banner && (''+g.banner).length>=4;});
     if(!games.length)return;var cnt=p.game_count||games.length;
     h+='<div class="prov-sec"><div class="prov-sec-hdr"><div class="prov-sec-left"><h4>'+(p.name||p.code)+'</h4><span class="ps-cnt">'+cnt+'</span></div><div class="prov-sec-right" style="display:flex;flex-direction:row;align-items:center;gap:6px"><button class="ps-arr" onclick="scrollSec(\''+p.code+'\',-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button><button class="ps-arr" onclick="scrollSec(\''+p.code+'\',1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button></div></div><div class="prov-sec-grid" id="sec_'+p.code+'">';
-    var st=0;var en=Math.min(12,games.length);
+    var st=0;var en=Math.min(6,games.length);
     for(var i=st;i<en;i++){var g=games[i];var bn=g.banner||'';var gn=g.game_name||'Game';var pn=p.name||p.code;
     var pl=p.logo||'';
     var provBadge=pl?'<img src="'+pl+'" alt="">':'<span class="gc-prov-name">'+pn+'</span>';
@@ -1307,7 +1307,7 @@ function renderProvSections(){
     h+='<div class="gc-overlay">'+provBadge+'</div></a><div class="gn">'+gn+'</div></div>'}
 
     h+='</div>';
-    if(games.length>12)h+='<div class="prov-sec-more" id="more_'+p.code+'" onclick="toggleExpand(\''+p.code+'\')"><span>Semua</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>';
+    if(games.length>6)h+='<div class="prov-sec-more" id="more_'+p.code+'" onclick="toggleExpand(\''+p.code+'\')"><span>Semua</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>';
     h+='</div>'});
     el.innerHTML=h;
 }
