@@ -259,7 +259,7 @@ body{font-family:'Plus Jakarta Sans','Outfit','Poppins',sans-serif;background:va
 <div style="flex:1;overflow-y:auto;padding:0 16px 16px" id="rwBody"><div style="text-align:center;padding:40px;color:var(--t3)">Memuat...</div></div>
 </div>
 
-<?php require_once dirname(__FILE__)."/includes/site_footer.php"; ?>
+<?php @require_once __DIR__.'/includes/site_footer.php'; ?>
 <?php echo renderBnav($db,"profil",$isLoggedIn); ?>
 
 <script>

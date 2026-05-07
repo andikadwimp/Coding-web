@@ -164,7 +164,7 @@ body{overflow-x:hidden;max-width:100vw;font-family:'Poppins',sans-serif;backgrou
   </div>
 </div>
 
-<?php require_once dirname(__FILE__)."/includes/site_footer.php"; ?>
+<?php @require_once __DIR__.'/includes/site_footer.php'; ?>
 <?php echo renderBnav($db,"promo", $isLoggedIn); ?>
 
 <script>
