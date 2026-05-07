@@ -1294,19 +1294,20 @@ function renderProvSection(id){
 }
 function renderProvSections(){
     var el=document.getElementById('provSections');if(!PROVS.length)return;
-    var h='';PROVS.forEach(function(p,pi){var games=p.games||[];if(!games.length)return;var cnt=p.game_count||games.length;
+    var h='';PROVS.forEach(function(p,pi){
+    var games=(p.games||[]).filter(function(g){return g.banner && (''+g.banner).length>=4;});
+    if(!games.length)return;var cnt=p.game_count||games.length;
     h+='<div class="prov-sec"><div class="prov-sec-hdr"><div class="prov-sec-left"><h4>'+(p.name||p.code)+'</h4><span class="ps-cnt">'+cnt+'</span></div><div class="prov-sec-right" style="display:flex;flex-direction:row;align-items:center;gap:6px"><button class="ps-arr" onclick="scrollSec(\''+p.code+'\',-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button><button class="ps-arr" onclick="scrollSec(\''+p.code+'\',1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button></div></div><div class="prov-sec-grid" id="sec_'+p.code+'">';
-    var st=0;var en=Math.min(7,games.length);
+    var st=0;var en=Math.min(12,games.length);
     for(var i=st;i<en;i++){var g=games[i];var bn=g.banner||'';var gn=g.game_name||'Game';var pn=p.name||p.code;
-    if(!bn || bn.length<4) continue;
     var pl=p.logo||'';
     var provBadge=pl?'<img src="'+pl+'" alt="">':'<span class="gc-prov-name">'+pn+'</span>';
     h+='<div class="gwrap"><a class="gc" href="#" onclick="launchGame(\''+p.code+'\',\''+g.game_code+'\');return false">';
-    h+='<img src="'+bn+'" loading="lazy" onload="if(this.naturalWidth<50||this.naturalHeight<50){this.onerror();}" onerror="this.onerror=null;this.style.visibility=\'hidden\';">';
+    h+='<img src="'+bn+'" loading="lazy" onload="if(this.naturalWidth<50||this.naturalHeight<50){this.onerror();}" onerror="var w=this.closest(\'.gwrap\');if(w)w.remove();">';
     h+='<div class="gc-overlay">'+provBadge+'</div></a><div class="gn">'+gn+'</div></div>'}
 
     h+='</div>';
-    if(games.length>7)h+='<div class="prov-sec-more" id="more_'+p.code+'" onclick="toggleExpand(\''+p.code+'\')"><span>Semua</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>';
+    if(games.length>12)h+='<div class="prov-sec-more" id="more_'+p.code+'" onclick="toggleExpand(\''+p.code+'\')"><span>Semua</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>';
     h+='</div>'});
     el.innerHTML=h;
 }
