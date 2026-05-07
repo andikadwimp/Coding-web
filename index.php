@@ -1,8 +1,12 @@
 <?php
 require_once 'includes/config.php';
 header('Content-Type: text/html; charset=UTF-8');
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: 0');
 // Unified beranda — handle both guest & logged-in
 $isLoggedIn = (bool)getUid();
+$_BUILD_TAG = 'v6-grid-'.date('His'); // for cache verification
 // Admin auto-redirect to panel
 if($isLoggedIn){
     try{
@@ -659,8 +663,8 @@ button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.hdr,
 </style>
 <link rel="stylesheet" href="theme.php?v=<?=time()?>">
 </head>
-<body>
-
+<body data-build="<?=$_BUILD_TAG?>">
+<!-- Build tag: <?=$_BUILD_TAG?> · max 6 cards/section · check 'View Source' -->
 <header class="hdr">
     <div class="hdr-left">
         <button class="hdr-menu" onclick="toggleSB()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
