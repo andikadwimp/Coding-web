@@ -1,12 +1,9 @@
 <?php
 // ═══════════════════════════════════════════════════════════════
-// GLOBAL SITE FOOTER (App Download · Payment · Approval · Penyedia
-// · Lisensi · Quick Links · Disclaimer · Copyright)
-// Include via: <?php require_once __DIR__.'/includes/site_footer.php'; ?>
-// Variables expected:
-//   $sets — settings array (auto-loaded from caller). Optional.
-//   $db   — PDO. Optional (used to fetch providers).
+// GLOBAL SITE FOOTER (only render on beranda — flagged via constant)
+// Caller must `define('RENDER_SITE_FOOTER', true);` before requiring.
 // ═══════════════════════════════════════════════════════════════
+if (!defined('RENDER_SITE_FOOTER')) return;
 
 // Make sure $sets and $db are accessible
 if(!isset($sets)){
