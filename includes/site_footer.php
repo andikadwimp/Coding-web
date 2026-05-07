@@ -219,15 +219,6 @@ try{
       </div>
     </div>
 
-    <!-- Quick Links -->
-    <div class="sf-links">
-      <a href="bantuan.php">Bantuan</a>
-      <a href="keamanan.php">Keamanan</a>
-      <a href="cs.php">Hubungi CS</a>
-      <a href="afiliasi.php">Afiliasi</a>
-      <a href="promo.php">Promosi</a>
-    </div>
-
     <div class="sf-divider"></div>
 
     <!-- Disclaimer -->

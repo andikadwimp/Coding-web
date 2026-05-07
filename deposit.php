@@ -279,7 +279,6 @@ body{overflow-x:hidden;max-width:100vw;font-family:'Poppins',sans-serif;backgrou
 <div class="sec-label">membayar</div>
 <div class="methods">
 <div class="mth on" id="mQris" onclick="selMethod('qris')">
-<span class="hot-badge">HOT</span>
 <div class="m-icon" style="background:var(--s2,var(--bg3));border:1px solid var(--bd);border-radius:10px;width:46px;height:46px;display:flex;align-items:center;justify-content:center">
 <svg viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="1.5" width="28" height="28">
 <rect x="2" y="2" width="8" height="8" rx="1.5"/><rect x="4" y="4" width="4" height="4" rx=".5" fill="var(--t2)"/>
@@ -327,9 +326,9 @@ body{overflow-x:hidden;max-width:100vw;font-family:'Poppins',sans-serif;backgrou
 <div class="quick">
 <div class="qk" onclick="setAmt(20)">20K</div>
 <div class="qk" onclick="setAmt(50)">50K</div>
-<div class="qk" data-popular="HOT" onclick="setAmt(100)">100K</div>
+<div class="qk" onclick="setAmt(100)">100K</div>
 <div class="qk" onclick="setAmt(200)">200K</div>
-<div class="qk" data-popular="HOT" onclick="setAmt(500)">500K</div>
+<div class="qk" onclick="setAmt(500)">500K</div>
 <div class="qk" onclick="setAmt(1000)">1,000K</div>
 <div class="qk" onclick="setAmt(3000)">3,000K</div>
 <div class="qk" onclick="setAmt(5000)">5,000K</div>

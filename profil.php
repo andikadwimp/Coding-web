@@ -113,15 +113,11 @@ body{font-family:'Plus Jakarta Sans','Outfit','Poppins',sans-serif;background:va
 
 /* Action button (Deposit/Penarikan) — FW66 style */
 .btn-row{display:flex;gap:10px;margin-bottom:0}
-.btn-act{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;padding:13px 10px;border-radius:10px;font-size:.88rem;font-weight:700;text-decoration:none;position:relative;overflow:hidden;transition:transform .12s;letter-spacing:-.005em}
+.btn-act{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;padding:13px 10px;border-radius:12px;font-size:.88rem;font-weight:700;text-decoration:none;position:relative;overflow:hidden;transition:transform .15s cubic-bezier(.16,1,.3,1),box-shadow .25s ease;letter-spacing:-.005em;background:linear-gradient(135deg,var(--pri),var(--pri-d));color:#fff;border:1.5px solid var(--pri);box-shadow:0 4px 12px rgba(var(--pri-rgb),.3),0 0 0 1px rgba(255,255,255,.08) inset}
+.btn-act:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(var(--pri-rgb),.45),0 0 0 1px rgba(255,255,255,.14) inset}
 .btn-act:active{transform:scale(.97)}
-.btn-wd{background:rgba(var(--pri-rgb),.05);border:1.5px solid rgba(var(--pri-rgb),.4);color:var(--t);transition:background .15s,transform .12s}
-.btn-wd .ba-icon{color:var(--t2)}
-.btn-dep{background:linear-gradient(135deg,var(--pri) 0%,var(--pri-d) 100%);background-size:200% auto;color:#fff;border:1.5px solid var(--pri);transition:background-position .25s ease,transform .12s}
-.btn-dep:hover{background-position:right center;box-shadow:0 4px 12px rgba(var(--pri-rgb),.35)}
-.btn-dep .ba-icon{color:#fff}
+.btn-act .ba-icon{color:#fff;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .btn-act svg{width:18px;height:18px}
-.btn-act .ba-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 /* Nav */
 .bnav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;background:var(--nav-bg,#0a1628);padding:8px 0 env(safe-area-inset-bottom,6px);overflow:hidden;border-radius:14px 14px 0 0;box-shadow:0 -4px 20px rgba(0,0,0,.5);border-top:1px solid rgba(var(--sec-rgb,56,189,248),.2)}
 .bnav::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 2%,var(--pri) 15%,var(--sec-l, var(--pri-l)) 50%,var(--pri) 85%,transparent 98%)}
@@ -184,7 +180,7 @@ body{font-family:'Plus Jakarta Sans','Outfit','Poppins',sans-serif;background:va
 <!-- Menu -->
 <div class="menu">
 <a class="menu-i" href="cs_chat.php">
-<div class="mi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></div>
+<div class="mi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18a3 3 0 003 3h12a3 3 0 003-3v-7a9 9 0 10-18 0v7z"/><path d="M3 14a3 3 0 013-3h1v7H6a3 3 0 01-3-3v-1zM21 14v1a3 3 0 01-3 3h-1v-7h1a3 3 0 013 3z" fill="currentColor" fill-opacity=".15"/></svg></div>
 <div class="mi-text"><div class="mt-title">Layanan Pelanggan</div><div class="mt-sub">Online 24/7 siap membantu</div></div>
 <?php if($notifCount>0): ?><div class="mi-badge"><?php echo $notifCount; ?></div><?php endif; ?>
 <div class="mi-arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
@@ -193,28 +189,28 @@ body{font-family:'Plus Jakarta Sans','Outfit','Poppins',sans-serif;background:va
 
 <div class="menu">
 <a class="menu-i" href="#" onclick="openRiwayat();return false">
-<div class="mi-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
+<div class="mi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9 9.74 9.74 0 00-6.74 2.74L3 8"/><polyline points="3 3 3 8 8 8"/><polyline points="12 7 12 12 15.5 14.2"/></svg></div>
 <div class="mi-text"><div class="mt-title">Riwayat</div><div class="mt-sub">Riwayat saldo, bonus, deposit</div></div>
 <div class="mi-arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
 </a>
 <a class="menu-i" href="afiliasi.php">
-<div class="mi-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg></div>
+<div class="mi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><circle cx="17" cy="9" r="2.5"/><path d="M22 17.5v-1a3 3 0 00-3-3h-1.5"/><path d="M19 5.5l1.5 1.5-1.5 1.5M21 7h-2"/></svg></div>
 <div class="mi-text"><div class="mt-title">Undang</div><div class="mt-sub">Undang Teman Klaim Bonus & Komisi</div></div>
 <div class="mi-arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
 </a>
 <a class="menu-i" href="promo.php?tab=kode">
-<div class="mi-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 5l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777z"/></svg></div>
+<div class="mi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
 <div class="mi-text"><div class="mt-title">Kode Penukaran</div></div>
 <div class="mi-arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
 </a>
 <a class="menu-i" href="keamanan.php">
-<div class="mi-icon" ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+<div class="mi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>
 <div class="mi-text"><div class="mt-title">Pusat keamanan</div></div>
 <div class="mi-arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
 </a>
 <a class="menu-i red" href="#" onclick="doLogout();return false">
-<div class="mi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div>
-<div class="mi-text"><div class="mt-title">Keluar</div></div>
+<div class="mi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div>
+<div class="mi-text"><div class="mt-title">Keluar</div>
 <div class="mi-arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
 </a>
 </div>

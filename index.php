@@ -361,10 +361,11 @@ button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.hdr,
 .game-overlay.show{display:block}
 .game-overlay iframe{width:100%;height:100%;border:none}
 .fl-drag{position:fixed;z-index:9999;touch-action:auto;cursor:grab;user-select:none;-webkit-user-select:none}
-.fl-btn{display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 7px;border-radius:11px;background:rgba(0,0,0,.7);border:1px solid rgba(255,215,0,.35);box-shadow:0 4px 12px rgba(0,0,0,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.fl-btn .fl-icon{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--pri-d));display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(var(--pri-rgb),.5)}
-.fl-btn .fl-icon svg{width:14px;height:14px;color:#fff}
-.fl-btn .fl-label{font-size:.55rem;color:rgba(255,215,0,.95);font-weight:800;font-family:'Poppins';letter-spacing:.5px}
+.fl-btn{display:flex;flex-direction:row;align-items:center;gap:7px;padding:9px 14px 9px 10px;border-radius:14px;background:rgba(0,0,0,.78);border:1px solid rgba(var(--pri-rgb,56,189,248),.5);box-shadow:0 6px 20px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.05) inset,0 0 18px rgba(var(--pri-rgb,56,189,248),.25);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);transition:transform .15s cubic-bezier(.16,1,.3,1)}
+.fl-btn:active{transform:scale(.94)}
+.fl-btn .fl-icon{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--pri-d));display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(var(--pri-rgb),.55),0 0 0 1px rgba(255,255,255,.12) inset;flex-shrink:0}
+.fl-btn .fl-icon svg{width:18px;height:18px;color:#fff}
+.fl-btn .fl-label{font-size:.78rem;color:#fff;font-weight:800;font-family:'Plus Jakarta Sans','Poppins',sans-serif;letter-spacing:.2px;line-height:1}
 
 .game-loading{position:fixed;inset:0;z-index:9500;background:rgba(10,15,28,.55);backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%);display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;opacity:0;transition:opacity .35s cubic-bezier(.16,1,.3,1)}
 .game-loading.show{display:flex;opacity:1}
@@ -1469,8 +1470,8 @@ document.querySelectorAll('.qa-row').forEach(function(el){
 <div class="game-overlay" id="gameOverlay">
 <div class="game-loading" id="gameLoading"></div>
 <iframe id="gameFrame" src=""></iframe>
-<div class="fl-drag" id="flLobby" style="right:0;top:0;left:auto" onclick="closeGame()">
-<div class="fl-btn"><div class="fl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><span class="fl-label">Lobby</span></div>
+<div class="fl-drag" id="flLobby" style="left:max(12px,env(safe-area-inset-left,12px));top:calc(env(safe-area-inset-top,0px) + 14px);right:auto" onclick="closeGame()">
+<div class="fl-btn"><div class="fl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></div><span class="fl-label">Lobby</span></div>
 </div>
 </div>
 <?php include 'includes/credit_notify.php'; ?>
