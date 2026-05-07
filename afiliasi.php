@@ -188,6 +188,108 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-he
 
 <div class="panel" id="p1">
 
+<!-- BIG HERO ILLUSTRATION: referral flow diagram -->
+<style>
+.aff-hero{position:relative;background:linear-gradient(160deg,var(--s) 0%,rgba(var(--pri-rgb,56,189,248),.07) 50%,var(--s) 100%);border:1px solid rgba(var(--pri-rgb,56,189,248),.22);border-radius:14px;padding:18px 14px 14px;margin-bottom:14px;overflow:hidden}
+.aff-hero::before{content:'';position:absolute;top:-30px;right:-30px;width:160px;height:160px;background:radial-gradient(circle,rgba(var(--pri-rgb,56,189,248),.18),transparent 70%);pointer-events:none}
+.aff-hero h3{font-size:.95rem;font-weight:800;letter-spacing:-.015em;text-align:center;margin-bottom:6px;color:var(--t);position:relative}
+.aff-hero p{font-size:.72rem;color:var(--t2);text-align:center;font-weight:500;margin-bottom:14px;line-height:1.55;position:relative}
+.aff-hero p b{color:var(--pri);font-weight:700}
+.aff-svg{display:block;width:100%;height:auto;max-width:340px;margin:0 auto;position:relative;z-index:1}
+@keyframes affDash{to{stroke-dashoffset:-12}}
+@keyframes affPulse{0%,100%{opacity:.4;transform:scale(.95)}50%{opacity:1;transform:scale(1.05)}}
+@keyframes affFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.aff-svg .arrow{stroke:var(--pri);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-dasharray:4 3;animation:affDash 1.4s linear infinite}
+.aff-svg .you{filter:drop-shadow(0 4px 8px rgba(var(--pri-rgb,56,189,248),.4))}
+.aff-svg .person{animation:affFloat 3s ease-in-out infinite}
+.aff-svg .person:nth-of-type(2){animation-delay:.3s}
+.aff-svg .person:nth-of-type(3){animation-delay:.6s}
+.aff-svg .person:nth-of-type(4){animation-delay:.9s}
+.aff-svg .coin{animation:affPulse 1.6s ease-in-out infinite}
+.aff-step-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.aff-step{padding:10px 6px;text-align:center;background:var(--bg2);border:1px solid var(--bd);border-radius:10px;position:relative}
+.aff-step .as-num{font-family:'Chakra Petch',sans-serif;font-size:1.05rem;font-weight:800;color:var(--pri);line-height:1;margin-bottom:4px;font-variant-numeric:tabular-nums}
+.aff-step .as-lbl{font-size:.62rem;color:var(--t2);font-weight:600;letter-spacing:.2px;line-height:1.3}
+.aff-step::after{content:'→';position:absolute;right:-9px;top:50%;transform:translateY(-50%);color:var(--pri);font-size:.85rem;font-weight:700;z-index:2}
+.aff-step:last-child::after{display:none}
+@media(max-width:380px){.aff-step .as-lbl{font-size:.58rem}}
+</style>
+
+<div class="aff-hero">
+  <h3>🎁 Cara Kerja Sistem Afiliasi</h3>
+  <p>Ajak teman <b>daftar &amp; deposit</b> → kamu dapat komisi dari taruhan mereka <b>SELAMANYA</b>.</p>
+
+  <!-- SVG: 1 user (YOU) connected by arrows to 3 friends, each holding coins -->
+  <svg class="aff-svg" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg" aria-label="Referral flow: kamu mengundang 3 teman">
+    <!-- Top: YOU -->
+    <g class="you" transform="translate(170,38)">
+      <circle r="22" fill="rgba(var(--pri-rgb,56,189,248),.22)" stroke="var(--pri)" stroke-width="2"/>
+      <!-- Person silhouette -->
+      <circle cy="-6" r="7" fill="var(--pri)"/>
+      <path d="M-12 12 Q-12 0 0 0 Q12 0 12 12 Z" fill="var(--pri)"/>
+      <!-- Crown above -->
+      <path d="M-8 -16 L-5 -22 L0 -18 L5 -22 L8 -16 Z" fill="#fbbf24" stroke="#f59e0b" stroke-width=".8"/>
+    </g>
+    <text x="170" y="78" text-anchor="middle" font-size="9" font-weight="800" fill="var(--t)" font-family="'Chakra Petch',sans-serif" letter-spacing=".5">KAMU</text>
+
+    <!-- Arrows: from YOU to 3 friends below -->
+    <path class="arrow" d="M155 56 Q120 80 65 110"/>
+    <path class="arrow" d="M170 60 L170 110"/>
+    <path class="arrow" d="M185 56 Q220 80 275 110"/>
+
+    <!-- Friend 1 (left) -->
+    <g class="person" transform="translate(65,128)">
+      <circle r="18" fill="var(--bg2)" stroke="var(--pri)" stroke-width="1.8"/>
+      <circle cy="-5" r="6" fill="var(--pri)"/>
+      <path d="M-10 10 Q-10 -1 0 -1 Q10 -1 10 10 Z" fill="var(--pri)"/>
+    </g>
+    <text x="65" y="162" text-anchor="middle" font-size="7.5" font-weight="700" fill="var(--t2)" font-family="'Plus Jakarta Sans',sans-serif">Teman A</text>
+
+    <!-- Friend 2 (middle) -->
+    <g class="person" transform="translate(170,128)">
+      <circle r="18" fill="var(--bg2)" stroke="var(--pri)" stroke-width="1.8"/>
+      <circle cy="-5" r="6" fill="var(--pri)"/>
+      <path d="M-10 10 Q-10 -1 0 -1 Q10 -1 10 10 Z" fill="var(--pri)"/>
+    </g>
+    <text x="170" y="162" text-anchor="middle" font-size="7.5" font-weight="700" fill="var(--t2)" font-family="'Plus Jakarta Sans',sans-serif">Teman B</text>
+
+    <!-- Friend 3 (right) -->
+    <g class="person" transform="translate(275,128)">
+      <circle r="18" fill="var(--bg2)" stroke="var(--pri)" stroke-width="1.8"/>
+      <circle cy="-5" r="6" fill="var(--pri)"/>
+      <path d="M-10 10 Q-10 -1 0 -1 Q10 -1 10 10 Z" fill="var(--pri)"/>
+    </g>
+    <text x="275" y="162" text-anchor="middle" font-size="7.5" font-weight="700" fill="var(--t2)" font-family="'Plus Jakarta Sans',sans-serif">Teman C</text>
+
+    <!-- Coins flowing back up to YOU -->
+    <g class="coin" transform="translate(95,90)">
+      <circle r="6" fill="#fbbf24" stroke="#d97706" stroke-width="1"/>
+      <text y="2" text-anchor="middle" font-size="6" font-weight="900" fill="#7c2d12" font-family="sans-serif">$</text>
+    </g>
+    <g class="coin" transform="translate(245,90)" style="animation-delay:.5s">
+      <circle r="6" fill="#fbbf24" stroke="#d97706" stroke-width="1"/>
+      <text y="2" text-anchor="middle" font-size="6" font-weight="900" fill="#7c2d12" font-family="sans-serif">$</text>
+    </g>
+    <g class="coin" transform="translate(170,98)" style="animation-delay:.25s">
+      <circle r="5" fill="#fbbf24" stroke="#d97706" stroke-width="1"/>
+      <text y="1.8" text-anchor="middle" font-size="5" font-weight="900" fill="#7c2d12" font-family="sans-serif">$</text>
+    </g>
+
+    <!-- Reward label at top -->
+    <g transform="translate(170,12)">
+      <rect x="-32" y="-9" width="64" height="16" rx="8" fill="rgba(74,222,128,.14)" stroke="#4ade80" stroke-width="1"/>
+      <text y="2" text-anchor="middle" font-size="8" font-weight="800" fill="#4ade80" font-family="'Chakra Petch',sans-serif" letter-spacing=".5">+ KOMISI</text>
+    </g>
+  </svg>
+
+  <!-- 3-step compact summary -->
+  <div class="aff-step-row">
+    <div class="aff-step"><div class="as-num">1</div><div class="as-lbl">Bagikan link</div></div>
+    <div class="aff-step"><div class="as-num">2</div><div class="as-lbl">Teman main</div></div>
+    <div class="aff-step"><div class="as-num">3</div><div class="as-lbl">Komisi cair</div></div>
+  </div>
+</div>
+
 <!-- 1: Cara Kerja -->
 <div class="tut-card">
   <svg class="tc-illust" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="50" cy="50" r="32"/><path d="M50 30v40M30 50h40"/><circle cx="50" cy="50" r="8" fill="currentColor"/></svg>

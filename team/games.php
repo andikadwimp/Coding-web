@@ -120,6 +120,48 @@ if($_SERVER['REQUEST_METHOD']==='POST'&&($_POST['act']??'')==='update_game_sort'
     header('Content-Type: application/json');echo json_encode(['ok'=>true]);exit;
 }
 
+// Toggle game status (active/inactive — soft delete)
+if($_SERVER['REQUEST_METHOD']==='POST'&&($_POST['act']??'')==='toggle_game_status'){
+    $id=intval($_POST['id']??0);
+    $db->prepare("UPDATE games SET status=1-status WHERE id=?")->execute([$id]);
+    $r=$db->prepare("SELECT status FROM games WHERE id=?");$r->execute([$id]);
+    header('Content-Type: application/json');echo json_encode(['ok'=>true,'status'=>(int)$r->fetchColumn()]);exit;
+}
+
+// Delete game (HARD delete)
+if($_SERVER['REQUEST_METHOD']==='POST'&&($_POST['act']??'')==='delete_game'){
+    $id=intval($_POST['id']??0);
+    if($id>0){
+        $db->prepare("DELETE FROM games WHERE id=?")->execute([$id]);
+        // Refresh game count untuk provider
+        $g=$db->prepare("SELECT provider_code FROM games WHERE id=?");$g->execute([$id]);
+        try{$db->exec("UPDATE providers p SET game_count=(SELECT COUNT(*) FROM games g WHERE g.provider_code=p.code AND g.status=1)");}catch(Exception $e){}
+    }
+    header('Content-Type: application/json');echo json_encode(['ok'=>true]);exit;
+}
+
+// List games per provider (AJAX)
+if($_SERVER['REQUEST_METHOD']==='POST'&&($_POST['act']??'')==='list_games'){
+    $code=$_POST['code']??'';
+    $rows=[];
+    try{
+        $s=$db->prepare("SELECT id,game_code,game_name,banner,status,featured,sort_order FROM games WHERE provider_code=? ORDER BY featured DESC,sort_order ASC,game_name ASC LIMIT 500");
+        $s->execute([$code]);$rows=$s->fetchAll();
+    }catch(Exception $e){}
+    header('Content-Type: application/json');echo json_encode(['ok'=>true,'games'=>$rows]);exit;
+}
+
+// Bulk update game (status/featured/sort) - dipake dari modal manager
+if($_SERVER['REQUEST_METHOD']==='POST'&&($_POST['act']??'')==='update_game'){
+    $id=intval($_POST['id']??0);
+    $fields=[];$vals=[];
+    if(isset($_POST['featured'])){$fields[]='featured=?';$vals[]=intval($_POST['featured']);}
+    if(isset($_POST['status'])){$fields[]='status=?';$vals[]=intval($_POST['status']);}
+    if(isset($_POST['sort_order'])){$fields[]='sort_order=?';$vals[]=intval($_POST['sort_order']);}
+    if($fields&&$id){$vals[]=$id;$db->prepare("UPDATE games SET ".implode(',',$fields)." WHERE id=?")->execute($vals);}
+    header('Content-Type: application/json');echo json_encode(['ok'=>true]);exit;
+}
+
 $provs=[];try{$provs=$db->query("SELECT * FROM providers ORDER BY sort_order ASC,name")->fetchAll();}catch(Exception $e){}
 $featured=[];try{$featured=$db->query("SELECT g.*,g.id as gid FROM games g WHERE g.featured=1 ORDER BY g.sort_order ASC,g.game_name LIMIT 100")->fetchAll();}catch(Exception $e){}
 ?>
@@ -177,22 +219,187 @@ $featured=[];try{$featured=$db->query("SELECT g.*,g.id as gid FROM games g WHERE
         <?php endif; ?>
       </form>
 
-      <!-- Status only -->
-      <form method="POST" style="display:flex;gap:4px;align-items:center">
-        <input type="hidden" name="act" value="update_prov">
-        <input type="hidden" name="code" value="<?=$p['code']?>">
-        <input type="hidden" name="logo" value="<?=htmlspecialchars($p['logo']??'')?>">
-        <select name="status" style="padding:5px 8px;background:var(--s);border:1px solid var(--bd);border-radius:5px;color:var(--t);font-size:.62rem">
-          <option value="1" <?=$p['status']==1?'selected':''?>>Aktif</option>
-          <option value="0" <?=$p['status']==0?'selected':''?>>Maintenance</option>
-        </select>
-        <button class="btn btn-sec" type="submit" style="padding:4px 8px;font-size:.62rem">OK</button>
-      </form>
+      <!-- Kelola Games + Status -->
+      <div style="display:flex;gap:4px;align-items:center">
+        <button type="button" class="btn btn-pri" style="padding:5px 10px;font-size:.62rem" onclick="openGM('<?=htmlspecialchars($p['code'],ENT_QUOTES)?>','<?=htmlspecialchars($p['name'],ENT_QUOTES)?>')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="11" height="11" style="vertical-align:-1px"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          Kelola Games
+        </button>
+        <form method="POST" style="display:flex;gap:4px;align-items:center;margin:0">
+          <input type="hidden" name="act" value="update_prov">
+          <input type="hidden" name="code" value="<?=$p['code']?>">
+          <input type="hidden" name="logo" value="<?=htmlspecialchars($p['logo']??'')?>">
+          <select name="status" onchange="this.form.submit()" style="padding:5px 8px;background:var(--s);border:1px solid var(--bd);border-radius:5px;color:var(--t);font-size:.62rem">
+            <option value="1" <?=$p['status']==1?'selected':''?>>Aktif</option>
+            <option value="0" <?=$p['status']==0?'selected':''?>>Maint.</option>
+          </select>
+        </form>
+      </div>
     </div>
   </div>
   <?php endforeach; ?>
   </div>
 </div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GAME MANAGER MODAL — kelola game per provider
+     (toggle featured/status, sort order, delete)
+     ═══════════════════════════════════════════════════════════════ -->
+<style>
+.gm-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(4px);z-index:9000;display:none;align-items:flex-start;justify-content:center;padding:5vh 16px;animation:gmFadeIn .2s ease-out both}
+.gm-overlay.show{display:flex}
+@keyframes gmFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes gmSlideIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.gm-modal{background:#fff;border-radius:14px;width:100%;max-width:740px;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:gmSlideIn .3s cubic-bezier(.16,1,.3,1) both}
+.gm-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--bd)}
+.gm-hdr h3{font-size:.95rem;font-weight:800;letter-spacing:-.015em;color:var(--t)}
+.gm-hdr h3 small{display:block;font-size:.65rem;font-weight:600;color:var(--t3);margin-top:2px;letter-spacing:.3px}
+.gm-close{width:32px;height:32px;border:none;background:var(--bg3);border-radius:8px;color:var(--t2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.gm-close:hover{background:#fee;color:var(--red)}
+.gm-toolbar{display:flex;gap:8px;align-items:center;padding:12px 18px;background:var(--bg);border-bottom:1px solid var(--bd);flex-wrap:wrap}
+.gm-search{flex:1;min-width:140px;padding:7px 11px;border:1px solid var(--bd2);border-radius:7px;font-size:.78rem;font-family:inherit;outline:none;background:#fff;transition:border-color .15s}
+.gm-search:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(var(--accent-rgb),.12)}
+.gm-filter{display:flex;gap:4px;background:var(--bg3);border-radius:7px;padding:2px}
+.gm-filter button{padding:6px 11px;border:none;background:transparent;border-radius:5px;font-size:.7rem;font-weight:600;color:var(--t3);cursor:pointer;font-family:inherit;transition:all .15s}
+.gm-filter button.on{background:#fff;color:var(--t);box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.gm-list{flex:1;overflow-y:auto;padding:12px 18px}
+.gm-row{display:grid;grid-template-columns:48px 1fr auto auto auto auto;gap:10px;align-items:center;padding:8px;background:#fff;border:1px solid var(--bd);border-radius:9px;margin-bottom:6px;transition:border-color .15s,background .15s}
+.gm-row:hover{border-color:var(--accent);background:var(--accent-l)}
+.gm-row.inactive{opacity:.55}
+.gm-row .gm-banner{width:48px;height:48px;border-radius:7px;overflow:hidden;background:var(--bg3);position:relative;flex-shrink:0}
+.gm-row .gm-banner img{width:100%;height:100%;object-fit:cover}
+.gm-row .gm-info{min-width:0}
+.gm-row .gm-name{font-size:.78rem;font-weight:700;color:var(--t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.005em}
+.gm-row .gm-code{font-size:.62rem;color:var(--t3);font-family:'JetBrains Mono',monospace;margin-top:1px}
+.gm-row .gm-sort{width:54px;padding:5px 8px;border:1px solid var(--bd2);border-radius:6px;font-size:.7rem;text-align:center;font-family:'JetBrains Mono',monospace;outline:none;background:#fff}
+.gm-row .gm-sort:focus{border-color:var(--accent)}
+.gm-btn{padding:5px 9px;border:1px solid var(--bd2);background:#fff;color:var(--t2);border-radius:6px;font-size:.62rem;font-weight:700;cursor:pointer;transition:all .15s;font-family:inherit;display:inline-flex;align-items:center;gap:3px;letter-spacing:.2px}
+.gm-btn:hover{border-color:var(--accent);color:var(--accent)}
+.gm-btn.on{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#fff;border-color:#f59e0b}
+.gm-btn.on-status{background:#dcfce7;color:#15803d;border-color:#86efac}
+.gm-btn.off-status{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
+.gm-btn.del{color:var(--red);border-color:#fecaca;background:#fff}
+.gm-btn.del:hover{background:#fee;border-color:var(--red)}
+.gm-empty{text-align:center;padding:40px 20px;color:var(--t3);font-size:.82rem}
+.gm-stats{padding:10px 18px;background:var(--bg);border-top:1px solid var(--bd);font-size:.7rem;color:var(--t3);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.gm-stats b{color:var(--t);font-weight:700;font-family:'JetBrains Mono',monospace}
+@media(max-width:520px){
+  .gm-row{grid-template-columns:48px 1fr;gap:8px}
+  .gm-row > :nth-child(n+3){grid-column:1/-1;justify-self:start}
+  .gm-row .gm-banner{grid-row:span 2}
+}
+</style>
+
+<div class="gm-overlay" id="gmOverlay" onclick="if(event.target===this)closeGM()">
+  <div class="gm-modal" role="dialog" aria-modal="true">
+    <div class="gm-hdr">
+      <h3 id="gmTitle">Kelola Games<small id="gmSub"></small></h3>
+      <button class="gm-close" onclick="closeGM()" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="gm-toolbar">
+      <input class="gm-search" id="gmSearch" placeholder="Cari game…" oninput="renderGM()">
+      <div class="gm-filter">
+        <button data-f="all" class="on" onclick="gmFilter(this,'all')">Semua</button>
+        <button data-f="featured" onclick="gmFilter(this,'featured')">⭐ Populer</button>
+        <button data-f="active" onclick="gmFilter(this,'active')">Aktif</button>
+        <button data-f="inactive" onclick="gmFilter(this,'inactive')">Nonaktif</button>
+      </div>
+    </div>
+    <div class="gm-list" id="gmList"><div class="gm-empty">Memuat…</div></div>
+    <div class="gm-stats">
+      <span><b id="gmCount">0</b> game · <b id="gmFeat">0</b> populer · <b id="gmActive">0</b> aktif</span>
+      <span style="font-size:.62rem">Sort lebih kecil = tampil duluan · Klik ⭐ untuk masukkan ke <b>Populer</b> di beranda</span>
+    </div>
+  </div>
+</div>
+
+<script>
+var GM={code:'',name:'',games:[],filter:'all'};
+function openGM(code,name){
+  GM.code=code;GM.name=name;
+  document.getElementById('gmTitle').firstChild.textContent='Kelola Games · '+name;
+  document.getElementById('gmSub').textContent=code.toUpperCase();
+  document.getElementById('gmOverlay').classList.add('show');
+  document.body.style.overflow='hidden';
+  loadGM();
+}
+function closeGM(){
+  document.getElementById('gmOverlay').classList.remove('show');
+  document.body.style.overflow='';
+}
+function loadGM(){
+  document.getElementById('gmList').innerHTML='<div class="gm-empty">Memuat…</div>';
+  var fd=new FormData();fd.append('act','list_games');fd.append('code',GM.code);
+  fetch('games.php',{method:'POST',body:fd}).then(r=>r.json()).then(function(d){
+    if(!d.ok){document.getElementById('gmList').innerHTML='<div class="gm-empty">Gagal load</div>';return;}
+    GM.games=d.games||[];renderGM();
+  }).catch(function(){document.getElementById('gmList').innerHTML='<div class="gm-empty">Error koneksi</div>';});
+}
+function gmFilter(btn,f){
+  document.querySelectorAll('.gm-filter button').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');GM.filter=f;renderGM();
+}
+function renderGM(){
+  var q=(document.getElementById('gmSearch').value||'').toLowerCase().trim();
+  var list=GM.games.slice();
+  if(q)list=list.filter(g=>(g.game_name||'').toLowerCase().includes(q)||(g.game_code||'').toLowerCase().includes(q));
+  if(GM.filter==='featured')list=list.filter(g=>+g.featured===1);
+  else if(GM.filter==='active')list=list.filter(g=>+g.status===1);
+  else if(GM.filter==='inactive')list=list.filter(g=>+g.status===0);
+  var feat=GM.games.filter(g=>+g.featured===1).length;
+  var active=GM.games.filter(g=>+g.status===1).length;
+  document.getElementById('gmCount').textContent=GM.games.length;
+  document.getElementById('gmFeat').textContent=feat;
+  document.getElementById('gmActive').textContent=active;
+  if(!list.length){document.getElementById('gmList').innerHTML='<div class="gm-empty">Tidak ada game</div>';return;}
+  var h='';
+  list.forEach(function(g){
+    var inactive=+g.status===0;
+    var feat=+g.featured===1;
+    h+='<div class="gm-row'+(inactive?' inactive':'')+'" data-id="'+g.id+'">'+
+      '<div class="gm-banner">'+(g.banner?'<img src="'+(''+g.banner).replace(/"/g,'&quot;')+'" loading="lazy" onerror="this.style.display=\'none\'">':'')+'</div>'+
+      '<div class="gm-info"><div class="gm-name">'+escapeHtml(g.game_name||g.game_code)+'</div><div class="gm-code">'+escapeHtml(g.game_code)+'</div></div>'+
+      '<input class="gm-sort" type="number" value="'+(g.sort_order||0)+'" min="0" onchange="gmSort('+g.id+',this.value)" title="Urutan (kecil = duluan)">'+
+      '<button class="gm-btn'+(feat?' on':'')+'" onclick="gmFeat('+g.id+',this)" title="Tampil di Populer di beranda">'+(feat?'⭐ Populer':'☆ Pop')+'</button>'+
+      '<button class="gm-btn '+(inactive?'off-status':'on-status')+'" onclick="gmStat('+g.id+',this)">'+(inactive?'OFF':'ON')+'</button>'+
+      '<button class="gm-btn del" onclick="gmDel('+g.id+',this)" title="Hapus permanen">×</button>'+
+    '</div>';
+  });
+  document.getElementById('gmList').innerHTML=h;
+}
+function escapeHtml(s){return (''+s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function gmFeat(id,btn){
+  var fd=new FormData();fd.append('act','toggle_featured');fd.append('id',id);
+  fetch('games.php',{method:'POST',body:fd}).then(r=>r.json()).then(function(d){
+    if(d.ok){
+      var g=GM.games.find(x=>+x.id===+id);if(g){g.featured=+g.featured===1?0:1;renderGM();}
+    }
+  });
+}
+function gmStat(id,btn){
+  var fd=new FormData();fd.append('act','toggle_game_status');fd.append('id',id);
+  fetch('games.php',{method:'POST',body:fd}).then(r=>r.json()).then(function(d){
+    if(d.ok){var g=GM.games.find(x=>+x.id===+id);if(g){g.status=d.status;renderGM();}}
+  });
+}
+function gmSort(id,val){
+  var fd=new FormData();fd.append('act','update_game_sort');fd.append('id',id);fd.append('sort',parseInt(val)||0);
+  fetch('games.php',{method:'POST',body:fd}).then(r=>r.json()).then(function(d){
+    if(d.ok){var g=GM.games.find(x=>+x.id===+id);if(g)g.sort_order=parseInt(val)||0;}
+  });
+}
+function gmDel(id,btn){
+  if(!confirm('Hapus PERMANEN game ini? (Tidak bisa dibatalkan — sync ulang Nexus untuk balikin)'))return;
+  var fd=new FormData();fd.append('act','delete_game');fd.append('id',id);
+  fetch('games.php',{method:'POST',body:fd}).then(r=>r.json()).then(function(d){
+    if(d.ok){GM.games=GM.games.filter(x=>+x.id!==+id);renderGM();}
+  });
+}
+// ESC closes modal
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.getElementById('gmOverlay').classList.contains('show'))closeGM();});
+</script>
 
 <!-- SortableJS dari CDN untuk drag-and-drop -->
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>

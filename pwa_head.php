@@ -496,13 +496,33 @@ body{animation:pageFadeIn .3s ease-out both}
     if(!el){el=document.createElement('div');el.id='lwPop';el.className='lw-pop';document.body.appendChild(el);}
     return el;
   }
+  // Pre-validate each winner's banner — only keep ones with reachable images
+  var verified=[]; // valid winners (banner loaded successfully)
+  function verifyWinners(){
+    verified=[];
+    if(!data.length)return;
+    var pending=data.length;
+    data.forEach(function(w){
+      if(!w.banner){pending--;if(pending===0)startCycle();return;}
+      var img=new Image();
+      img.onload=function(){
+        if(this.naturalWidth>=50 && this.naturalHeight>=50){verified.push(w);}
+        pending--;if(pending===0)startCycle();
+      };
+      img.onerror=function(){pending--;if(pending===0)startCycle();};
+      img.src=w.banner;
+    });
+  }
+  function startCycle(){
+    if(!verified.length){return;} // no valid winners → don't show popup at all
+    idx=0;start();
+  }
   function show(){
-    if(!data.length){return;}
-    var w=data[idx%data.length];idx++;
+    if(!verified.length){return;}
+    var w=verified[idx%verified.length];idx++;
     var el=ensureEl();
     el.classList.remove('leaving');
-    var imgHtml=w.banner?'<img src="'+w.banner.replace(/"/g,'&quot;')+'" loading="lazy" onerror="this.style.display=\'none\'">':'';
-    el.innerHTML='<div class="lw-img">'+imgHtml+'</div>'+
+    el.innerHTML='<div class="lw-img"><img src="'+w.banner.replace(/"/g,'&quot;')+'" loading="lazy"></div>'+
       '<div class="lw-info"><div class="lw-user">'+w.username+'</div><div class="lw-game">'+w.game_name+'</div></div>'+
       '<div class="lw-amt"><span><span class="lw-amt-prefix">+</span>Rp '+fmtRp(w.amount)+'</span><small>menang</small></div>';
     el.classList.add('show');
@@ -516,7 +536,7 @@ body{animation:pageFadeIn .3s ease-out both}
     fetched++;
     fetch('/api/data.php',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({action:'live_winners'})})
       .then(function(r){return r.json();}).then(function(d){
-        if(d&&d.ok&&d.winners&&d.winners.length){data=d.winners;idx=0;start();}
+        if(d&&d.ok&&d.winners&&d.winners.length){data=d.winners;verifyWinners();}
       }).catch(function(){});
   }
   function start(){
@@ -525,7 +545,7 @@ body{animation:pageFadeIn .3s ease-out both}
     timer=setInterval(function(){
       show();
       // Refresh data every cycle of N popups
-      if(idx>0 && idx%data.length===0)load();
+      if(idx>0 && verified.length>0 && idx%verified.length===0)load();
     }, 6500); // one popup every 6.5s
   }
   function init(){
