@@ -286,9 +286,9 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-he
 <div class="aff-tree">
   <!-- Top arrows: C kontribusi via B → A -->
   <div class="aff-arrows">
-    <div class="aff-arrow"><b>C1 berkontribusi ke A: 20</b><br>Dari perbedaan level 2%</div>
-    <div class="aff-arrow dim"><b>C2 berkontribusi ke A: 40</b><br>Dari perbedaan level 2%</div>
-    <div class="aff-arrow dim"><b>C3 berkontribusi ke A: 0</b><br>tanpa gradasi (tidak ada selisih level)</div>
+    <div class="aff-arrow"><b>C1 → A: 20</b><br>Selisih 2%</div>
+    <div class="aff-arrow dim"><b>C2 → A: 40</b><br>Selisih 2%</div>
+    <div class="aff-arrow dim"><b>C3 → A: 0</b><br>Tanpa selisih</div>
   </div>
 
   <!-- Level B (direct downline) -->
@@ -321,9 +321,9 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-he
 
   <!-- Mid arrows: B owns C -->
   <div class="aff-arrows">
-    <div class="aff-arrow green"><b>C1 ke B1: 10</b><br>1% rebate B1</div>
-    <div class="aff-arrow green"><b>C2 ke B2: 20</b><br>1% rebate B2</div>
-    <div class="aff-arrow green"><b>C3 ke B3: 600</b><br>3% rebate B3 (tier tinggi)</div>
+    <div class="aff-arrow green"><b>C1 → B1: 10</b><br>Rebate 1%</div>
+    <div class="aff-arrow green"><b>C2 → B2: 20</b><br>Rebate 1%</div>
+    <div class="aff-arrow green"><b>C3 → B3: 600</b><br>Rebate 3%</div>
   </div>
 
   <!-- Level C (level 2 downline) -->
