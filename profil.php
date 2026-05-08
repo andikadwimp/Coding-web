@@ -35,7 +35,7 @@ $pct=$nextReq>$curReq?min(100,(($depK-$curReq)/($nextReq-$curReq))*100):100;
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 html{font-size:16px!important;overflow-x:hidden}
-body{font-family:'Plus Jakarta Sans','Outfit','Poppins',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;padding-bottom:calc(110px + env(safe-area-inset-bottom,0px));overflow-x:hidden;max-width:100vw}
+body{font-family:'Plus Jakarta Sans','Outfit','Poppins',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;padding-bottom:calc(140px + env(safe-area-inset-bottom,0px));overflow-x:hidden;max-width:100vw}
 /* Header */
 .prof-top{padding:28px 16px 20px;background:linear-gradient(180deg,rgba(var(--sec-rgb,56,189,248),.08),transparent)}
 .prof-user{display:flex;align-items:center;gap:14px;margin-bottom:20px}

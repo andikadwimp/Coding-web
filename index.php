@@ -6,6 +6,7 @@ header('Pragma: no-cache');
 header('Expires: 0');
 // Unified beranda — handle both guest & logged-in
 $isLoggedIn = (bool)getUid();
+$uid = getUid(); // For sidebar profile lookup (sb-prof) — was undefined before
 $_BUILD_TAG = 'v6-grid-'.date('His'); // for cache verification
 // Admin auto-redirect to panel
 if($isLoggedIn){
@@ -71,7 +72,7 @@ try{
 <link rel="stylesheet" href="style.css?v=<?=time()?>">
 <style>
 *{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}html{font-size:16px!important;overflow-x:hidden}
-body{overflow-x:hidden;max-width:100vw;background:var(--bg);color:var(--t);padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
+body{overflow-x:hidden;max-width:100vw;background:var(--bg);color:var(--t);padding-bottom:calc(140px + env(safe-area-inset-bottom,0px))}
 button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.hdr,.bnav{will-change:auto;-webkit-transform:translateZ(0);transform:translateZ(0)}
 
 .hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg);position:sticky;top:0;z-index:100}
@@ -824,7 +825,14 @@ if($isLoggedIn):
   }catch(Exception $e){}
 ?>
 <div class="sb-prof">
-  <div class="sb-prof-av v<?=min($uvip,5)?>"><?=strtoupper(substr($uname,0,1))?><div class="sb-prof-vip">VIP <?=$uvip?></div></div>
+  <div class="sb-prof-av v<?=min($uvip,5)?>" style="background:var(--bg2);overflow:hidden">
+    <?php if($uid_show): ?>
+      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=<?=htmlspecialchars($uid_show)?>" alt="avatar" style="width:100%;height:100%;object-fit:cover" onerror="this.outerHTML='<?=strtoupper(substr($uname,0,1))?>'">
+    <?php else: ?>
+      <?=strtoupper(substr($uname,0,1))?>
+    <?php endif; ?>
+    <div class="sb-prof-vip">VIP <?=$uvip?></div>
+  </div>
   <div class="sb-prof-info">
     <div class="sb-prof-name"><?=htmlspecialchars($uname)?></div>
     <div class="sb-prof-id">ID <?=htmlspecialchars($uid_show)?></div>
