@@ -1,4 +1,4 @@
-const CACHE = 'app-v55';
+const CACHE = 'app-v56';
 
 // Path yg BOLEH di-cache (static assets aja)
 const CACHEABLE_PATTERNS = [
