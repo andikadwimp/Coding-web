@@ -326,11 +326,21 @@ function sendText(){
   .then(function(r){return r.json()}).then(function(d){
     btn.disabled=false;
     hideTyping();
-    if(!d.ok){if(window.handleAuthError&&handleAuthError(d))return;return;}
-    addMsg({id:lastId+1,sender:'bot',message:'Pesan Anda sudah diterima. Admin CS akan segera membalas. Terima kasih!',created_at:now},true);
+    if(!d.ok){
+      if(window.handleAuthError&&handleAuthError(d))return;
+      addMsg({id:lastId+1,sender:'bot',message:'⚠️ Gagal kirim pesan: '+(d.error||'unknown')+'. Coba lagi.',created_at:now},true);
+      return;
+    }
+    // Hanya tampil bot reply kalau pesan benar-benar terkirim ke admin (Telegram)
+    if(d.tg_ok){
+      addMsg({id:lastId+1,sender:'bot',message:'Pesan Anda sudah diterima. Admin CS akan segera membalas. Terima kasih!',created_at:now},true);
+    }else{
+      addMsg({id:lastId+1,sender:'bot',message:'Pesan tersimpan tapi belum terkirim ke admin (cek koneksi). Tetap akan dibalas saat online.',created_at:now},true);
+    }
   }).catch(function(){
     btn.disabled=false;
     hideTyping();
+    addMsg({id:lastId+1,sender:'bot',message:'⚠️ Gagal terhubung ke server. Cek internet & coba lagi.',created_at:now},true);
   });
 }
 

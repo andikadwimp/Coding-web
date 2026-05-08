@@ -113,7 +113,7 @@ if($action==='menu'){
 
 // Klik button — return reply (text+image) & log ke DB
 if($action==='click_button'){
-  $uid=authUid();if(!$uid)err('Login dulu');
+  $uid=authUid();if(!$uid)err('NOT_LOGGED_IN',401);
   $bid=intval($d['button_id']??0);
   $b=$db->prepare("SELECT * FROM cs_buttons WHERE id=? AND is_active=1");
   $b->execute([$bid]);$btn=$b->fetch();
@@ -126,7 +126,7 @@ if($action==='click_button'){
 
 // User kirim text manual → Telegram bot
 if($action==='send_text'){
-  $uid=authUid();if(!$uid)err('Login dulu');
+  $uid=authUid();if(!$uid)err('NOT_LOGGED_IN',401);
   $txt=trim((string)($d['message']??''));
   if($txt==='')err('Pesan kosong');
   if(mb_strlen($txt)>2000)err('Pesan terlalu panjang');
@@ -165,7 +165,7 @@ if($action==='send_text'){
 
 // Polling: ambil message baru (sejak last_id)
 if($action==='poll'){
-  $uid=authUid();if(!$uid)err('Login dulu');
+  $uid=authUid();if(!$uid)err('NOT_LOGGED_IN',401);
   $lastId=intval($d['last_id']??0);
   $s=$db->prepare("SELECT id,sender,message,image_url,created_at FROM cs_messages WHERE user_id=? AND id>? ORDER BY id ASC LIMIT 50");
   $s->execute([$uid,$lastId]);
@@ -180,7 +180,7 @@ if($action==='poll'){
 
 // Ambil full history user
 if($action==='history'){
-  $uid=authUid();if(!$uid)err('Login dulu');
+  $uid=authUid();if(!$uid)err('NOT_LOGGED_IN',401);
   $s=$db->prepare("SELECT id,sender,message,image_url,created_at FROM cs_messages WHERE user_id=? ORDER BY id DESC LIMIT 50");
   $s->execute([$uid]);
   $rows=array_reverse($s->fetchAll());

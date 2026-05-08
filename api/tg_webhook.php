@@ -248,6 +248,18 @@ if($replyText===''){echo'{"ok":true,"msg":"empty_reply"}';exit;}
 $db->prepare("INSERT INTO cs_messages(user_id,sender,message,tg_message_id) VALUES(?,?,?,?)")
    ->execute([$uid,'admin',$replyText,intval($msg['message_id'])]);
 
+// Push notif ke user — biar reply real-time tanpa harus poll
+try{
+    $wpLib = __DIR__ . '/../includes/webpush.php';
+    if(file_exists($wpLib)){
+        require_once $wpLib;
+        if(function_exists('pushNotify')){
+            $shortMsg = mb_strlen($replyText) > 100 ? mb_substr($replyText,0,100).'…' : $replyText;
+            pushNotify($db, $uid, '💬 Pesan dari CS', $shortMsg, '/cs_chat.php');
+        }
+    }
+}catch(Exception $e){}
+
 // Confirm ke admin di Telegram (✓ kecil di samping message)
 if($token){
   $ch=curl_init("https://api.telegram.org/bot$token/sendMessage");
