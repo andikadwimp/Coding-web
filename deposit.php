@@ -712,7 +712,7 @@ function showPayment(d){
       pb.innerHTML='';pb.appendChild(rb);
       setTimeout(function(){var b=document.getElementById('redirBar');if(b)b.style.width='100%';},80);
     }
-    setTimeout(function(){location.href='dashboard.php';},2000);
+    setTimeout(function(){location.href='profil.php';},2000);
   }
 
   // ── 1. SSE direct ke SQX (server-push tiap 2 detik, paling cepat) ──
@@ -765,7 +765,7 @@ function closePay(){
     // Kalau udah paid (ke-reconcile sebelumnya) → redirect langsung
     if(dep.status==='paid'){
       showToast('Deposit berhasil! Saldo sudah masuk.');
-      setTimeout(function(){location.href='dashboard.php'},1500);
+      setTimeout(function(){location.href='profil.php'},1500);
       return;
     }
     var pd=dep.pay_data_parsed||{};

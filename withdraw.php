@@ -274,7 +274,7 @@ html{font-size:16px!important;overflow-x:hidden}body{font-family:'Poppins',sans-
 </div>
 </div>
 
-<?php echo renderBnav($db,"deposit", $isLoggedIn); ?>
+<?php echo renderBnav($db,"profil", $isLoggedIn); ?>
 
 <script>
 var HAS_PIN=<?php echo $hasPin?'true':'false'; ?>;
