@@ -193,6 +193,7 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-he
 /* TOP CARD: avatar A + stats list */
 .aff-top{background:var(--s);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:14px;display:flex;gap:14px;align-items:flex-start;animation:secFadeIn .4s cubic-bezier(.16,1,.3,1) both}
 .aff-top .at-av{width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,var(--bg2),var(--s2));border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;overflow:hidden}
+.aff-top .at-av img{width:100%;height:100%;object-fit:cover;display:block}
 .aff-top .at-av svg{width:46px;height:46px;color:var(--t2)}
 .aff-top .at-av-badge{position:absolute;bottom:-2px;right:-2px;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#fbbf24,#f59e0b);border:2px solid var(--s);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Chakra Petch',sans-serif;font-weight:800;font-size:.78rem;letter-spacing:-.5px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
 .aff-top .at-stats{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;font-size:.74rem}
@@ -211,7 +212,8 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-he
 .aff-node .an-top{font-size:.62rem;color:var(--t2);font-weight:600;margin-bottom:5px;line-height:1.25}
 .aff-node .an-top b{display:block;color:var(--t);font-family:'Chakra Petch',sans-serif;font-weight:800;font-size:.66rem;margin-bottom:1px}
 .aff-node .an-top .an-amt{font-family:'Chakra Petch',sans-serif;font-weight:800;color:#fb923c;font-variant-numeric:tabular-nums;font-size:.78rem}
-.aff-node .an-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--bg2),var(--s2));border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;margin:6px auto 6px;position:relative;overflow:hidden}
+.aff-node .an-av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--bg2),var(--s2));border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;margin:6px auto 6px;position:relative;overflow:hidden}
+.aff-node .an-av img{width:100%;height:100%;object-fit:cover;display:block}
 .aff-node .an-av svg{width:26px;height:26px;color:var(--t2)}
 .aff-node .an-av-badge{position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-radius:50%;border:2px solid var(--s);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Chakra Petch',sans-serif;font-weight:800;font-size:.6rem}
 .aff-node.lvl-b .an-av-badge{background:linear-gradient(135deg,#4ade80,#22c55e)}
@@ -269,7 +271,7 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-he
 <!-- ═══ HEADER: Avatar A + Performance breakdown ═══ -->
 <div class="aff-top">
   <div class="at-av">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=PlayerA&backgroundColor=transparent" alt="A">
     <div class="at-av-badge">A</div>
   </div>
   <div class="at-stats">
@@ -296,7 +298,7 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-he
     <div class="aff-node lvl-b">
       <div class="an-top"><b>B1 Komisi</b><span>Kontribusi <span class="an-amt">15</span></span></div>
       <div class="an-av">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=DownlineB1" alt="B1">
         <div class="an-av-badge">B1</div>
       </div>
       <div class="an-bet">Taruhan efektif<b>500</b></div>
@@ -304,7 +306,7 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-he
     <div class="aff-node lvl-b">
       <div class="an-top"><b>B2 Komisi</b><span>Kontribusi <span class="an-amt">90</span></span></div>
       <div class="an-av">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=DownlineB2" alt="B2">
         <div class="an-av-badge">B2</div>
       </div>
       <div class="an-bet">Taruhan efektif<b>3,000</b></div>
@@ -312,7 +314,7 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-he
     <div class="aff-node lvl-b">
       <div class="an-top"><b>B3 Komisi</b><span>Kontribusi <span class="an-amt">60</span></span></div>
       <div class="an-av">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=DownlineB3" alt="B3">
         <div class="an-av-badge">B3</div>
       </div>
       <div class="an-bet">Taruhan efektif<b>2,000</b></div>
@@ -331,7 +333,7 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-he
     <div class="aff-node lvl-c">
       <div class="an-top"><b>C1 Komisi</b><span>Kontribusi <span class="an-amt">10</span></span></div>
       <div class="an-av">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=DownlineC1" alt="C1">
         <div class="an-av-badge">C1</div>
       </div>
       <div class="an-bet">Taruhan efektif<b>1,000</b></div>
@@ -339,7 +341,7 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-he
     <div class="aff-node lvl-c">
       <div class="an-top"><b>C2 Komisi</b><span>Kontribusi <span class="an-amt">20</span></span></div>
       <div class="an-av">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=DownlineC2" alt="C2">
         <div class="an-av-badge">C2</div>
       </div>
       <div class="an-bet">Taruhan efektif<b>2,000</b></div>
@@ -347,7 +349,7 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-he
     <div class="aff-node lvl-c">
       <div class="an-top"><b>C3 Komisi</b><span>Kontribusi <span class="an-amt">600</span></span></div>
       <div class="an-av">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=DownlineC3" alt="C3">
         <div class="an-av-badge">C3</div>
       </div>
       <div class="an-bet">Taruhan efektif<b>20,000</b></div>
