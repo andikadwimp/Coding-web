@@ -270,16 +270,8 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-he
 
 <!-- ═══ HEADER: Avatar A + Performance breakdown ═══ -->
 <div class="aff-top">
-  <div class="at-av" style="background:linear-gradient(135deg,#fbbf24,#f59e0b)">
-    <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="30" cy="24" r="11" fill="#fde68a"/>
-      <ellipse cx="26" cy="24" rx="1.5" ry="2" fill="#1f2937"/>
-      <ellipse cx="34" cy="24" rx="1.5" ry="2" fill="#1f2937"/>
-      <path d="M24 28 Q30 32 36 28" stroke="#1f2937" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-      <path d="M19 18 L24 13 L30 17 L36 13 L41 18 L41 24 Q41 14 30 14 Q19 14 19 24 Z" fill="#92400e"/>
-      <path d="M16 50 Q16 38 30 38 Q44 38 44 50 Z" fill="#fff" stroke="#1f2937" stroke-width=".6"/>
-      <path d="M22 50 L24 38 L30 36 L36 38 L38 50 Z" fill="#1e40af"/>
-    </svg>
+  <div class="at-av">
+    <img src="https://avatars.githubusercontent.com/u/1?s=200" alt="A">
     <div class="at-av-badge">A</div>
   </div>
   <div class="at-stats">
@@ -305,24 +297,24 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-he
   <div class="aff-tree-row">
     <div class="aff-node lvl-b">
       <div class="an-top"><b>B1 Komisi</b><span>Kontribusi <span class="an-amt">15</span></span></div>
-      <div class="an-av" style="background:linear-gradient(135deg,#86efac,#16a34a)">
-        <svg viewBox="0 0 48 48"><circle cx="24" cy="20" r="9" fill="#fde68a"/><circle cx="20.5" cy="20" r="1.3" fill="#1f2937"/><circle cx="27.5" cy="20" r="1.3" fill="#1f2937"/><path d="M19 24 Q24 28 29 24" stroke="#1f2937" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M14 12 Q14 8 24 8 Q34 8 34 12 L34 18 Q24 16 14 18 Z" fill="#7c3aed"/><path d="M11 42 Q11 32 24 32 Q37 32 37 42 Z" fill="#ec4899"/></svg>
+      <div class="an-av">
+        <img src="https://avatars.githubusercontent.com/u/8?s=120" alt="B1">
         <div class="an-av-badge">B1</div>
       </div>
       <div class="an-bet">Taruhan efektif<b>500</b></div>
     </div>
     <div class="aff-node lvl-b">
       <div class="an-top"><b>B2 Komisi</b><span>Kontribusi <span class="an-amt">90</span></span></div>
-      <div class="an-av" style="background:linear-gradient(135deg,#bef264,#65a30d)">
-        <svg viewBox="0 0 48 48"><circle cx="24" cy="20" r="9" fill="#fed7aa"/><circle cx="20.5" cy="20" r="1.3" fill="#1f2937"/><circle cx="27.5" cy="20" r="1.3" fill="#1f2937"/><path d="M20 25 L28 25" stroke="#1f2937" stroke-width="1.4" stroke-linecap="round"/><path d="M14 14 Q14 8 24 8 Q34 8 34 14 L34 19 Q24 17 14 19 Z" fill="#1e40af"/><path d="M11 42 Q11 32 24 32 Q37 32 37 42 Z" fill="#f59e0b"/></svg>
+      <div class="an-av">
+        <img src="https://avatars.githubusercontent.com/u/12?s=120" alt="B2">
         <div class="an-av-badge">B2</div>
       </div>
       <div class="an-bet">Taruhan efektif<b>3,000</b></div>
     </div>
     <div class="aff-node lvl-b">
       <div class="an-top"><b>B3 Komisi</b><span>Kontribusi <span class="an-amt">60</span></span></div>
-      <div class="an-av" style="background:linear-gradient(135deg,#5eead4,#0d9488)">
-        <svg viewBox="0 0 48 48"><circle cx="24" cy="20" r="9" fill="#fed7aa"/><circle cx="20.5" cy="20" r="1.3" fill="#1f2937"/><circle cx="27.5" cy="20" r="1.3" fill="#1f2937"/><path d="M19 24 Q24 28 29 24" stroke="#1f2937" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M14 12 Q14 7 24 7 Q34 7 34 12 L34 17 L30 16 L26 18 L22 16 L18 17 L14 17 Z" fill="#dc2626"/><path d="M11 42 Q11 32 24 32 Q37 32 37 42 Z" fill="#16a34a"/></svg>
+      <div class="an-av">
+        <img src="https://avatars.githubusercontent.com/u/25?s=120" alt="B3">
         <div class="an-av-badge">B3</div>
       </div>
       <div class="an-bet">Taruhan efektif<b>2,000</b></div>
@@ -340,24 +332,24 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--t);min-he
   <div class="aff-tree-row">
     <div class="aff-node lvl-c">
       <div class="an-top"><b>C1 Komisi</b><span>Kontribusi <span class="an-amt">10</span></span></div>
-      <div class="an-av" style="background:linear-gradient(135deg,#93c5fd,#2563eb)">
-        <svg viewBox="0 0 48 48"><circle cx="24" cy="20" r="9" fill="#fde68a"/><circle cx="20.5" cy="20" r="1.3" fill="#1f2937"/><circle cx="27.5" cy="20" r="1.3" fill="#1f2937"/><path d="M21 25 Q24 27 27 25" stroke="#1f2937" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M14 13 Q14 8 24 8 Q34 8 34 13 L36 18 L34 18 L34 19 Q24 17 14 19 Z" fill="#7c2d12"/><path d="M11 42 Q11 32 24 32 Q37 32 37 42 Z" fill="#0ea5e9"/></svg>
+      <div class="an-av">
+        <img src="https://avatars.githubusercontent.com/u/40?s=120" alt="C1">
         <div class="an-av-badge">C1</div>
       </div>
       <div class="an-bet">Taruhan efektif<b>1,000</b></div>
     </div>
     <div class="aff-node lvl-c">
       <div class="an-top"><b>C2 Komisi</b><span>Kontribusi <span class="an-amt">20</span></span></div>
-      <div class="an-av" style="background:linear-gradient(135deg,#f9a8d4,#db2777)">
-        <svg viewBox="0 0 48 48"><circle cx="24" cy="20" r="9" fill="#fed7aa"/><circle cx="20.5" cy="20" r="1.3" fill="#1f2937"/><circle cx="27.5" cy="20" r="1.3" fill="#1f2937"/><path d="M19 24 Q24 28 29 24" stroke="#1f2937" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="20" cy="22" r="1.5" fill="#fda4af" opacity=".6"/><circle cx="28" cy="22" r="1.5" fill="#fda4af" opacity=".6"/><path d="M14 13 Q14 7 24 7 Q34 7 34 13 L34 19 Q24 16 14 19 Z" fill="#1f2937"/><path d="M11 42 Q11 32 24 32 Q37 32 37 42 Z" fill="#fbbf24"/></svg>
+      <div class="an-av">
+        <img src="https://avatars.githubusercontent.com/u/55?s=120" alt="C2">
         <div class="an-av-badge">C2</div>
       </div>
       <div class="an-bet">Taruhan efektif<b>2,000</b></div>
     </div>
     <div class="aff-node lvl-c">
       <div class="an-top"><b>C3 Komisi</b><span>Kontribusi <span class="an-amt">600</span></span></div>
-      <div class="an-av" style="background:linear-gradient(135deg,#c4b5fd,#7c3aed)">
-        <svg viewBox="0 0 48 48"><circle cx="24" cy="20" r="9" fill="#fde68a"/><circle cx="20.5" cy="20" r="1.3" fill="#1f2937"/><circle cx="27.5" cy="20" r="1.3" fill="#1f2937"/><path d="M19 25 Q24 30 29 25" stroke="#1f2937" stroke-width="1.5" fill="none" stroke-linecap="round"/><rect x="18" y="17" width="5" height="3" rx="1" fill="#1f2937" opacity=".15"/><rect x="25" y="17" width="5" height="3" rx="1" fill="#1f2937" opacity=".15"/><path d="M14 14 Q14 8 24 8 Q34 8 34 14 L34 19 Q24 17 14 19 Z" fill="#92400e"/><path d="M11 42 Q11 32 24 32 Q37 32 37 42 Z" fill="#dc2626"/></svg>
+      <div class="an-av">
+        <img src="https://avatars.githubusercontent.com/u/77?s=120" alt="C3">
         <div class="an-av-badge">C3</div>
       </div>
       <div class="an-bet">Taruhan efektif<b>20,000</b></div>
