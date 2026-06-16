@@ -1,0 +1,49 @@
+<!--
+  LAYER 2 AUTO-RECONCILE SNIPPET
+  Paste sebelum </body> di layout.php atau index.php (halaman yang selalu di-load user).
+
+  Cara kerja:
+  1. Saat user buka app / refresh halaman, cek apakah ada pending deposit
+  2. Kalau ada, background-reconcile (tanpa blocking UI)
+  3. Kalau ternyata ada yg berubah jadi 'paid', tampilkan notifikasi
+  4. Dijalanin maksimal sekali per 60 detik biar ga spam
+
+  Pastikan api.js udah di-load sebelum snippet ini.
+-->
+<script>
+(function(){
+    // Guard: hanya jalan kalau API client udah ke-load (api.js mendefinisikan window.API)
+    // Backward-compat: cek juga lowercase 'api' kalau ada custom alias
+    var apiObj = (typeof API !== 'undefined' && API)
+              || (typeof api !== 'undefined' && api)
+              || null;
+    if(!apiObj || typeof apiObj.reconcileMyDeposits !== 'function') return;
+
+    // Throttle: max 1x per 60 detik
+    var LAST_KEY = '_dep_reconcile_last';
+    var now = Date.now();
+    var last = parseInt(sessionStorage.getItem(LAST_KEY) || '0', 10);
+    if(now - last < 60000) return;
+    sessionStorage.setItem(LAST_KEY, now);
+
+    // Trigger background reconcile — silent, non-blocking
+    setTimeout(function(){
+        apiObj.reconcileMyDeposits().then(function(res){
+            if(!res || !res.ok) return;
+            var s = res.summary || {};
+            // Ada deposit yang baru di-paid? Kasih notif
+            if(s.paid && s.paid > 0){
+                // Refresh saldo UI kalau ada fungsi globalnya
+                if(typeof refreshBalance === 'function') refreshBalance();
+                if(typeof window.refreshUser === 'function') window.refreshUser();
+                // Tampilkan toast / alert — sesuaikan dengan pattern notif yg lu pake
+                if(typeof toast === 'function'){
+                    toast('Deposit berhasil masuk! Cek saldo kamu.', 'success');
+                }else if(typeof showToast === 'function'){
+                    showToast('Deposit berhasil masuk! Cek saldo kamu.');
+                }
+            }
+        }).catch(function(){ /* silent fail — cron yang handle */ });
+    }, 2000); // delay 2 detik biar ga conflict sama load-time API lain
+})();
+</script>
